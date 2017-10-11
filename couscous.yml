@@ -6,50 +6,29 @@ title: React Redux Datatable
 baseUrl: https://sean-ww.github.io/react-redux-datatable
 
 # The left menu bar
-#menu:
-#    sections:
-#        courses:
-#            text: Courses
-#            items:
-#                courses:
-#                    text: Get all active courses
-#                    relativeUrl: courses.html
-#        events:
-#            text: Events
-#            items:
-#                eventCancellation:
-#                    text: Cancellation of a Training Event
-#                    relativeUrl: event-cancellation.html
-#        historicalRequests:
-#            text: Historical Requests
-#            items:
-#                addHistory:
-#                    text: Add a historical training record
-#                    relativeUrl: add-history.html
-#                removeHistory:
-#                    text: Remove a historical training record
-#                    relativeUrl: remove-history.html
-#        requests:
-#            text: Requests
-#            items:
-#                requestTraining:
-#                    text: Request a Training Course
-#                    relativeUrl: request-training.html
-#        systems:
-#            text: Systems
-#            items:
-#                systems:
-#                    text: Get all visible systems
-#                    relativeUrl: systems.html
-#        users:
-#            text: Users
-#            items:
-#                user:
-#                    text: Retrieve the current user's details
-#                    relativeUrl: user.html
-#                users:
-#                    text: Retrieve a single user's details
-#                    relativeUrl: users.html
-#                userSearch:
-#                    text: Search users
-#                    relativeUrl: user-search.html
+menu:
+    sections:
+        getStarted:
+            text: Get Started
+            items:
+                getStarted:
+                    text: Get Started
+                    relativeUrl: get-started/get-started.html
+        requestingData:
+            text: Requesting Data
+            items:
+                overview:
+                    text: Overview
+                    relativeUrl: requesting-data/overview.html
+                tableSettings:
+                    text: Table Settings
+                    relativeUrl: requesting-data/table-settings.html
+                tableColumns:
+                    text: Table Columns
+                    relativeUrl: requesting-data/table-columns.html
+        exportingData:
+            text: Exporting Data
+            items:
+                overview:
+                    text: Overview
+                    relativeUrl: exporting-data/overview.html

@@ -23,7 +23,7 @@ This builds upon [react-bootstrap-table](https://github.com/AllenFang/react-boot
 
 ### Documentation
 
-[You will find full documentation here](http://sean-ww.github.io/react-redux-datatable)
+[You will find full documentation here](https://sean-ww.github.io/react-redux-datatable)
 
 ### License
 
