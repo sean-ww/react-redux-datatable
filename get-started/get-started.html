@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Redux Datatable</title>
+
+    <link rel="stylesheet" href="https://sean-ww.github.io/react-redux-datatable/css/fonts.css" type="text/css"/>
+    <link rel="stylesheet" href="https://sean-ww.github.io/react-redux-datatable/css/theme.css" type="text/css"/>
+    <link rel="stylesheet" href="https://sean-ww.github.io/react-redux-datatable/css/theme-fixes.css" type="text/css"/>
+    <link rel="stylesheet" href="https://sean-ww.github.io/react-redux-datatable/css/highlightjs.css" type="text/css"/>
+</head>
+<body class="wy-body-for-nav">
+
+<div class="wy-grid-for-nav">
+
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+        <div class="wy-side-nav-search">
+            <a href="https://sean-ww.github.io/react-redux-datatable/" class="fa fa-home"> React Redux Datatable</a>
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+            <ul>
+                                    <span>Get Started</span>
+                                            <li class="toctree-l1 ">
+                            <a class="reference internal "
+                               href="https://sean-ww.github.io/react-redux-datatable/get-started/get-started.html">
+                                Get Started
+                            </a>
+                        </li>
+                                                        <span>Requesting Data</span>
+                                            <li class="toctree-l1 ">
+                            <a class="reference internal "
+                               href="https://sean-ww.github.io/react-redux-datatable/requesting-data/overview.html">
+                                Overview
+                            </a>
+                        </li>
+                                            <li class="toctree-l1 ">
+                            <a class="reference internal "
+                               href="https://sean-ww.github.io/react-redux-datatable/requesting-data/table-settings.html">
+                                Table Settings
+                            </a>
+                        </li>
+                                            <li class="toctree-l1 ">
+                            <a class="reference internal "
+                               href="https://sean-ww.github.io/react-redux-datatable/requesting-data/table-columns.html">
+                                Table Columns
+                            </a>
+                        </li>
+                                                        <span>Exporting Data</span>
+                                            <li class="toctree-l1 ">
+                            <a class="reference internal "
+                               href="https://sean-ww.github.io/react-redux-datatable/exporting-data/overview.html">
+                                Overview
+                            </a>
+                        </li>
+                                    
+            </ul>
+        </div>
+        &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+                <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+            <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+            <a href="https://sean-ww.github.io/react-redux-datatable/">React Redux Datatable</a>
+        </nav>
+
+
+                <div class="wy-nav-content">
+            <div class="rst-content">
+                <div role="main" class="document">
+                    <h4 id="install">Install</h4>
+<pre><code>npm i --save react-redux-datatable</code></pre>
+<h4 id="example-table-setup">Example Table Setup</h4>
+<pre><code>// in ECMAScript 6
+import DataTable from 'react-redux-datatable';
+import 'react-redux-datatable/dist/styles.css';
+
+const apiLocation = 'https://my.api/service';
+
+const tableSettings = {
+    tableID: 'DataTable',
+    keyField: 'ref_id',
+    tableColumns: [
+        {
+            title: 'Ref',
+            key: 'ref_id',
+            filter: 'NumberFilter',
+            defaultValue: { comparator: '=' },
+        },
+        {
+            title: 'First Name',
+            key: 'first_name',
+        },
+        {
+            title: 'Surname',
+            key: 'surname',
+        },
+        {
+            title: 'Type',
+            key: 'type',
+            filter: 'SelectFilter',
+            filterOptions: {
+                Add: 'Add',
+                Amend: 'Amend',
+                Remove: 'Remove',
+            },
+        },
+    ],
+};
+
+const DataTable = () =&gt; (
+    &lt;DataTable
+      tableSettings={tableSettings}
+      apiLocation={apiLocation}
+    /&gt;
+);</code></pre>
+<h4 id="example-api-success-2xx-response">Example API Success 2xx Response</h4>
+<p>Return json.</p>
+<pre><code class="language-json">{
+  "searchSuccess": true,
+  "dataTotalSize": 2,
+  "data": [
+    {
+      "ref_id":"5",
+      "first_name":"Ted",
+      "surname":"Corkscrew",
+      "type":"Add"
+    },
+    {
+      "ref_id":"26",
+      "first_name":"Edwina",
+      "surname":"Hosepipe",
+      "type":"Add"
+    }
+  ]
+}</code></pre>
+<h4 id="example-api-error-response">Example API Error Response</h4>
+<p>Return json with searchSuccess as false and/or a html status error code (4xx or 5xx).</p>
+<pre><code class="language-json">{
+  "searchSuccess": false
+}</code></pre>
+                </div>
+
+                <footer>
+                    <hr/>
+                                        Built with <a href="http://couscous.io/">Couscous</a> using a <a href="https://github.com/sean-ww/Template-ReadTheDocs">theme</a> based on <a href="https://readthedocs.org/">Read the Docs</a>.
+                </footer>
+
+            </div>
+        </div>
+
+    </section>
+
+</div>
+
+<script src="https://sean-ww.github.io/react-redux-datatable/js/jquery-1.11.0.min.js"></script>
+<script src="https://sean-ww.github.io/react-redux-datatable/js/bootstrap.min.js"></script>
+<script src="https://sean-ww.github.io/react-redux-datatable/js/highlight.min.js"></script>
+<script src="https://sean-ww.github.io/react-redux-datatable/js/theme.js"></script>
+
+<script>
+    $(function() {
+        // Syntax highlighting
+        hljs.initHighlightingOnLoad();
+    });
+</script>
+
+</body>
+</html>
