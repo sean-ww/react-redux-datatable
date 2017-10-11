@@ -1,0 +1,22 @@
+# Project language
+language: node_js
+node_js:
+  - "stable"
+
+# Cache node packages
+cache:
+  directories:
+    - node_modules
+
+# Install sass and create the dist directory
+before_script:
+  - gem install sass
+  - mkdir dist
+
+# Run tests and build
+script:
+  - npm test && npm run build
+
+# Update code coverage
+after_script:
+  - travis_retry npm run coveralls

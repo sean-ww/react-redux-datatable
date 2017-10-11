@@ -1,0 +1,426 @@
+/*TABLE STYLES*/
+table {
+    width: 100%;
+    font-size: 11px;
+    text-align: center;
+    border-spacing: 0;
+    empty-cells: show;
+    border-collapse: collapse;
+
+    &.hover tbody tr:hover td {
+        cursor: pointer;
+
+        a {
+            color: #ffffff;
+            cursor: pointer;
+        }
+    }
+
+    &.hover tbody tr td a {
+        color: #000000;
+        font-weight: bold;
+    }
+
+    .odd {
+        background: #eef3ea;
+    }
+
+    .even {
+        background: #ffffff;
+    }
+
+    .selected {
+        color: #ffffff;
+        background: #037cab !important;
+    }
+
+    .sorting {
+        background: url($sort_both_img_asset) no-repeat center right;
+    }
+
+    .sorting_asc {
+        background: url($sort_asc_img_asset) no-repeat center right;
+    }
+
+    .sorting_desc {
+        background: url($sort_desc_img_asset) no-repeat center right;
+    }
+}
+
+thead tr {
+    color: #111111;
+    border-bottom: 1px solid #a5a5a5;
+}
+
+td {
+    font-size: 10px;
+    padding: 6px 4px;
+    border-bottom: 1px solid #e2e2e2;
+
+    p {
+        font-size: 11px;
+    }
+}
+
+th {
+    font-size: 10px;
+    font-weight: 500;
+    padding: 8px 12px;
+
+    &.sorting {
+        cursor: pointer;
+    }
+}
+
+.tfoot th {
+    border-bottom: 1px solid #999999;
+}
+
+.dataTables_wrapper tbody tr:hover {
+    background: #dddddd;
+}
+
+.dataTables_paginate {
+    text-align: center;
+    font-size: 11px;
+
+    .paginate_button.disabled {
+        color: #999999;
+    }
+
+    span {
+        display: none;
+    }
+}
+
+.dataTables_filter,
+.dataTables_length {
+    margin: 10px 0;
+    width: auto;
+    display: inline-block;
+}
+
+.dataTables_length {
+    float: left;
+
+    select {
+        border-color: #709293;
+    }
+}
+
+.dataTables_filter {
+    float: right;
+}
+
+.dataTable {
+    clear: both;
+    position: relative;
+
+    td {
+        white-space: nowrap;
+    }
+
+    .loading {
+        position: absolute;
+        top: 30%;
+    }
+
+    tfoot input {
+        padding: 3px 0;
+    }
+
+    tfoot select {
+        padding: 3px 0;
+        appearance: none;
+        -moz-appearance: none;
+        text-indent: 0.1px;
+        padding-left: 10px;
+        text-overflow: '';
+    }
+}
+
+.dataTables_filter label,
+.dataTables_length label {
+    background: none;
+    color: #000000;
+    border: 0;
+    display: block;
+    vertical-align: middle;
+    padding: 0;
+    margin: auto;
+    width: auto;
+    font-weight: normal;
+    font-size: 11px;
+}
+
+.dataTables_filter input,
+.dataTables_length select {
+    width: auto;
+    padding: 2px;
+    margin: auto;
+    background: #ffffff;
+    font-size: 11px;
+    display: inline-block;
+    background: #f5f5f5;
+    border: 1px solid #709293;
+}
+
+div.bottom {
+    padding: 10px;
+    text-align: center;
+    background: rgb(238, 244, 237);
+    border: 1px solid #999999;
+    margin-top: 5px;
+}
+
+.dataTables_top {
+    padding: 0 10px;
+    margin: 5px 0;
+    overflow: auto;
+}
+
+.dataTable input,
+.dataTable select,
+.dataTables_filter input {
+    font-size: 10px;
+    padding: 3px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    border-color: #dddddd;
+    text-align: left;
+}
+
+.paginate_button.next {
+    float: right;
+}
+
+.paginate_button.previous {
+    float: left;
+}
+
+.paginate_button:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.paginate_button.disabled:hover {
+    cursor: default;
+    text-decoration: none;
+}
+
+.dataTables_info {
+    font-size: 11px;
+    text-align: center;
+}
+
+select:-moz-focusring {
+    color: transparent;
+    text-shadow: 0 0 0 #000000;
+}
+
+.dataTables_scrollBody {
+    height: auto;
+
+    .dataTable thead tr th {
+        height: 0px !important;
+        border: 0px !important;
+    }
+}
+
+/*!important removed - not sure if needed? - freezeHeaders cannot overwrite important in IE8*/
+.filterOptions {
+    background: #e9e7c3;
+    @include border-radius(3px);
+    border: 1px solid #615f25;
+    position: relative;
+    width: 100%;
+    display: none;
+    margin-top: 10px;
+    left: 0;
+    z-index: 1000;
+    clear: both;
+
+    h4 {
+        padding: 10px 10px 0;
+        font-weight: normal;
+        color: #036c96;
+    }
+
+    .input {
+        float: left;
+        color: #333333;
+        width: 200px;
+        clear: none;
+    }
+}
+
+.filterOptions label,
+.filterOptions select,
+.filters input {
+    font-size: 12px;
+    width: auto;
+}
+
+.filterBtn {
+    float: right;
+    margin-bottom: 10px;
+}
+
+.currentFilters {
+    color: #036c96;
+}
+
+.filters {
+    margin-bottom: 10px;
+}
+
+/*--Table Icon--*/
+$table_icon_width: 20;
+$table_icon_list: "delete", "disable", "edit", "view", "restore", "archive", "enable", "add", "remove", "show", "hide", "help", "back", "profile", "email", "sort", "save", "settings", "download", "audit", "menu", "addPage";
+
+a.table-icons,
+div.table-icons {
+    margin: 0 5px;
+    display: inline-block;
+    vertical-align: middle;
+    white-space: pre;
+    font-size: 11px;
+
+    span {
+        background: url($button_sprite_img_asset) no-repeat;
+        height: 20px;
+        display: block;
+        @each $current_icon in $table_icon_list {
+            $i: index($table_icon_list, $current_icon);
+
+            &.#{$current_icon} {
+                background-position: -#{(($i * $table_icon_width) - 20)}px 0;
+                width: 20px;
+            }
+        }
+    }
+
+    &:hover {
+        span {
+            @each $current_icon in $table_icon_list {
+                $i: index($table_icon_list, $current_icon);
+
+                .#{$current_icon} {
+                    background-position: -#{(($i * $table_icon_width) - 20)}px -80px;
+                    width: 20px;
+                }
+            }
+        }
+    }
+
+    &.inline span {
+        display: inline-block;
+        margin-bottom: -5px;
+        margin-right: 2px;
+    }
+
+    &.centered span {
+        margin: 0 auto;
+    }
+}
+
+.table-icons span {
+    @each $current_icon in $table_icon_list {
+        $i: index($table_icon_list, $current_icon);
+
+        &.#{$current_icon}Disabled {
+            background-position: -#{(($i * $table_icon_width) - 20)}px -60px;
+            width: 20px;
+            cursor: not-allowed;
+            cursor: default;
+        }
+    }
+}
+
+tr.selected td a.table-icons span {
+    @each $current_icon in $table_icon_list {
+        $i: index($table_icon_list, $current_icon);
+
+        .#{$current_icon} {
+            background-position: -#{(($i * $table_icon_width) - 20)}px -40px;
+            width: 20px;
+        }
+    }
+}
+
+/*--Table Status--*/
+span.statusImage {
+    background: url($status_lights_img_asset) no-repeat;
+    height: 16px;
+    width: 16px;
+    display: inline-block;
+
+    &.status-offline,
+    &.status-red {
+        background-position: 0 0;
+    }
+
+    &.status-advWarning {
+        background-position: -32px 0;
+    }
+
+    &.status-good,
+    &.status-green {
+        background-position: -16px 0;
+    }
+
+    &.status-amber,
+    &.status-warning {
+        background-position: -48px 0;
+    }
+
+    &.status-black {
+        background-position: -64px 0;
+    }
+
+    &.status-blue {
+        background-position: -80px 0;
+    }
+}
+
+.status-legend {
+    padding: 3px 20px;
+    margin-bottom: 20px;
+    border: 1px solid #cccccc;
+    font-size: 11px;
+    @include border-radius(3px);
+    background: #eeeeee;
+    display: inline-block;
+    position: relative;
+    top: 1.7em;
+
+    span {
+        display: inline-block;
+        margin: 2px 5px 0;
+        padding: 2px 0;
+
+        &.statusImage1 {
+            float: left;
+            margin: -3px 5px 0 0;
+        }
+
+        &.statusImage {
+            display: inline-block;
+            margin: 0 5px 0 0;
+            vertical-align: middle;
+        }
+    }
+
+    span:first-child span.statusImage {
+        margin-left: 0;
+    }
+
+    .legendTitle {
+        position: absolute;
+        top: -1.9em;
+        left: -3px;
+        font-weight: bold;
+        font-size: 12px;
+        color: $primary_header_color;
+    }
+}

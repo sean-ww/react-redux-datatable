@@ -1,0 +1,55 @@
+/*--Loading Screen--*/
+.loadingContainer,
+.stateChangeContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #ffffff;
+    width: 100%;
+    height: 100%;
+    z-index: 12;
+
+    .loadingGif {
+        width: 245px;
+        height: 113px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: -56px 0 0 -122px;
+
+        span {
+            display: block;
+            text-align: center;
+            font-family: sans-serif;
+        }
+    }
+}
+
+/*--Loading Gif (spinner)--*/
+.absLoadingContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #ffffff;
+    width: 100%;
+    height: 100%;
+    z-index: 1200;
+    @include opacity(0.3);
+}
+
+.rollingSpinner {
+    border: 0;
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -18px;
+    margin-top: -18px;
+    width: 36px;
+    height: 36px;
+    background-image: url($rolling_gif_img_asset);
+}
+
+.stateChangeContainer {
+    @include opacity(0.6);
+}

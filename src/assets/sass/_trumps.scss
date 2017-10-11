@@ -1,0 +1,23 @@
+.showImportant {
+    display: block !important;
+}
+
+.hideImportant {
+    display: none !important;
+}
+
+.ui-widget {
+    font-family: "open_sans",sans-serif !important;
+}
+
+.ui-datepicker select.ui-datepicker-month,
+.ui-datepicker select.ui-datepicker-year {
+    display: inline;
+}
+
+.ui-state-highlight {
+    height: 23px;
+    line-height: 19px;
+    background: #ffffc8;
+    border: 1px dashed #c8c800 !important;
+}

@@ -1,0 +1,15 @@
+.DS_Store
+*.idea
+example/
+node_modules/
+coverage/
+.sass-cache
+*.tgz
+src/
+test/
+.babelrc
+.eslintrc
+webpack.config.babel.js
+webpack.example.config.js
+webpack.umd.config.js
+webpack.umd.min.config.js
