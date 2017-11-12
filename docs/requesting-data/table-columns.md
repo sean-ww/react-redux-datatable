@@ -4,8 +4,9 @@
 | ----          | ------   | -----------                                                                 |
 | title         | string   | Required: The column heading to be displayed.                               |
 | key           | string   | Required: The column key.                                                   |
+| hidden        | bool     | If true, hides the column. Defaults to false.                               |
 | filter        | string   | The filter type to be used by the column.                                   |
-| defaultValue  | object   | The default value specific to the filter type.                                  |
+| defaultValue  | object   | The default value specific to the filter type.                              |
 | filterOptions | object   | Key-value paris of filter options eg. { key: 'value', key: 'value' }.       |
 | width         | integer  | Define a fixed width for the column.                                        |
 | export        | bool     | If false, the column will get excluded from the export.                     |
