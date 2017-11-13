@@ -261,6 +261,9 @@ class DataTable extends React.Component {
                 // add data formatting
                 if (column.dataFormat) colProps.dataFormat = column.dataFormat;
 
+                // add data formatting extra data
+                if (column.formatExtraData) colProps.formatExtraData = column.formatExtraData;
+
                 // make column unsortable
                 if (column.searchable === false) colProps.dataSort = false;
 

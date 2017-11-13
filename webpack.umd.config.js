@@ -86,6 +86,7 @@ module.exports = {
                 console.log(colors.green('Start (UMD Build): '), colors.bgBlue.white(new Date()));
                 callback();
             })
-        }
+        },
+        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/), // Ignore all optional deps of moment.js
     ]
 };
