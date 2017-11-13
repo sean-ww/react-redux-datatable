@@ -1,6 +1,6 @@
 {
   "name": "react-redux-datatable",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Dynamic data table using React and Redux that fetches JSON from a predefined API.",
   "main": "./lib/index.js",
   "style": "./dist/styles.css",
