@@ -109,7 +109,7 @@
 <tr>
 <td>filterOptions</td>
 <td>object</td>
-<td>Key-value paris of filter options eg. { key: 'value', key: 'value' }.</td>
+<td>Key-value paris of filter options eg. { key: 'value', key: 'value' }. <a href="#filter-options">See More</a></td>
 </tr>
 <tr>
 <td>width</td>
@@ -143,7 +143,8 @@
 </tr>
 </tbody>
 </table>
-<h5 id="text-filter">Text Filter</h5>
+<h5 id="filter-options">Filter Options</h5>
+<h6 id="text-filter">Text Filter</h6>
 <p>This is the default filter and does not need to be named.</p>
 <pre><code>{
     title: 'First Name',
@@ -155,7 +156,7 @@
   "type":"like",
   "value":"search value"
 }</code></pre>
-<h5 id="select-filter">Select Filter</h5>
+<h6 id="select-filter">Select Filter</h6>
 <p>This provides a select box with predefined options.</p>
 <pre><code>{
     title: 'Type',
@@ -173,7 +174,7 @@
   "type":"eq",
   "value":"Amend"
 }</code></pre>
-<h5 id="number-filter">Number Filter</h5>
+<h6 id="number-filter">Number Filter</h6>
 <p>This allows your to filter using a number with a logical comparator.</p>
 <pre><code>{
     title: 'Ref',
@@ -187,7 +188,7 @@
   "type":"eq", // eq, gt, gteq, lt, lteq, nteq, like
   "value":"119"
 }</code></pre>
-<h5 id="date-range-filter">Date Range Filter</h5>
+<h6 id="date-range-filter">Date Range Filter</h6>
 <p>This provides a select box with predefined options.</p>
 <pre><code>{
     title: 'Date Created',

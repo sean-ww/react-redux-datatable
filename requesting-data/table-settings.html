@@ -184,8 +184,57 @@
 <td>bool</td>
 <td>If true the table filters will be stored using local storage.</td>
 </tr>
+<tr>
+<td>extraToolbarItems</td>
+<td>function</td>
+<td>A way of passing extra items to the toolbar. <a href="#extra-toolbar-items">See More</a></td>
+</tr>
+<tr>
+<td>extraButtons</td>
+<td>function</td>
+<td>A way of passing extra buttons to the table. <a href="#extra-buttons">See More</a></td>
+</tr>
 </tbody>
 </table>
+<h5 id="extra-toolbar-items">Extra Toolbar Items</h5>
+<p><img src="https://github.com/sean-ww/react-redux-datatable/raw/master/extra-toolbar-options.png" alt="Extra Toolbar Options" /></p>
+<p>You can add extra items to the toolbar when you use displayTitle:</p>
+<pre><code>const ExtraToolbarItem = () =&gt;
+    &lt;Link
+      class="table-icons"
+      to="courses/create-course"
+    &gt;
+        &lt;span
+          class="add-link"
+        /&gt;
+        Add New
+    &lt;/Link&gt;
+
+const tableSettings = {
+    tableID: 'myTable',
+    displayTitle: 'Course Catalogue',
+    extraToolbarItems: ExtraToolbarItem,
+    ...otherSettings,
+}</code></pre>
+<h5 id="extra-buttons">Extra Buttons</h5>
+<p><img src="https://github.com/sean-ww/react-redux-datatable/raw/master/extra-buttons.png" alt="Extra Buttons" /></p>
+<p>You can add extra buttons to the table using extraButtons:</p>
+<pre><code>const ExtraButton = () =&gt;
+    &lt;Link
+      class="table-icons"
+      to="courses/create-course"
+    &gt;
+        &lt;span
+          class="add-link"
+        /&gt;
+        Add New
+    &lt;/Link&gt;
+
+const tableSettings = {
+    tableID: 'myTable',
+    extraButtons: ExtraButton,
+    ...otherSettings,
+}</code></pre>
                 </div>
 
                 <footer>
