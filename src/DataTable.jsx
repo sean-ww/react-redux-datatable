@@ -150,30 +150,31 @@ class DataTable extends React.Component {
                     <span class="refresh-icon"><b /></span>
                 </button>
                 {filtersType === 'shown' &&
-                    <button
-                      class="table-button table-button-menu-item"
-                      onClick={this.toggleFilters}
-                    >
-                        <span class="filter-icon filter-icon-shown"><b /></span>Filter
-                    </button>
+                <button
+                  class="table-button table-button-menu-item"
+                  onClick={this.toggleFilters}
+                >
+                    <span class="filter-icon filter-icon-shown"><b /></span>Filter
+                </button>
                 }
                 {filtersType === 'filtered' &&
-                    <button
-                      class="table-button table-button-menu-item"
-                      onClick={this.startClearingAllFilters}
-                    >
-                        <span class="filter-icon filter-icon-clear"><b /></span>Clear Filters
-                    </button>
+                <button
+                  class="table-button table-button-menu-item"
+                  onClick={this.startClearingAllFilters}
+                >
+                    <span class="filter-icon filter-icon-clear"><b /></span>Clear Filters
+                </button>
                 }
                 {filtersType === 'hidden' &&
-                    <button
-                      class="table-button table-button-menu-item"
-                      onClick={this.toggleFilters}
-                    >
-                        <span class="filter-icon"><b /></span>Filter
-                    </button>
+                <button
+                  class="table-button table-button-menu-item"
+                  onClick={this.toggleFilters}
+                >
+                    <span class="filter-icon"><b /></span>Filter
+                </button>
                 }
                 { props.exportCSVBtn }
+                { this.props.extraButtons() }
             </ButtonGroup>
         );
     }
@@ -241,99 +242,99 @@ class DataTable extends React.Component {
         }
 
         const tableHeaderColumns =
-        Object.prototype.toString.call(tableColumns) === '[object Array]' ?
-            tableColumns.map((column) => {
-                // Set column defaults
-                const thisRef = (c) => { this.colRef[column.key] = c; };
-                const colProps = {
-                    ref: thisRef,
-                    dataField: column.key,
-                    key: column.key,
-                    dataAlign: 'center',
-                    dataSort: true,
-                    sortFunc: this.preventClientSideSort,
-                    hidden: false,
-                    width: undefined,
-                    filter: undefined,
-                    className: `${(this.state.showFilters ? '' : 'hide-filter')}`,
-                };
-
-                // add data formatting
-                if (column.dataFormat) colProps.dataFormat = column.dataFormat;
-
-                // add data formatting extra data
-                if (column.formatExtraData) colProps.formatExtraData = column.formatExtraData;
-
-                // make column unsortable
-                if (column.searchable === false) colProps.dataSort = false;
-
-                // make column hidden
-                if (column.hidden) colProps.hidden = true;
-
-                // set column width
-                if (column.width) colProps.width = column.width.toString();
-
-                // prevent column csv export
-                if (typeof column.export !== 'undefined' && !column.export) colProps.export = false;
-
-                // set column filter
-                let defaultValue = '';
-                if (!this._hasMounted && column.defaultValue) defaultValue = column.defaultValue;
-                let colFilter = column.filter;
-                if (typeof colFilter === 'undefined') {
-                    colFilter = '';
-                    if (column.searchable !== false) colFilter = 'TextFilter'; // default, if searchable
-                }
-                switch (colFilter) {
-                case 'TextFilter': {
-                    colProps.filter = {
-                        type: 'TextFilter',
-                        placeholder: ' ',
-                        defaultValue,
+            Object.prototype.toString.call(tableColumns) === '[object Array]' ?
+                tableColumns.map((column) => {
+                    // Set column defaults
+                    const thisRef = (c) => { this.colRef[column.key] = c; };
+                    const colProps = {
+                        ref: thisRef,
+                        dataField: column.key,
+                        key: column.key,
+                        dataAlign: 'center',
+                        dataSort: true,
+                        sortFunc: this.preventClientSideSort,
+                        hidden: false,
+                        width: undefined,
+                        filter: undefined,
+                        className: `${(this.state.showFilters ? '' : 'hide-filter')}`,
                     };
-                    break;
-                }
-                case 'SelectFilter': {
-                    colProps.filter = {
-                        type: 'SelectFilter',
-                        options: column.filterOptions,
-                        defaultValue,
-                    };
-                    break;
-                }
-                case 'NumberFilter': {
-                    colProps.filter = {
-                        type: 'NumberFilter',
-                        placeholder: ' ',
-                        numberComparators: ['=', '>', '>=', '<', '<=', '!=', '...'],
-                        withoutEmptyComparatorOption: true,
-                        defaultValue,
-                    };
-                    break;
-                }
-                case 'CustomDateRangeFilter': {
-                    colProps.filter = {
-                        type: 'CustomFilter',
-                        getElement: getCustomFilter,
-                        customFilterParameters: {
-                            columnKey: column.key,
+
+                    // add data formatting
+                    if (column.dataFormat) colProps.dataFormat = column.dataFormat;
+
+                    // add data formatting extra data
+                    if (column.formatExtraData) colProps.formatExtraData = column.formatExtraData;
+
+                    // make column unsortable
+                    if (column.searchable === false) colProps.dataSort = false;
+
+                    // make column hidden
+                    if (column.hidden) colProps.hidden = true;
+
+                    // set column width
+                    if (column.width) colProps.width = column.width.toString();
+
+                    // prevent column csv export
+                    if (typeof column.export !== 'undefined' && !column.export) colProps.export = false;
+
+                    // set column filter
+                    let defaultValue = '';
+                    if (!this._hasMounted && column.defaultValue) defaultValue = column.defaultValue;
+                    let colFilter = column.filter;
+                    if (typeof colFilter === 'undefined') {
+                        colFilter = '';
+                        if (column.searchable !== false) colFilter = 'TextFilter'; // default, if searchable
+                    }
+                    switch (colFilter) {
+                    case 'TextFilter': {
+                        colProps.filter = {
+                            type: 'TextFilter',
+                            placeholder: ' ',
                             defaultValue,
-                        },
-                    };
-                    break;
-                }
-                default: {
-                    break;
-                }
-                }
+                        };
+                        break;
+                    }
+                    case 'SelectFilter': {
+                        colProps.filter = {
+                            type: 'SelectFilter',
+                            options: column.filterOptions,
+                            defaultValue,
+                        };
+                        break;
+                    }
+                    case 'NumberFilter': {
+                        colProps.filter = {
+                            type: 'NumberFilter',
+                            placeholder: ' ',
+                            numberComparators: ['=', '>', '>=', '<', '<=', '!=', '...'],
+                            withoutEmptyComparatorOption: true,
+                            defaultValue,
+                        };
+                        break;
+                    }
+                    case 'CustomDateRangeFilter': {
+                        colProps.filter = {
+                            type: 'CustomFilter',
+                            getElement: getCustomFilter,
+                            customFilterParameters: {
+                                columnKey: column.key,
+                                defaultValue,
+                            },
+                        };
+                        break;
+                    }
+                    default: {
+                        break;
+                    }
+                    }
 
-                return (
-                    <TableHeaderColumn {...colProps}>
-                        {column.title}
-                    </TableHeaderColumn>
-                );
-            })
-        : [];
+                    return (
+                        <TableHeaderColumn {...colProps}>
+                            {column.title}
+                        </TableHeaderColumn>
+                    );
+                })
+                : [];
 
         const csvFileName = `exportDownload_${moment().format('YYYY-MM-DD_HH-mm')}.csv`;
 
@@ -362,6 +363,7 @@ class DataTable extends React.Component {
 DataTable.propTypes = {
     DataTableExportData: PropTypes.object,
     keyField: PropTypes.string.isRequired,
+    extraButtons: PropTypes.func,
     defaultSort: PropTypes.array,
     tableColumns: PropTypes.array.isRequired,
     tableData: PropTypes.any,
@@ -386,6 +388,7 @@ DataTable.propTypes = {
 
 DataTable.defaultProps = {
     DataTableExportData: null,
+    extraButtons: null,
     defaultSort: null,
     tableData: null,
     sortName: undefined,

@@ -502,6 +502,7 @@ class DataTableContainer extends React.Component {
                     <span class="section-toolbar-title">
                         {tableSettings.displayTitle}
                     </span>
+                    { tableSettings.extraToolbarItems() }
                     <div class="section-toolbar-group">
                         <div
                           class={`
@@ -520,12 +521,13 @@ class DataTableContainer extends React.Component {
                 <div class="inner" style={{ overflow: 'auto' }}>
                     <div style={{ minWidth }}>
                         { isLoading &&
-                            <div class="absLoadingContainer" style={{ opacity: 0.3 }}>
-                                <LoadingGif />
-                            </div>
+                        <div class="absLoadingContainer" style={{ opacity: 0.3 }}>
+                            <LoadingGif />
+                        </div>
                         }
                         <DataTable
                           keyField={tableSettings.keyField}
+                          extraButtons={tableSettings.extraButtons}
                           defaultSort={tableSettings.defaultSort}
                           tableColumns={this.state.tableColumns}
                           tableData={tableData}

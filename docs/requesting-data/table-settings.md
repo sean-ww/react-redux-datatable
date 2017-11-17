@@ -69,13 +69,64 @@ Then the tableSettings post parameter would contain a corresponding json object:
 
 #### Available Options
 
-| Name            | Type    | Description                                                                      |
-| ----            | ------  | -----------                                                                      |
-| tableID         | string  | Required: An ID for the table.                                                   |
-| keyField        | string  | Required: A column key must be selected as the key field.                        |
-| tableColumns    | array   | Required: An array of objects with at least a key and title.                     |
-| wrapperType     | string  | This string adds a class or classes to the wrapper div around the table.         |
-| displayTitle    | string  | This adds a title above the table.                                               |
-| defaultSort     | array   | The default column to sort by, and if it is asc or desc e.g. ['ref_id', 'desc']. |
-| minWidth        | integer | Define a minimum width for the table.                                            |
-| useLocalStorage | bool    | If true the table filters will be stored using local storage.                    |
+| Name              | Type     | Description                                                                      |
+| ----              | ------   | -----------                                                                      |
+| tableID           | string   | Required: An ID for the table.                                                   |
+| keyField          | string   | Required: A column key must be selected as the key field.                        |
+| tableColumns      | array    | Required: An array of objects with at least a key and title.                     |
+| wrapperType       | string   | This string adds a class or classes to the wrapper div around the table.         |
+| displayTitle      | string   | This adds a title above the table.                                               |
+| defaultSort       | array    | The default column to sort by, and if it is asc or desc e.g. ['ref_id', 'desc']. |
+| minWidth          | integer  | Define a minimum width for the table.                                            |
+| useLocalStorage   | bool     | If true the table filters will be stored using local storage.                    |
+| extraToolbarItems | function | A way of passing extra items to the toolbar. [See More](#extra-toolbar-items)  |
+| extraButtons      | function | A way of passing extra buttons to the table. [See More](#extra-buttons)          |
+
+##### Extra Toolbar Items
+
+![Extra Toolbar Options](https://github.com/sean-ww/react-redux-datatable/raw/master/extra-toolbar-options.png)
+
+You can add extra items to the toolbar when you use displayTitle:
+```
+const ExtraToolbarItem = () =>
+    <Link
+      class="table-icons"
+      to="courses/create-course"
+    >
+        <span
+          class="add-link"
+        />
+        Add New
+    </Link>
+
+const tableSettings = {
+    tableID: 'myTable',
+    displayTitle: 'Course Catalogue',
+    extraToolbarItems: ExtraToolbarItem,
+    ...otherSettings,
+}
+```
+
+##### Extra Buttons
+
+![Extra Buttons](https://github.com/sean-ww/react-redux-datatable/raw/master/extra-buttons.png)
+
+You can add extra buttons to the table using extraButtons:
+```
+const ExtraButton = () =>
+    <Link
+      class="table-icons"
+      to="courses/create-course"
+    >
+        <span
+          class="add-link"
+        />
+        Add New
+    </Link>
+
+const tableSettings = {
+    tableID: 'myTable',
+    extraButtons: ExtraButton,
+    ...otherSettings,
+}
+```
