@@ -174,7 +174,7 @@ class DataTable extends React.Component {
                 </button>
                 }
                 { props.exportCSVBtn }
-                { this.props.extraButtons() }
+                { this.props.extraButtons && this.props.extraButtons() }
             </ButtonGroup>
         );
     }

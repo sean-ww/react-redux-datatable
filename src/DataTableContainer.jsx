@@ -502,7 +502,7 @@ class DataTableContainer extends React.Component {
                     <span class="section-toolbar-title">
                         {tableSettings.displayTitle}
                     </span>
-                    { tableSettings.extraToolbarItems() }
+                    { tableSettings.extraToolbarItems && tableSettings.extraToolbarItems() }
                     <div class="section-toolbar-group">
                         <div
                           class={`
