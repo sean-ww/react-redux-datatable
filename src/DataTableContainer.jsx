@@ -489,6 +489,10 @@ class DataTableContainer extends React.Component {
             tableDataSize = DataTableData[tableID].dataTotalSize;
         }
 
+        if (!tableSettings.extraToolbarItems) {
+            tableSettings.extraToolbarItems = () => {};
+        }
+
         return (
             <div
               class={`
@@ -502,7 +506,7 @@ class DataTableContainer extends React.Component {
                     <span class="section-toolbar-title">
                         {tableSettings.displayTitle}
                     </span>
-                    { tableSettings.extraToolbarItems && tableSettings.extraToolbarItems() }
+                    { tableSettings.extraToolbarItems() }
                     <div class="section-toolbar-group">
                         <div
                           class={`
