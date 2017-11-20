@@ -1,30 +1,20 @@
+import { updateExportState } from './updateReducerState';
+
 export default function reducer(state = {
     DataTableExportData: {},
 }, action) {
     switch (action.type) {
     case 'FETCH_EXPORT_TABLE_DATA': {
-        return {
-            ...state,
-            DataTableExportData: action.payload,
-        };
+        return updateExportState(state, action);
     }
     case 'FETCH_EXPORT_TABLE_DATA_REJECTED': {
-        return {
-            ...state,
-            DataTableExportData: action.payload,
-        };
+        return updateExportState(state, action);
     }
     case 'FETCH_EXPORT_TABLE_DATA_FULFILLED': {
-        return {
-            ...state,
-            DataTableExportData: action.payload,
-        };
+        return updateExportState(state, action);
     }
     case 'FETCH_EXPORT_TABLE_DATA_RESET': {
-        return {
-            ...state,
-            DataTableExportData: action.payload,
-        };
+        return updateExportState(state, action);
     }
     default: {
         return {

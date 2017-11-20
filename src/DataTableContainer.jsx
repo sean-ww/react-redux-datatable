@@ -250,7 +250,6 @@ class DataTableContainer extends React.Component {
                 }
                 this.resetPagination();
                 this.props.dispatch(fetchTableData(
-                    this.props,
                     this.props.tableSettings,
                     this.state.sizePerPage,
                     0,
@@ -286,7 +285,6 @@ class DataTableContainer extends React.Component {
             localStorage.setItem('tableSearch', JSON.stringify(newTableSearch));
         }
         this.props.dispatch(fetchTableData(
-            this.props,
             this.props.tableSettings,
             this.state.sizePerPage,
             0,
@@ -304,7 +302,6 @@ class DataTableContainer extends React.Component {
     onSortChange(sortName, sortOrder) {
         const offset = (this.state.currentPage - 1) * this.state.sizePerPage;
         this.props.dispatch(fetchTableData(
-            this.props,
             this.props.tableSettings,
             this.state.sizePerPage,
             offset,
@@ -323,7 +320,6 @@ class DataTableContainer extends React.Component {
     onPageChange(page, sizePerPage) {
         const offset = (page - 1) * sizePerPage;
         this.props.dispatch(fetchTableData(
-            this.props,
             this.props.tableSettings,
             sizePerPage,
             offset,
@@ -350,13 +346,12 @@ class DataTableContainer extends React.Component {
             this.props.DataTableExportData[tableID] &&
             this.props.DataTableExportData[tableID].fetched) {
             const exportData = this.props.DataTableExportData[tableID].data;
-            this.props.dispatch(resetExport(this.props, tableID));
+            this.props.dispatch(resetExport(tableID));
             return exportData;
         } else if (!this.props.DataTableExportData ||
             !this.props.DataTableExportData[tableID] ||
             !this.props.DataTableExportData[tableID].fetching) {
             this.props.dispatch(fetchTableData(
-                this.props,
                 this.props.tableSettings,
                 1000,
                 0,
@@ -375,7 +370,6 @@ class DataTableContainer extends React.Component {
         const filterObj = generateFilterObj(this.state.tableColumns);
         const columnFilters = generateColumnFilters(filterObj);
         this.props.dispatch(fetchTableData(
-            this.props,
             this.props.tableSettings,
             this.state.sizePerPage,
             offset,
@@ -394,7 +388,6 @@ class DataTableContainer extends React.Component {
     refreshTable() {
         const offset = (this.state.currentPage - 1) * this.state.sizePerPage;
         this.props.dispatch(fetchTableData(
-            this.props,
             this.props.tableSettings,
             this.state.sizePerPage,
             offset,
@@ -429,7 +422,6 @@ class DataTableContainer extends React.Component {
             localStorage.setItem('tableFilters', JSON.stringify(newTableFilters));
         }
         this.props.dispatch(fetchTableData(
-            this.props,
             this.props.tableSettings,
             this.state.sizePerPage,
             0,
@@ -468,7 +460,7 @@ class DataTableContainer extends React.Component {
 
         if (!tableID || (DataTableData && DataTableData[tableID] && DataTableData[tableID].error)) {
             return (
-                <div class="applicationError status_message offline">
+                <div class="status_message offline">
                     <p>
                         The table failed to initialise. Please check you are connected to the internet and try again.
                     </p>
