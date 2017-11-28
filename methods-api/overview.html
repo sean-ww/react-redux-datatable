@@ -78,30 +78,68 @@
                 <div class="wy-nav-content">
             <div class="rst-content">
                 <div role="main" class="document">
-                    <h1 id="react-redux-datatable">react-redux-datatable</h1>
-<p><a href="https://travis-ci.org/sean-ww/react-redux-datatable"><img src="https://travis-ci.org/sean-ww/react-redux-datatable.svg?branch=master" alt="Build Status" /></a>
-<a href="https://coveralls.io/github/sean-ww/react-redux-datatable?branch=master"><img src="https://coveralls.io/repos/github/sean-ww/react-redux-datatable/badge.svg?branch=master" alt="Coverage Status" /></a>
-<a href="https://www.npmjs.org/package/react-redux-datatable"><img src="https://img.shields.io/npm/v/react-redux-datatable.svg" alt="Version" /></a>
-<a href="https://raw.githubusercontent.com/sean-ww/react-redux-datatable/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="GitHub license" /></a></p>
-<p>Dynamic data table using React and Redux that fetches JSON from a predefined API. Designed to build asynchronous React-Redux tables quickly and consistently.</p>
-<p><img src="https://github.com/sean-ww/react-redux-datatable/raw/master/react-redux-datatable.png" alt="Example" /></p>
-<p>This builds upon <a href="https://github.com/AllenFang/react-bootstrap-table">react-bootstrap-table</a>.</p>
-<ul>
-<li>Filter and search data by text or by column values</li>
-<li>Built in ability to filter date ranges, number, text and select lists</li>
-<li>Paginate and Sort data</li>
-<li>Configurable table and column widths</li>
-<li>Ability to add custom filters and column formatters</li>
-<li>Optional local storage of filter data</li>
-<li>Uses React and Redux with a predefined API</li>
-<li>Add table headers</li>
-<li>Toggle full screen view</li>
-<li>Export to csv</li>
-</ul>
-<h3 id="notes">Notes</h3>
-<p>Use <a href="https://www.npmjs.com/package/babel-polyfill">babel-polyfill</a> in your codebase to ensure the package works across older browsers.</p>
-<h3 id="license">License</h3>
-<p>The MIT License (MIT). Please view the <a href="https://github.com/sean-ww/react-datatable/blob/master/LICENSE">License File</a> for more information.</p>
+                    <h4 id="table-api-methods">Table API Methods</h4>
+<p>In order to access the underlying table methods, you will need to set a reference:</p>
+<pre><code>&lt;DataTable
+  setRef={(c) =&gt; { this.myTable = c; }}
+  ...
+/&gt;</code></pre>
+<p>You can then use this reference to call methods:</p>
+<pre><code>this.myTable.method();</code></pre>
+<h4 id="example">Example</h4>
+<pre><code>class MyTable extends React.Component {
+    render() {
+        const MyLink = () =&gt;
+            &lt;span onClick={() =&gt; this.myTable.refreshTable()}&gt;
+                Click Me
+            &lt;/span&gt;;
+
+        const tableSettings = {
+            tableID: 'MyTable',
+            wrapperType: 'section',
+            displayTitle: 'Example',
+            extraToolbarItems: MyLink,
+            keyField: 'requestId',
+            defaultSort: ['requestId', 'desc'],
+            tableColumns: [
+                {
+                    title: 'Ref',
+                    key: 'requestId',
+                },
+                {
+                    title: 'Training Course',
+                    key: 'course',
+                },
+            ],
+        };
+
+        return (
+            &lt;DataTable
+              setRef={(c) =&gt; { this.myTable = c; }}
+              tableSettings={tableSettings}
+              apiLocation={apiLocation}
+            /&gt;
+        );
+    }
+}</code></pre>
+<h4 id="available-methods">Available Methods</h4>
+<h6 id="makefullscreen">makeFullscreen</h6>
+<p>Call to toggle the table between full-screen and standard view.</p>
+<pre><code>this.myTable.makeFullscreen()</code></pre>
+<h6 id="onpagechange">onPageChange</h6>
+<p>Call to change the page, giving (pageNumber, sizePerPage).</p>
+<pre><code>this.myTable.onPageChange(2, 10) // Go to page 2 starting from result 11</code></pre>
+<h6 id="onsizeperpagelist">onSizePerPageList</h6>
+<p>Call to change the size per page value, giving (sizePerPage).
+This must match an option value in the select list.</p>
+<pre><code>this.myTable.onSizePerPageList(25) // Change to 25 results per page</code></pre>
+<p>This alone will not update the table data, but can be used alongside <code>onPageChange</code> to update the data.</p>
+<h6 id="resetpagination">resetPagination</h6>
+<p>Call to go back to the first page.</p>
+<pre><code>this.myTable.resetPagination()</code></pre>
+<h6 id="refreshtable">refreshTable</h6>
+<p>Call to refresh the table data.</p>
+<pre><code>this.myTable.refreshTable()</code></pre>
                 </div>
 
                 <footer>
