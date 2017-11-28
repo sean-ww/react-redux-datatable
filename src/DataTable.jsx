@@ -23,10 +23,6 @@ class DataTable extends React.Component {
 
     constructor(props) {
         super(props);
-        this.toggleFilters = this.toggleFilters.bind(this);
-        this.startClearingAllFilters = this.startClearingAllFilters.bind(this);
-        this.clearAllFilters = this.clearAllFilters.bind(this);
-        this.checkFilters = this.checkFilters.bind(this);
         this.state = {
             showFilters: false,
             clearFilters: false,
@@ -77,9 +73,9 @@ class DataTable extends React.Component {
                 <span class="export-icon"><b /></span>Export
             </ExportCSVButton>
         );
-    }
+    };
 
-    checkFilters() {
+    checkFilters = () => {
         let showFilters = false;
         if (Object.prototype.toString.call(this.props.tableColumns) === '[object Array]') {
             this.props.tableColumns.forEach((col) => {
@@ -94,16 +90,16 @@ class DataTable extends React.Component {
             showFilters,
             defaultFiltersSet: showFilters,
         };
-    }
+    };
 
-    startClearingAllFilters() {
+    startClearingAllFilters = () => {
         this.props.startClearingFilters(); // - this to stop firing, but doesn't update until too late
         this.setState({
             clearFilters: true,
         });
-    }
+    };
 
-    clearAllFilters() {
+    clearAllFilters = () => {
         if (Object.prototype.toString.call(this.props.tableColumns) === '[object Array]') {
             this.props.tableColumns.forEach((col) => {
                 if (col.filter && col.filter.substring(0, 6) === 'Custom') {
@@ -121,13 +117,13 @@ class DataTable extends React.Component {
             clearFilters: false,
         });
         this.props.clearFilters();
-    }
+    };
 
-    toggleFilters() {
+    toggleFilters = () => {
         this.setState({
             showFilters: !this.state.showFilters,
         });
-    }
+    };
 
     createCustomButtonGroup = (props) => {
         let filtersType = 'hidden';
@@ -177,7 +173,7 @@ class DataTable extends React.Component {
                 { this.props.extraButtons && this.props.extraButtons() }
             </ButtonGroup>
         );
-    }
+    };
 
     searchBox = () => (
         <input
@@ -186,7 +182,7 @@ class DataTable extends React.Component {
           placeholder="Search"
           onChange={this.props.onSearchChange}
         />
-    )
+    );
 
     /* eslint-disable class-methods-use-this */
     preventClientSideSort() {

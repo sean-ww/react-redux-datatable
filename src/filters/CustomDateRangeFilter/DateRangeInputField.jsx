@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import DayPicker from 'react-day-picker';
+import DatePicker from './SelectDayPicker/SelectDayPicker';
 
 /**
  * Date range input field - This is a date range picker component.
@@ -43,9 +43,10 @@ const DateRangeInputField = ({ handleDayClick, from, to }) => (
             </div>
         }
 
-        <DayPicker
-          onDayClick={handleDayClick}
-          selectedDays={[from, { from, to }]}
+        <DatePicker
+          handleDayClick={handleDayClick}
+          from={from}
+          to={to}
         />
     </div>
 );

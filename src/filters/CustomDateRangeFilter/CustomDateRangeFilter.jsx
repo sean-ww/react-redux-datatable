@@ -70,10 +70,14 @@ class CustomDateFilter extends React.Component {
             let toValue;
             if (moment.isDate(this.state.to)) {
                 this.setDisplayValue(this.state.from, this.state.to);
-                toValue = moment(this.state.to).add(1, 'd').format('YYYY-MM-DD');
+                toValue = moment(this.state.to)
+                    .hours(23).minutes(59).seconds(59)
+                    .format('YYYY-MM-DD HH:mm:ss');
             } else {
                 this.setDisplayValue(this.state.from, this.state.from);
-                toValue = moment(this.state.from).add(1, 'd').format('YYYY-MM-DD');
+                toValue = moment(this.state.from)
+                    .hours(23).minutes(59).seconds(59)
+                    .format('YYYY-MM-DD HH:mm:ss');
             }
             this.props.filterHandler({
                 values: {

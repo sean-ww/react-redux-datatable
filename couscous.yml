@@ -14,21 +14,27 @@ menu:
                 getStarted:
                     text: Get Started
                     relativeUrl: get-started/get-started.html
+                tableSettings:
+                    text: Table Settings
+                    relativeUrl: get-started/table-settings.html
+                tableColumns:
+                    text: Table Columns
+                    relativeUrl: get-started/table-columns.html
         requestingData:
             text: Requesting Data
             items:
                 overview:
                     text: Overview
                     relativeUrl: requesting-data/overview.html
-                tableSettings:
-                    text: Table Settings
-                    relativeUrl: requesting-data/table-settings.html
-                tableColumns:
-                    text: Table Columns
-                    relativeUrl: requesting-data/table-columns.html
         exportingData:
             text: Exporting Data
             items:
                 overview:
                     text: Overview
                     relativeUrl: exporting-data/overview.html
+        methodsAPI:
+            text: Methods API
+            items:
+                overview:
+                    text: Overview
+                    relativeUrl: methods-api/overview.html
