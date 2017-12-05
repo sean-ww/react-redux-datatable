@@ -45,7 +45,7 @@ class CustomDateFilter extends React.Component {
             if (moment.isDate(toDate)) {
                 displayValue = `
                 ${moment(fromDate).format('DD/MM/YYYY')}
-                {' - '}
+                ${' - '}
                 ${moment(toDate).format('DD/MM/YYYY')}
                 `;
             } else displayValue = moment(fromDate).format('DD/MM/YYYY');

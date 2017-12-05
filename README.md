@@ -21,6 +21,10 @@ This builds upon [react-bootstrap-table](https://github.com/AllenFang/react-boot
 * Toggle full screen view
 * Export to csv
 
+### Demo
+
+[View the Demo](http://seanwallis.com/datatable-demo/)
+
 ### Documentation
 
 [You will find full documentation here](https://sean-ww.github.io/react-redux-datatable)

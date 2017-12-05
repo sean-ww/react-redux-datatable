@@ -3,7 +3,7 @@ import moment from 'moment';
 import DataTable from '../src/DataTableContainer'; // import DataTable from 'react-redux-datatable';
 import '../dist/styles.css'; // import 'react-redux-datatable/dist/styles.css';
 
-const apiLocation = `${window.location.protocol}//${window.location.hostname}/service/addresschange/requests/search`;
+const apiLocation = 'http://seanwallis.com/datatable-service/search';
 
 function dateFormatter(cell) {
     const dateValue = moment(cell).format('ddd, Do MMM YYYY HH:mm');
@@ -48,17 +48,8 @@ const addressTableSettings = {
             width: 90,
         },
         {
-            title: 'Surname',
+            title: 'Last Name',
             key: 'surname',
-            width: 90,
-        },
-        {
-            title: 'Oracle ID',
-            key: 'oracle_id',
-        },
-        {
-            title: 'Function',
-            key: 'function_name',
             width: 90,
         },
         {
@@ -72,7 +63,7 @@ const addressTableSettings = {
             filter: 'CustomDateRangeFilter',
             disableSearchAll: true,
             dataFormat: dateFormatter,
-            width: 80,
+            width: 120,
         },
         {
             title: 'Type',
@@ -89,9 +80,9 @@ const addressTableSettings = {
             key: 'system_type',
             filter: 'SelectFilter',
             filterOptions: {
-                iStore: 'iStore',
-                iProc: 'iProc',
-                COOM: 'COOM',
+                training: 'training',
+                staging: 'staging',
+                production: 'production',
             },
         },
         {

@@ -9,7 +9,7 @@ import store from './store';
 import Example from './example';
 
 const history = useBasename(createHistory)({
-    basename: '/react-redux-datatable/example',
+    basename: '/datatable-demo',
 });
 
 const app = document.getElementById('root');
