@@ -512,7 +512,7 @@ class DataTableContainer extends React.Component {
                 <div class="inner" style={{ overflow: 'auto' }}>
                     <div style={{ minWidth }}>
                         { isLoading &&
-                        <div class="absLoadingContainer" style={{ opacity: 0.3 }}>
+                        <div class="loadingContainer" style={{ opacity: 0.3 }}>
                             <LoadingGif />
                         </div>
                         }
