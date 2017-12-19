@@ -9,7 +9,6 @@ import DatePicker from './SelectDayPicker/SelectDayPicker';
  * @param {function} handleDayClick - A function to handle day clicks.
  * @param {Date] from - The from date (start of the range).
  * @param {Date} to - The to date (end of the range).
- *
  * @returns {jsx} The date range input component.
  */
 const DateRangeInputField = ({ handleDayClick, from, to }) => (
@@ -53,8 +52,13 @@ const DateRangeInputField = ({ handleDayClick, from, to }) => (
 
 DateRangeInputField.propTypes = {
     handleDayClick: PropTypes.func.isRequired,
-    from: PropTypes.instanceOf(Date).isRequired,
-    to: PropTypes.instanceOf(Date).isRequired,
+    from: PropTypes.instanceOf(Date),
+    to: PropTypes.instanceOf(Date),
+};
+
+DateRangeInputField.defaultProps = {
+    from: null,
+    to: null,
 };
 
 export default DateRangeInputField;

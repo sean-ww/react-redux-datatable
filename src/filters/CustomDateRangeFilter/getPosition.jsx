@@ -5,7 +5,6 @@
  * Based on: https://www.kirupa.com/html5/get_element_position_using_javascript.htm
  *
  * @param {Object} element The element we are finding the position of.
- *
  * @returns {{x: number, y: number}} The coordinates of the element.
  */
 export default (element) => {

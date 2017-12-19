@@ -102,8 +102,13 @@ export class SelectDayPicker extends React.Component {
 
 SelectDayPicker.propTypes = {
     handleDayClick: PropTypes.func.isRequired,
-    from: PropTypes.instanceOf(Date).isRequired,
-    to: PropTypes.instanceOf(Date).isRequired,
+    from: PropTypes.instanceOf(Date),
+    to: PropTypes.instanceOf(Date),
+};
+
+SelectDayPicker.defaultProps = {
+    from: null,
+    to: null,
 };
 
 export default SelectDayPicker;

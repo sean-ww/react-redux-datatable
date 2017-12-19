@@ -4,167 +4,16 @@ import { connect } from 'react-redux';
 import DataTable from './DataTable';
 import { fetchTableData, resetExport } from './DataTable.actions';
 import LoadingGif from './LoadingGif/LoadingGif';
+import {
+    setupTableColumns,
+    clearDefaultFilterValues,
+    setDefaultFilters,
+    setStorageFilters,
+    generateFilterObj,
+    generateColumnFilters,
+} from './ColumnFilters';
 
-function setFiltersFromStorage(tableColumns, previousFilters) {
-    const updatedTableColumns = [];
-    if (Object.prototype.toString.call(tableColumns) === '[object Array]') {
-        tableColumns.forEach((col) => {
-            const type = col.filter ? col.filter : 'TextFilter';
-            if (previousFilters && previousFilters[col.key] && previousFilters[col.key].value) {
-                if (type === 'CustomDateRangeFilter') {
-                    const fromDate = new Date(previousFilters[col.key].value.values.from);
-                    const toDate = new Date(previousFilters[col.key].value.values.to);
-                    updatedTableColumns.push(
-                        {
-                            ...col,
-                            defaultValue: {
-                                from: fromDate,
-                                to: toDate,
-                            }, // replace default
-                        },
-                    );
-                } else {
-                    updatedTableColumns.push(
-                        {
-                            ...col,
-                            defaultValue: previousFilters[col.key].value, // replace default
-                        },
-                    );
-                }
-            } else if (previousFilters) {
-                if (type === 'NumberFilter') {
-                    updatedTableColumns.push(
-                        {
-                            ...col,
-                            defaultValue: {
-                                comparator: col.defaultValue.comparator,
-                            }, // keep default comparator
-                        },
-                    );
-                } else {
-                    const newCol = Object.assign({}, col);
-                    delete newCol.defaultValue; // remove any defaults
-                    updatedTableColumns.push({ ...newCol });
-                }
-            } else {
-                updatedTableColumns.push({ ...col }); // no change
-            }
-        });
-    }
-    return updatedTableColumns;
-}
-
-function generateFilterObj(tableColumns) {
-    const filterObj = {};
-    if (Object.prototype.toString.call(tableColumns) === '[object Array]') {
-        tableColumns.forEach((col) => {
-            if (col.defaultValue) {
-                let type = col.filter ? col.filter : 'TextFilter';
-                if (type === 'NumberFilter') {
-                    if (col.defaultValue.number) {
-                        filterObj[col.key] = {
-                            type: col.filter,
-                            value: col.defaultValue,
-                        };
-                    }
-                } else {
-                    let value = '';
-                    if (type === 'CustomDateRangeFilter') {
-                        type = 'CustomFilter';
-                        value = {
-                            key: 'value',
-                            type: 'between',
-                            value: col.defaultValue,
-                        };
-                    } else {
-                        value = col.defaultValue;
-                    }
-                    filterObj[col.key] = {
-                        type,
-                        value,
-                    };
-                }
-            }
-        });
-    }
-    return filterObj;
-}
-
-function generateColumnFilters(filterObj) {
-    const columnFilters = [];
-    if (Object.keys(filterObj).length > 0) {
-        for (const key in filterObj) {
-            if (filterObj[key].type) {
-                switch (filterObj[key].type) {
-                case 'TextFilter': {
-                    columnFilters.push({
-                        key,
-                        type: 'like',
-                        value: filterObj[key].value,
-                    });
-                    break;
-                }
-                case 'SelectFilter': {
-                    columnFilters.push({
-                        key,
-                        type: 'eq',
-                        value: filterObj[key].value,
-                    });
-                    break;
-                }
-                case 'NumberFilter': {
-                    let type = 'like';
-                    switch (filterObj[key].value.comparator) {
-                    case '=':
-                        type = 'eq';
-                        break;
-                    case '>':
-                        type = 'gt';
-                        break;
-                    case '>=':
-                        type = 'gteq';
-                        break;
-                    case '<':
-                        type = 'lt';
-                        break;
-                    case '<=':
-                        type = 'lteq';
-                        break;
-                    case '!=':
-                        type = 'nteq';
-                        break;
-                    default:
-                    }
-                    columnFilters.push({
-                        key,
-                        type,
-                        value: filterObj[key].value.number,
-                    });
-                    break;
-                }
-                case 'CustomFilter': {
-                    let filterValue = '';
-                    if (typeof filterObj[key].value.values !== 'undefined') {
-                        filterValue = filterObj[key].value.values;
-                    } else if (typeof filterObj[key].value.value !== 'undefined') {
-                        filterValue = filterObj[key].value.value;
-                    }
-                    columnFilters.push({
-                        key,
-                        type: filterObj[key].value.type,
-                        value: filterValue,
-                    });
-                    break;
-                }
-                default:
-                }
-            }
-        }
-    }
-    return columnFilters;
-}
-
-class DataTableContainer extends React.Component {
+export class DataTableContainer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -173,46 +22,18 @@ class DataTableContainer extends React.Component {
             currentPage: 1,
             sortName: undefined,
             sortOrder: undefined,
-            searchValue: `${(this.props.tableSettings.defaultSearch ? this.props.tableSettings.defaultSearch : '')}`,
-            columnFilters: undefined,
             clearingFilters: false,
-            filtersPristine: true,
-            initReady: false,
-            tableColumns: this.props.tableSettings.tableColumns,
         };
-    }
-
-    componentWillMount() {
-        if (this.props.tableSettings.useLocalStorage) {
-            // set table search
-            const previousTableSearch = JSON.parse(localStorage.getItem('tableSearch'));
-            if (previousTableSearch && previousTableSearch[this.props.tableSettings.tableID]) {
-                const updatedTableSearch = previousTableSearch[this.props.tableSettings.tableID];
-                this.setState({
-                    searchValue: updatedTableSearch,
-                });
-            }
-
-            // set table filters
-            const previousTableFilters = JSON.parse(localStorage.getItem('tableFilters'));
-            if (previousTableFilters && previousTableFilters[this.props.tableSettings.tableID]) {
-                const updatedTableColumns = setFiltersFromStorage(
-                    this.props.tableSettings.tableColumns,
-                    previousTableFilters[this.props.tableSettings.tableID],
-                );
-
-                this.setState({
-                    tableColumns: updatedTableColumns,
-                });
-            }
-        }
+        this.searchValue = `${(this.props.tableSettings.defaultSearch ? this.props.tableSettings.defaultSearch : '')}`;
+        this.columnFilters = undefined;
+        this.setupTable();
+        this.initiateTable();
     }
 
     componentDidMount() {
         if (typeof this.props.ownProps.setRef !== 'undefined') {
             this.props.ownProps.setRef(this);
         }
-        this.initiateTable();
     }
 
     componentWillUnmount() {
@@ -222,28 +43,25 @@ class DataTableContainer extends React.Component {
     }
 
     onFilterChange = (filterObj) => {
-        if (this.state.initReady) {
-            this.setState({
-                filtersPristine: false,
-            });
-            const columnFilters = generateColumnFilters(filterObj);
-
+        if (this.props.DataTableData && this.props.DataTableData[this.props.tableSettings.tableID]) {
             // check: do not update individually while clearing all filters
             if (!this.state.clearingFilters) {
+                this.columnFilters = generateColumnFilters(this.tableColumns, filterObj);
                 if (this.props.tableSettings.useLocalStorage) {
-                    const previousTableFilters = JSON.parse(localStorage.getItem('tableFilters'));
+                    const storageFilters = setStorageFilters(this.tableColumns, filterObj);
+                    const previousTableFilters = JSON.parse(global.window.localStorage.getItem('tableFilters'));
                     let newTableFilters;
                     if (previousTableFilters) {
                         newTableFilters = {
                             ...previousTableFilters,
-                            [this.props.tableSettings.tableID]: filterObj,
+                            [this.props.tableSettings.tableID]: storageFilters,
                         };
                     } else {
                         newTableFilters = {
-                            [this.props.tableSettings.tableID]: filterObj,
+                            [this.props.tableSettings.tableID]: storageFilters,
                         };
                     }
-                    localStorage.setItem('tableFilters', JSON.stringify(newTableFilters));
+                    global.window.localStorage.setItem('tableFilters', JSON.stringify(newTableFilters));
                 }
                 this.resetPagination();
                 this.props.dispatch(fetchTableData(
@@ -252,13 +70,10 @@ class DataTableContainer extends React.Component {
                     0,
                     this.state.sortName,
                     this.state.sortOrder,
-                    this.state.searchValue,
-                    columnFilters,
+                    this.searchValue,
+                    this.columnFilters,
                     this.props.apiLocation,
                 ));
-                this.setState({
-                    columnFilters,
-                });
             }
         }
     };
@@ -267,7 +82,7 @@ class DataTableContainer extends React.Component {
         this.resetPagination();
         const text = e.target.value.trim();
         if (this.props.tableSettings.useLocalStorage) {
-            const previousTableSearch = JSON.parse(localStorage.getItem('tableSearch'));
+            const previousTableSearch = JSON.parse(global.window.localStorage.getItem('tableSearch'));
             let newTableSearch;
             if (previousTableSearch) {
                 newTableSearch = {
@@ -279,21 +94,19 @@ class DataTableContainer extends React.Component {
                     [this.props.tableSettings.tableID]: text,
                 };
             }
-            localStorage.setItem('tableSearch', JSON.stringify(newTableSearch));
+            global.window.localStorage.setItem('tableSearch', JSON.stringify(newTableSearch));
         }
+        this.searchValue = text;
         this.props.dispatch(fetchTableData(
             this.props.tableSettings,
             this.state.sizePerPage,
             0,
             this.state.sortName,
             this.state.sortOrder,
-            text,
-            this.state.columnFilters,
+            this.searchValue,
+            this.columnFilters,
             this.props.apiLocation,
         ));
-        this.setState({
-            searchValue: text,
-        });
     };
 
     onSortChange = (sortName, sortOrder) => {
@@ -304,8 +117,8 @@ class DataTableContainer extends React.Component {
             offset,
             sortName,
             sortOrder,
-            this.state.searchValue,
-            this.state.columnFilters,
+            this.searchValue,
+            this.columnFilters,
             this.props.apiLocation,
         ));
         this.setState({
@@ -322,8 +135,8 @@ class DataTableContainer extends React.Component {
             offset,
             this.state.sortName,
             this.state.sortOrder,
-            this.state.searchValue,
-            this.state.columnFilters,
+            this.searchValue,
+            this.columnFilters,
             this.props.apiLocation,
         ));
         this.setState({
@@ -354,32 +167,50 @@ class DataTableContainer extends React.Component {
                 0,
                 this.state.sortName,
                 this.state.sortOrder,
-                this.state.searchValue,
-                this.state.columnFilters,
+                this.searchValue,
+                this.columnFilters,
                 this.props.apiLocation,
             ));
         }
         return false;
     };
 
+    setupTable = () => {
+        const { tableColumns } = this.props.tableSettings;
+        this.tableColumns = setupTableColumns(tableColumns);
+
+        if (this.props.tableSettings.useLocalStorage) {
+            // set table search
+            const previousTableSearch = JSON.parse(global.window.localStorage.getItem('tableSearch'));
+            if (previousTableSearch && previousTableSearch[this.props.tableSettings.tableID]) {
+                this.searchValue = previousTableSearch[this.props.tableSettings.tableID];
+            }
+
+            // set table filters
+            const previousTableFilters = JSON.parse(global.window.localStorage.getItem('tableFilters'));
+            if (previousTableFilters && previousTableFilters[this.props.tableSettings.tableID]) {
+                setDefaultFilters(
+                    this.tableColumns,
+                    previousTableFilters[this.props.tableSettings.tableID],
+                );
+            }
+        }
+    };
+
     initiateTable = () => {
         const offset = (this.state.currentPage - 1) * this.state.sizePerPage;
-        const filterObj = generateFilterObj(this.state.tableColumns);
-        const columnFilters = generateColumnFilters(filterObj);
+        const filterObj = generateFilterObj(this.tableColumns);
+        this.columnFilters = generateColumnFilters(this.tableColumns, filterObj);
         this.props.dispatch(fetchTableData(
             this.props.tableSettings,
             this.state.sizePerPage,
             offset,
             this.state.sortName,
             this.state.sortOrder,
-            this.state.searchValue,
-            columnFilters,
+            this.searchValue,
+            this.columnFilters,
             this.props.apiLocation,
         ));
-        this.setState({
-            initReady: true,
-            columnFilters,
-        });
     };
 
     refreshTable = () => {
@@ -390,8 +221,8 @@ class DataTableContainer extends React.Component {
             offset,
             this.state.sortName,
             this.state.sortOrder,
-            this.state.searchValue,
-            this.state.columnFilters,
+            this.searchValue,
+            this.columnFilters,
             this.props.apiLocation,
         ));
     };
@@ -404,35 +235,37 @@ class DataTableContainer extends React.Component {
 
     clearFilters = () => {
         if (this.props.tableSettings.useLocalStorage) {
-            const previousTableFilters = JSON.parse(localStorage.getItem('tableFilters'));
+            const blankFilters = setStorageFilters(this.tableColumns, {});
+            const previousTableFilters = JSON.parse(global.window.localStorage.getItem('tableFilters'));
             let newTableFilters;
             if (previousTableFilters) {
                 newTableFilters = {
                     ...previousTableFilters,
-                    [this.props.tableSettings.tableID]: {},
+                    [this.props.tableSettings.tableID]: blankFilters,
                 };
             } else {
                 newTableFilters = {
-                    [this.props.tableSettings.tableID]: {},
+                    [this.props.tableSettings.tableID]: blankFilters,
                 };
             }
-            localStorage.setItem('tableFilters', JSON.stringify(newTableFilters));
+            global.window.localStorage.setItem('tableFilters', JSON.stringify(newTableFilters));
         }
+        clearDefaultFilterValues(this.tableColumns);
         this.props.dispatch(fetchTableData(
             this.props.tableSettings,
             this.state.sizePerPage,
             0,
             this.state.sortName,
             this.state.sortOrder,
-            this.state.searchValue,
+            this.searchValue,
             undefined,
             this.props.apiLocation,
         ));
         this.setState({
             currentPage: 1,
-            columnFilters: undefined,
             clearingFilters: false,
         });
+        this.columnFilters = undefined;
     };
 
     resetPagination = () => {
@@ -451,7 +284,6 @@ class DataTableContainer extends React.Component {
             DataTableData,
             DataTableExportData,
         } = this.props;
-
         const minWidth = tableSettings.minWidth;
         const tableID = tableSettings.tableID;
 
@@ -468,6 +300,11 @@ class DataTableContainer extends React.Component {
         let isLoading = false;
         if (!DataTableData || !DataTableData[tableID] || !DataTableData[tableID].fetched) isLoading = true;
 
+        let isFiltered = false;
+        if (this.columnFilters && this.columnFilters.length > 0) {
+            isFiltered = true;
+        }
+
         let tableData = null;
         if (DataTableData && DataTableData[tableID] && DataTableData[tableID].data) {
             tableData = DataTableData[tableID].data;
@@ -478,8 +315,12 @@ class DataTableContainer extends React.Component {
             tableDataSize = DataTableData[tableID].dataTotalSize;
         }
 
-        if (!tableSettings.extraToolbarItems) tableSettings.extraToolbarItems = null;
+        let exportData = null;
+        if (DataTableExportData && DataTableExportData[tableID]) {
+            exportData = DataTableExportData[tableID];
+        }
 
+        if (!tableSettings.extraToolbarItems) tableSettings.extraToolbarItems = null;
         return (
             <div
               class={`
@@ -520,9 +361,9 @@ class DataTableContainer extends React.Component {
                           keyField={tableSettings.keyField}
                           extraButtons={tableSettings.extraButtons}
                           defaultSort={tableSettings.defaultSort}
-                          tableColumns={this.state.tableColumns}
+                          tableColumns={this.tableColumns}
                           tableData={tableData}
-                          DataTableExportData={DataTableExportData[tableID]}
+                          DataTableExportData={exportData}
                           dataTotalSize={tableDataSize}
                           onPageChange={this.onPageChange}
                           onSizePerPageList={this.onSizePerPageList}
@@ -535,11 +376,10 @@ class DataTableContainer extends React.Component {
                           refreshTable={this.refreshTable}
                           sortName={this.state.sortName}
                           sortOrder={this.state.sortOrder}
-                          searchValue={this.state.searchValue}
-                          columnFilters={this.state.columnFilters}
+                          searchValue={this.searchValue}
+                          isFiltered={isFiltered}
                           startClearingFilters={this.startClearingFilters}
                           clearFilters={this.clearFilters}
-                          filtersPristine={this.state.filtersPristine}
                         />
                     </div>
                 </div>

@@ -82,6 +82,16 @@ Then the tableSettings post parameter would contain a corresponding json object:
 | extraToolbarItems | function | A way of passing extra items to the toolbar. [See More](#extra-toolbar-items)  |
 | extraButtons      | function | A way of passing extra buttons to the table. [See More](#extra-buttons)          |
 
+##### Using Local Storage
+
+Using local storage will store the column filters and search box values entered as ```tableFilters``` and ```tableSearch```.
+
+LocalStorage can be cleared as below:
+```
+localStorage.removeItem('tableFilters'); // clear table filters
+localStorage.removeItem('tableSearch'); // clear table searches
+```
+
 ##### Extra Toolbar Items
 
 ![Extra Toolbar Options](https://github.com/sean-ww/react-redux-datatable/raw/master/extra-toolbar-options.png)
