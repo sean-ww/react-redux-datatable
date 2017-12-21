@@ -76,10 +76,11 @@ Then the tableSettings post parameter would contain a corresponding json object:
 | tableColumns      | array    | Required: An array of objects with at least a key and title.                     |
 | wrapperType       | string   | This string adds a class or classes to the wrapper div around the table.         |
 | displayTitle      | string   | This adds a title above the table.                                               |
+| defaultSearch     | string   | The default search value.                                                        |
 | defaultSort       | array    | The default column to sort by, and if it is asc or desc e.g. ['ref_id', 'desc']. |
 | minWidth          | integer  | Define a minimum width for the table.                                            |
 | useLocalStorage   | bool     | If true the table filters will be stored using local storage.                    |
-| extraToolbarItems | function | A way of passing extra items to the toolbar. [See More](#extra-toolbar-items)  |
+| extraToolbarItems | function | A way of passing extra items to the toolbar. [See More](#extra-toolbar-items)    |
 | extraButtons      | function | A way of passing extra buttons to the table. [See More](#extra-buttons)          |
 
 ##### Using Local Storage

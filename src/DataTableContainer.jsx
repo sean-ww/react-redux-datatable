@@ -23,6 +23,7 @@ export class DataTableContainer extends React.Component {
             sortName: undefined,
             sortOrder: undefined,
             clearingFilters: false,
+            lastRefresh: 0,
         };
         this.searchValue = `${(this.props.tableSettings.defaultSearch ? this.props.tableSettings.defaultSearch : '')}`;
         this.columnFilters = undefined;
@@ -225,6 +226,9 @@ export class DataTableContainer extends React.Component {
             this.columnFilters,
             this.props.apiLocation,
         ));
+        this.setState({
+            lastRefresh: Date.now(),
+        });
     };
 
     startClearingFilters = () => {
