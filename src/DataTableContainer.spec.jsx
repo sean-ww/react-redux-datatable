@@ -296,7 +296,6 @@ describe('<DataTableContainer>', () => {
                         searchable: false,
                         sortable: false,
                         export: false,
-                        dataFormat: actionFormatter,
                     },
                 ],
             });
