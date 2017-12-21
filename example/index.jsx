@@ -9,7 +9,7 @@ import store from './store';
 import Example from './example';
 
 const history = useBasename(createHistory)({
-    basename: '/datatable-demo',
+    basename: window.location.pathname,
 });
 
 const app = document.getElementById('root');

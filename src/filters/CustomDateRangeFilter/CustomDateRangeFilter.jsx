@@ -9,14 +9,6 @@ class CustomDateFilter extends React.Component {
 
     constructor(props) {
         super(props);
-        this.handleDayClick = this.handleDayClick.bind(this);
-        this.handleResetClick = this.handleResetClick.bind(this);
-        this.togglePicker = this.togglePicker.bind(this);
-        this.positionPicker = this.positionPicker.bind(this);
-        this.windowClick = this.windowClick.bind(this);
-        this.filter = this.filter.bind(this);
-        this.customCleanFiltered = this.customCleanFiltered.bind(this);
-        this.setDisplayValue = this.setDisplayValue.bind(this);
         this.state = {
             showPicker: false,
             topPosition: 0,
@@ -39,7 +31,7 @@ class CustomDateFilter extends React.Component {
         this.removeEvents();
     }
 
-    setDisplayValue(fromDate, toDate) {
+    setDisplayValue = (fromDate, toDate) => {
         let displayValue = '';
         if (moment.isDate(fromDate)) {
             if (moment.isDate(toDate)) {
@@ -53,18 +45,18 @@ class CustomDateFilter extends React.Component {
         this.setState({
             displayValue,
         });
-    }
+    };
 
-    customCleanFiltered() {
+    customCleanFiltered = () => {
         this.setState({
             from: null,
             to: null,
             displayValue: '',
         });
         this.props.filterHandler(); // clear filter
-    }
+    };
 
-    filter() {
+    filter = () => {
         if (moment.isDate(this.state.from)) {
             const fromValue = moment(this.state.from).format('YYYY-MM-DD');
             let toValue;
@@ -93,42 +85,42 @@ class CustomDateFilter extends React.Component {
             this.props.filterHandler(); // clear filter
         }
         this.windowClick();
-    }
+    };
 
     handleDayClick = (day) => {
         const range = DateUtils.addDayToRange(day, this.state);
         this.setState(range);
-    }
+    };
 
     handleResetClick = () => {
         this.setState({
             from: null,
             to: null,
         });
-    }
+    };
 
-    addEvents() {
+    addEvents = () => {
         window.addEventListener('click', this.windowClick, false);
         window.addEventListener('scroll', this.positionPicker, false);
         window.addEventListener('resize', this.positionPicker, false);
     }
 
-    removeEvents() {
+    removeEvents = () => {
         window.removeEventListener('click', this.windowClick);
         window.removeEventListener('scroll', this.positionPicker);
         window.removeEventListener('resize', this.positionPicker);
-    }
+    };
 
-    windowClick() {
+    windowClick = () => {
         this.setState({
             showPicker: false,
             topPosition: 0,
             leftPosition: -1000,
         });
         this.removeEvents();
-    }
+    };
 
-    positionPicker() {
+    positionPicker = () => {
         const parentPosition = getPosition(document.getElementById(`${this.props.columnKey}-date-filter`));
         const elemWidth = document.getElementById(`${this.props.columnKey}-date-filter-container`).offsetWidth;
         const elemHeight = document.getElementById(`${this.props.columnKey}-date-filter-container`).offsetHeight;
@@ -136,7 +128,10 @@ class CustomDateFilter extends React.Component {
         const bottomOfElement = parentPosition.y + elemHeight;
 
         const rightOfScreen = document.documentElement.offsetWidth;
-        const bottomOfScreen = document.documentElement.offsetHeight;
+        const bottomOfScreen = Math.max(
+            document.documentElement.offsetHeight,
+            window.innerHeight,
+        );
 
         const leftAdjustmentPadding = 2;
         const leftAdjustment = Math.max((rightOfElement + leftAdjustmentPadding) - rightOfScreen, 0);
@@ -147,9 +142,9 @@ class CustomDateFilter extends React.Component {
             topPosition: parentPosition.y - topAdjustment,
             leftPosition: parentPosition.x - leftAdjustment,
         });
-    }
+    };
 
-    togglePicker() {
+    togglePicker = () => {
         this.removeEvents();
 
         const nextShowState = !this.state.showPicker;
@@ -162,7 +157,7 @@ class CustomDateFilter extends React.Component {
             this.positionPicker(nextShowState);
             this.addEvents();
         }
-    }
+    };
 
     render() {
         const { columnKey } = this.props;

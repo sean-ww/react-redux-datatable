@@ -4,7 +4,7 @@
  * @param DataTableData The current data table data in state.
  * @param removeTableId The id of the table that has updated.
  *
- * @returns {object} The previous data table data, less the updated table.
+ * @returns {Object} The previous data table data, less the updated table.
  */
 const getPreviousDataTableData = (DataTableData, removeTableId) => {
     if (typeof DataTableData !== 'object') return {};
@@ -22,10 +22,10 @@ const getPreviousDataTableData = (DataTableData, removeTableId) => {
  *
  * Combine the updated table payload with the previous data table data.
  *
- * @param {object} DataTableData The current data table data in state.
- * @param {object} tableUpdate The table update payload.
+ * @param {Object} DataTableData The current data table data in state.
+ * @param {Object} tableUpdate The table update payload.
  *
- * @return {object} The new table data object.
+ * @return {Object} The new table data object.
  */
 const updateDataTableData = (DataTableData, tableUpdate) => Object.assign(
     {},

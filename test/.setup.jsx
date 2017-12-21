@@ -17,4 +17,11 @@ global.navigator = {
     userAgent: 'node.js'
 };
 
+if (!global.window.localStorage) {
+    global.window.localStorage = {
+        getItem() { return '{}'; },
+        setItem() {}
+    };
+}
+
 documentRef = document;

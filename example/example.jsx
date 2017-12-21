@@ -3,7 +3,7 @@ import moment from 'moment';
 import DataTable from '../src/DataTableContainer'; // import DataTable from 'react-redux-datatable';
 import '../dist/styles.css'; // import 'react-redux-datatable/dist/styles.css';
 
-const apiLocation = 'http://seanwallis.com/datatable-service/search';
+const apiLocation = `${window.location.protocol}//${window.location.hostname}/datatable-service/search`;
 
 function dateFormatter(cell) {
     const dateValue = moment(cell).format('ddd, Do MMM YYYY HH:mm');
@@ -18,8 +18,8 @@ function actionFormatter() {
     );
 }
 
-const addressTableSettings = {
-    tableID: 'AddressDataTable',
+const exampleTableSettings = {
+    tableID: 'ExampleDataTable',
     wrapperType: 'section',
     displayTitle: 'Requests Table',
     keyField: 'request_id',
@@ -96,11 +96,11 @@ const addressTableSettings = {
     ],
 };
 
-const AddressDataTable = () => (
+const ExampleDataTable = () => (
     <DataTable
-      tableSettings={addressTableSettings}
+      tableSettings={exampleTableSettings}
       apiLocation={apiLocation}
     />
 );
 
-export default AddressDataTable;
+export default ExampleDataTable;
