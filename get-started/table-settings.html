@@ -177,6 +177,11 @@
 <td>This adds a title above the table.</td>
 </tr>
 <tr>
+<td>defaultSearch</td>
+<td>string</td>
+<td>The default search value.</td>
+</tr>
+<tr>
 <td>defaultSort</td>
 <td>array</td>
 <td>The default column to sort by, and if it is asc or desc e.g. ['ref_id', 'desc'].</td>
@@ -203,6 +208,11 @@
 </tr>
 </tbody>
 </table>
+<h5 id="using-local-storage">Using Local Storage</h5>
+<p>Using local storage will store the column filters and search box values entered as <code>tableFilters</code> and <code>tableSearch</code>.</p>
+<p>LocalStorage can be cleared as below:</p>
+<pre><code>localStorage.removeItem('tableFilters'); // clear table filters
+localStorage.removeItem('tableSearch'); // clear table searches</code></pre>
 <h5 id="extra-toolbar-items">Extra Toolbar Items</h5>
 <p><img src="https://github.com/sean-ww/react-redux-datatable/raw/master/extra-toolbar-options.png" alt="Extra Toolbar Options" /></p>
 <p>You can add extra items to the toolbar when you use displayTitle:</p>
