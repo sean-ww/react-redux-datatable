@@ -6,13 +6,13 @@
   "style": "./dist/styles.css",
   "dependencies": {
     "axios": "0.15.3",
+    "moment": "^2.17.1",
     "react-bootstrap-table": "^3.2.2",
     "react-day-picker": "^5.2.3",
     "react-redux": "^5.0.2",
     "redux": "^3.6.0",
     "redux-promise-middleware": "^4.2.0",
     "redux-thunk": "^2.2.0",
-    "moment": "^2.17.1",
     "url-search-params-polyfill": "^1.2.0"
   },
   "devDependencies": {
@@ -70,7 +70,7 @@
     "build:commonjs": "BABEL_ENV=commonjs babel src --out-dir lib",
     "build:example": "webpack --config webpack.example.config.js --progress -p",
     "build:example:watch": "webpack --config webpack.example.config.js --watch --progress -p",
-    "build:styles": "sass src/assets/sass/styles.scss:dist/styles.css --style compressed",
+    "build:styles": "sass src/assets/sass/styles.scss dist/styles.css --style compressed",
     "build:umd": "webpack --config webpack.umd.config.js --progress",
     "build:umd:min": "webpack --config webpack.umd.min.config.js --progress -p",
     "cover": "BABEL_ENV=test nyc --reporter=lcov --reporter=text-lcov mocha test/.setup.jsx './src/**/*.spec.jsx'",
