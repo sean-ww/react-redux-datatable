@@ -248,7 +248,7 @@ class DataTable extends React.Component {
         if (defaultSort) {
             defaultSortOptions = [{
                 dataField: defaultSort[0],
-                order: defaultSort[1].toLowerCase(), // todo: fix styling that goes with this and get it to update
+                order: defaultSort[1].toLowerCase(), // todo: continue updating styling
             }];
         }
 

@@ -1,4 +1,4 @@
-.react-bs-table {
+.react-bootstrap-table {
     border-radius: 0 !important;
     border: 0 !important;
 
@@ -18,12 +18,10 @@
 
     .dropdown {
         top: 6px;
-        right: 0px;
     }
 
     .dropup {
         top: 0px;
-        right: 0px;
     }
 
     .order.dropdown,
@@ -31,10 +29,15 @@
         display: inline;
     }
 
+    .order .dropdown,
+    .order .dropup {
+        display: none;
+    }
+
     .dropdown,
     .dropup {
         position: relative;
-        display: none;
+        right: 0px;
     }
 
     .dropup .caret,
