@@ -72,7 +72,7 @@ export class SelectDayPicker extends React.Component {
             fromMonth: new Date(updatedYear - 5, 0),
             toMonth: new Date(updatedYear + 5, 11),
         });
-    }
+    };
 
     render() {
         const { handleDayClick, from, to } = this.props;

@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-    BootstrapTable,
     TableHeaderColumn,
     ButtonGroup,
     ExportCSVButton,
-} from 'react-bootstrap-table';
+} from 'react-bootstrap-table-next';
+import BootstrapTable from 'react-bootstrap-table-next';
 import moment from 'moment';
 
 const menuButtonClass = {
@@ -187,10 +187,10 @@ class DataTable extends React.Component {
         };
 
         // Add sort options
-        if (defaultSort) {
-            options.defaultSortName = defaultSort[0];
-            options.defaultSortOrder = defaultSort[1].toLowerCase();
-        }
+        // if (defaultSort) {
+        //     options.defaultSortName = defaultSort[0];
+        //     options.defaultSortOrder = defaultSort[1].toLowerCase();
+        // }
 
         const tableHeaderColumns = Object.values(tableColumns).map((filter) => {
             // Set column defaults
@@ -200,8 +200,8 @@ class DataTable extends React.Component {
                 dataField: filter.column.key,
                 key: filter.column.key,
                 dataAlign: 'center',
-                dataSort: true,
-                sortFunc: () => false,
+                // dataSort: true,
+                // sortFunc: () => false,
                 hidden: false,
                 width: undefined,
                 filter: undefined,
@@ -215,7 +215,7 @@ class DataTable extends React.Component {
             if (filter.column.formatExtraData) colProps.formatExtraData = filter.column.formatExtraData;
 
             // make column unsortable
-            if (filter.column.searchable === false) colProps.dataSort = false;
+            // if (filter.column.sortable === false) colProps.dataSort = false;
 
             // make column hidden
             if (filter.column.hidden) colProps.hidden = true;
@@ -241,23 +241,49 @@ class DataTable extends React.Component {
         });
 
         const csvFileName = `exportDownload_${moment().format('YYYY-MM-DD_HH-mm')}.csv`;
+
+
+        // Add sort options
+        let defaultSortOptions = null;
+        if (defaultSort) {
+            defaultSortOptions = [{
+                dataField: defaultSort[0],
+                order: defaultSort[1].toLowerCase(), // todo: fix styling that goes with this and get it to update
+            }];
+        }
+
+        const columns = Object.values(tableColumns).map((filter) => {
+            return {
+                dataField: filter.column.key,
+                text: filter.column.title,
+                sort: !(filter.column.sortable === false),
+            };
+        });
+        console.log(columns, tableHeaderColumns);
+
         return (
             <div style={{ position: 'relative' }}>
                 <BootstrapTable
-                  data={tableData || []}
-                  exportCSV
-                  csvFileName={csvFileName}
-                  remote
-                  search
-                  striped
-                  hover
-                  pagination
-                  fetchInfo={{ dataTotalSize }}
-                  options={options}
-                  keyField={keyField}
-                >
-                    { tableHeaderColumns }
-                </BootstrapTable>
+                    keyField='id'
+                    data={tableData || []}
+                    columns={columns}
+                    defaultSorted={defaultSortOptions}
+                />
+                {/*<BootstrapTable*/}
+                  {/*data={tableData || []}*/}
+                  {/*exportCSV*/}
+                  {/*csvFileName={csvFileName}*/}
+                  {/*remote*/}
+                  {/*search*/}
+                  {/*striped*/}
+                  {/*hover*/}
+                  {/*pagination*/}
+                  {/*fetchInfo={{ dataTotalSize }}*/}
+                  {/*options={options}*/}
+                  {/*keyField={keyField}*/}
+                {/*>*/}
+                    {/*{ tableHeaderColumns }*/}
+                {/*</BootstrapTable>*/}
             </div>
         );
     }
