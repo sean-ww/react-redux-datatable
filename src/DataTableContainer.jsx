@@ -145,7 +145,7 @@ export class DataTableContainer extends React.Component {
         });
     };
 
-    onSizePerPageList = (sizePerPage) => {
+    onSizePerPageChange = (sizePerPage) => {
         this.setState({
             sizePerPage,
         });
@@ -370,7 +370,7 @@ export class DataTableContainer extends React.Component {
                           DataTableExportData={exportData}
                           dataTotalSize={tableDataSize}
                           onPageChange={this.onPageChange}
-                          onSizePerPageList={this.onSizePerPageList}
+                          onSizePerPageChange={this.onSizePerPageChange}
                           onSortChange={this.onSortChange}
                           onSearchChange={this.onSearchChange}
                           onFilterChange={this.onFilterChange}

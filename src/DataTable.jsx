@@ -6,6 +6,7 @@ import {
     ExportCSVButton,
 } from 'react-bootstrap-table-next';
 import BootstrapTable from 'react-bootstrap-table-next';
+import paginationFactory from 'react-bootstrap-table2-paginator';
 import moment from 'moment';
 
 const menuButtonClass = {
@@ -161,7 +162,7 @@ class DataTable extends React.Component {
             tableData,
             dataTotalSize,
             onPageChange,
-            onSizePerPageList,
+            onSizePerPageChange,
             onSortChange,
             currentPage,
             sizePerPage,
@@ -173,7 +174,7 @@ class DataTable extends React.Component {
             paginationShowsTotal: this.renderShowsTotal,
             sizePerPage,
             sizePerPageList: [10, 25, 50, 100],
-            onSizePerPageList,
+            onSizePerPageChange,
             onSortChange,
             searchField: this.searchBox,
             page: currentPage,
@@ -248,9 +249,30 @@ class DataTable extends React.Component {
         if (defaultSort) {
             defaultSortOptions = [{
                 dataField: defaultSort[0],
-                order: defaultSort[1].toLowerCase(), // todo: continue updating styling
+                order: defaultSort[1].toLowerCase(),
             }];
         }
+
+        // Add pagination options
+        // const paginationOptions = {
+        //     paginationShowsTotal: this.renderShowsTotal,
+        //     sizePerPage,
+        //     sizePerPageList: [10, 25, 50, 100],
+        //     onSizePerPageChange,
+        //     onSortChange,
+        //     searchField: this.searchBox,
+        //     page: currentPage,
+        //     onPageChange,
+        // };
+        const paginationOptions = {
+            // paginationShowsTotal: this.renderShowsTotal, // todo: paginationShowsTotal currently does nothing
+            showTotal: true,
+            page: currentPage,
+            sizePerPage,
+            sizePerPageList: [10, 25, 50, 100],
+            onSizePerPageChange,
+            // onPageChange, // todo: get onPageChange working
+        };
 
         const columns = Object.values(tableColumns).map((filter) => {
             return {
@@ -268,6 +290,9 @@ class DataTable extends React.Component {
                     data={tableData || []}
                     columns={columns}
                     defaultSorted={defaultSortOptions}
+                    striped
+                    hover
+                    pagination={paginationFactory(paginationOptions)}
                 />
                 {/*<BootstrapTable*/}
                   {/*data={tableData || []}*/}
@@ -298,7 +323,7 @@ DataTable.propTypes = {
     tableData: PropTypes.any,
     dataTotalSize: PropTypes.number.isRequired,
     onPageChange: PropTypes.func.isRequired,
-    onSizePerPageList: PropTypes.func.isRequired,
+    onSizePerPageChange: PropTypes.func.isRequired,
     onSortChange: PropTypes.func.isRequired,
     onSearchChange: PropTypes.func.isRequired,
     onFilterChange: PropTypes.func.isRequired,
