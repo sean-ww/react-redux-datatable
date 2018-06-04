@@ -1,10 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-    TableHeaderColumn,
-    ButtonGroup,
-    ExportCSVButton,
-} from 'react-bootstrap-table-next';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import moment from 'moment';
@@ -92,7 +87,7 @@ class DataTable extends React.Component {
         });
     };
 
-    createCustomButtonGroup = (props) => {
+    renderCustomButtonGroup = (props) => {
         let filtersType = 'hidden';
         if (this.state.showFilters) {
             if (this.props.isFiltered) {
@@ -102,50 +97,66 @@ class DataTable extends React.Component {
             }
         }
         return (
-            <ButtonGroup className="table-button-menu" sizeClass="btn-group-md">
+            <div className="table-button-menu" sizeClass="btn-group-md">
                 <button
-                  {...menuButtonClass}
-                  onClick={() => this.props.refreshTable()}
+                    {...menuButtonClass}
+                    onClick={() => this.props.refreshTable()}
                 >
                     <span class="refresh-icon"><b /></span>
                 </button>
                 {filtersType === 'shown' &&
                 <button
-                  {...menuButtonClass}
-                  onClick={() => this.toggleFilters()}
+                    {...menuButtonClass}
+                    onClick={() => this.toggleFilters()}
                 >
                     <span class="filter-icon filter-icon-shown"><b /></span>Filter
                 </button>
                 }
                 {filtersType === 'filtered' &&
                 <button
-                  {...menuButtonClass}
-                  onClick={() => this.startClearingAllFilters()}
+                    {...menuButtonClass}
+                    onClick={() => this.startClearingAllFilters()}
                 >
                     <span class="filter-icon filter-icon-clear"><b /></span>Clear Filters
                 </button>
                 }
                 {filtersType === 'hidden' &&
                 <button
-                  {...menuButtonClass}
-                  onClick={() => this.toggleFilters()}
+                    {...menuButtonClass}
+                    onClick={() => this.toggleFilters()}
                 >
                     <span class="filter-icon"><b /></span>Filter
                 </button>
                 }
-                { props.exportCSVBtn }
+                {/*{ props.exportCSVBtn }*/}
                 { this.props.extraButtons && this.props.extraButtons() }
-            </ButtonGroup>
+            </div>
         );
     };
 
-    searchBox = () => (
-        <input
-          type="text"
-          defaultValue={this.props.searchValue}
-          placeholder="Search"
-          onChange={this.props.onSearchChange}
-        />
+    renderSearchBox = () => (
+        <div className="form-group form-group-sm react-bs-table-search-form">
+            <input
+                type="text"
+                defaultValue={this.props.searchValue}
+                placeholder="Search"
+                onChange={this.props.onSearchChange}
+            />
+            <span className="input-group-btn"></span>
+        </div>
+    );
+
+    renderToolBar = () => (
+        <div class="react-bs-table-tool-bar">
+            <div class="row">
+                <div className="col-xs-6 col-sm-6 col-md-6 col-lg-8">
+                    { this.renderCustomButtonGroup() }
+                </div>
+                <div className="col-xs-6 col-sm-6 col-md-6 col-lg-4">
+                    { this.renderSearchBox() }
+                </div>
+            </div>
+        </div>
     );
 
     renderShowsTotal = (start, to, total) => (
@@ -157,16 +168,18 @@ class DataTable extends React.Component {
     render() {
         const {
             keyField,
+            noDataIndication,
             defaultSort,
             tableColumns,
             tableData,
             dataTotalSize,
+            onTableChange,
             onPageChange,
             onSizePerPageChange,
             onSortChange,
             currentPage,
             sizePerPage,
-            sortName,
+            sortField,
             sortOrder,
         } = this.props;
 
@@ -178,7 +191,7 @@ class DataTable extends React.Component {
             onSortChange,
             searchField: this.searchBox,
             page: currentPage,
-            sortName,
+            sortField,
             sortOrder,
             onPageChange,
             btnGroup: this.createCustomButtonGroup,
@@ -189,7 +202,7 @@ class DataTable extends React.Component {
 
         // Add sort options
         // if (defaultSort) {
-        //     options.defaultSortName = defaultSort[0];
+        //     options.defaultsortField = defaultSort[0];
         //     options.defaultSortOrder = defaultSort[1].toLowerCase();
         // }
 
@@ -234,11 +247,13 @@ class DataTable extends React.Component {
                 colProps.filter = filter.getColumnFilterProps(defaultValue);
             }
 
-            return (
-                <TableHeaderColumn {...colProps}>
-                    {filter.column.title}
-                </TableHeaderColumn>
-            );
+            return false;
+
+            // return (
+            //     <TableHeaderColumn {...colProps}>
+            //         {filter.column.title}
+            //     </TableHeaderColumn>
+            // );
         });
 
         const csvFileName = `exportDownload_${moment().format('YYYY-MM-DD_HH-mm')}.csv`;
@@ -254,24 +269,14 @@ class DataTable extends React.Component {
         }
 
         // Add pagination options
-        // const paginationOptions = {
-        //     paginationShowsTotal: this.renderShowsTotal,
-        //     sizePerPage,
-        //     sizePerPageList: [10, 25, 50, 100],
-        //     onSizePerPageChange,
-        //     onSortChange,
-        //     searchField: this.searchBox,
-        //     page: currentPage,
-        //     onPageChange,
-        // };
         const paginationOptions = {
-            // paginationShowsTotal: this.renderShowsTotal, // todo: paginationShowsTotal currently does nothing
+            paginationTotalRenderer: this.renderShowsTotal,
             showTotal: true,
             page: currentPage,
             sizePerPage,
             sizePerPageList: [10, 25, 50, 100],
             onSizePerPageChange,
-            // onPageChange, // todo: get onPageChange working
+            totalSize: dataTotalSize,
         };
 
         const columns = Object.values(tableColumns).map((filter) => {
@@ -281,18 +286,21 @@ class DataTable extends React.Component {
                 sort: !(filter.column.sortable === false),
             };
         });
-        console.log(columns, tableHeaderColumns);
 
         return (
             <div style={{ position: 'relative' }}>
+                { this.renderToolBar() }
                 <BootstrapTable
-                    keyField='id'
+                    remote={{ pagination: true }}
+                    keyField={keyField}
                     data={tableData || []}
                     columns={columns}
                     defaultSorted={defaultSortOptions}
                     striped
                     hover
                     pagination={paginationFactory(paginationOptions)}
+                    onTableChange={onTableChange}
+                    noDataIndication={noDataIndication}
                 />
                 {/*<BootstrapTable*/}
                   {/*data={tableData || []}*/}
@@ -317,11 +325,13 @@ class DataTable extends React.Component {
 DataTable.propTypes = {
     DataTableExportData: PropTypes.object,
     keyField: PropTypes.string.isRequired,
+    noDataIndication: PropTypes.any,
     extraButtons: PropTypes.func,
     defaultSort: PropTypes.array,
     tableColumns: PropTypes.object.isRequired,
     tableData: PropTypes.any,
     dataTotalSize: PropTypes.number.isRequired,
+    onTableChange: PropTypes.func.isRequired,
     onPageChange: PropTypes.func.isRequired,
     onSizePerPageChange: PropTypes.func.isRequired,
     onSortChange: PropTypes.func.isRequired,
@@ -331,7 +341,7 @@ DataTable.propTypes = {
     currentPage: PropTypes.number.isRequired,
     sizePerPage: PropTypes.number.isRequired,
     refreshTable: PropTypes.func.isRequired,
-    sortName: PropTypes.string,
+    sortField: PropTypes.string,
     sortOrder: PropTypes.string,
     searchValue: PropTypes.string,
     startClearingFilters: PropTypes.func.isRequired,
@@ -341,10 +351,11 @@ DataTable.propTypes = {
 
 DataTable.defaultProps = {
     DataTableExportData: null,
+    noDataIndication: 'There is no data to display',
     extraButtons: null,
     defaultSort: null,
     tableData: null,
-    sortName: undefined,
+    sortField: undefined,
     sortOrder: undefined,
     searchValue: undefined,
     isFiltered: false,

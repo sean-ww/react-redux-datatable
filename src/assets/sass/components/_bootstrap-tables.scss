@@ -1,6 +1,7 @@
 .react-bootstrap-table {
     border-radius: 0 !important;
     border: 0 !important;
+    margin: 5px 10px;
 
     table {
         tr th,
@@ -299,10 +300,14 @@
             border-bottom: 4px solid;
         }
     }
+
+    .react-bootstrap-table-page-btns-ul {
+        float: right;
+        margin-top: 0;
+    }
 }
 
 .react-bs-table-tool-bar {
-    margin: 0 !important;
     display: inline-block;
     width: 100%;
 

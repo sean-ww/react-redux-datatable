@@ -18,9 +18,9 @@ export class DataTableContainer extends React.Component {
         super(props);
         this.state = {
             isFullscreen: false,
-            sizePerPage: 10,
-            currentPage: 1,
-            sortName: undefined,
+            sizePerPage: 0,
+            currentPage: 0,
+            sortField: undefined,
             sortOrder: undefined,
             clearingFilters: false,
             lastRefresh: 0,
@@ -28,7 +28,6 @@ export class DataTableContainer extends React.Component {
         this.searchValue = `${(this.props.tableSettings.defaultSearch ? this.props.tableSettings.defaultSearch : '')}`;
         this.columnFilters = undefined;
         this.setupTable();
-        this.initiateTable();
     }
 
     componentDidMount() {
@@ -42,6 +41,37 @@ export class DataTableContainer extends React.Component {
             this.props.ownProps.setRef(null);
         }
     }
+
+    onTableChange = (type, { page = 1, sizePerPage = 10, filters, sortField, sortOrder }) => {
+        console.log(
+            'onTableChange',
+            type,
+            page,
+            sizePerPage,
+            filters,
+            sortField,
+            sortOrder,
+        );
+        // todo: check things like searchvalue from local storage work
+        const offset = (page - 1) * sizePerPage;
+        this.props.dispatch(fetchTableData(
+            this.props.tableSettings,
+            sizePerPage,
+            offset,
+            sortField,
+            sortOrder,
+            this.searchValue,
+            this.columnFilters,
+            this.props.apiLocation,
+        ));
+        this.setState({
+            sizePerPage,
+            currentPage: page,
+            sortField,
+            sortOrder,
+            lastRefresh: Date.now(),
+        });
+    };
 
     onFilterChange = (filterObj) => {
         if (this.props.DataTableData && this.props.DataTableData[this.props.tableSettings.tableID]) {
@@ -69,7 +99,7 @@ export class DataTableContainer extends React.Component {
                     this.props.tableSettings,
                     this.state.sizePerPage,
                     0,
-                    this.state.sortName,
+                    this.state.sortField,
                     this.state.sortOrder,
                     this.searchValue,
                     this.columnFilters,
@@ -102,7 +132,7 @@ export class DataTableContainer extends React.Component {
             this.props.tableSettings,
             this.state.sizePerPage,
             0,
-            this.state.sortName,
+            this.state.sortField,
             this.state.sortOrder,
             this.searchValue,
             this.columnFilters,
@@ -110,20 +140,20 @@ export class DataTableContainer extends React.Component {
         ));
     };
 
-    onSortChange = (sortName, sortOrder) => {
+    onSortChange = (sortField, sortOrder) => {
         const offset = (this.state.currentPage - 1) * this.state.sizePerPage;
         this.props.dispatch(fetchTableData(
             this.props.tableSettings,
             this.state.sizePerPage,
             offset,
-            sortName,
+            sortField,
             sortOrder,
             this.searchValue,
             this.columnFilters,
             this.props.apiLocation,
         ));
         this.setState({
-            sortName,
+            sortField,
             sortOrder,
         });
     };
@@ -134,7 +164,7 @@ export class DataTableContainer extends React.Component {
             this.props.tableSettings,
             sizePerPage,
             offset,
-            this.state.sortName,
+            this.state.sortField,
             this.state.sortOrder,
             this.searchValue,
             this.columnFilters,
@@ -166,7 +196,7 @@ export class DataTableContainer extends React.Component {
                 this.props.tableSettings,
                 1000,
                 0,
-                this.state.sortName,
+                this.state.sortField,
                 this.state.sortOrder,
                 this.searchValue,
                 this.columnFilters,
@@ -177,6 +207,7 @@ export class DataTableContainer extends React.Component {
     };
 
     setupTable = () => {
+        console.log('setup');
         const { tableColumns } = this.props.tableSettings;
         this.tableColumns = setupTableColumns(tableColumns);
 
@@ -198,29 +229,13 @@ export class DataTableContainer extends React.Component {
         }
     };
 
-    initiateTable = () => {
-        const offset = (this.state.currentPage - 1) * this.state.sizePerPage;
-        const filterObj = generateFilterObj(this.tableColumns);
-        this.columnFilters = generateColumnFilters(this.tableColumns, filterObj);
-        this.props.dispatch(fetchTableData(
-            this.props.tableSettings,
-            this.state.sizePerPage,
-            offset,
-            this.state.sortName,
-            this.state.sortOrder,
-            this.searchValue,
-            this.columnFilters,
-            this.props.apiLocation,
-        ));
-    };
-
     refreshTable = () => {
         const offset = (this.state.currentPage - 1) * this.state.sizePerPage;
         this.props.dispatch(fetchTableData(
             this.props.tableSettings,
             this.state.sizePerPage,
             offset,
-            this.state.sortName,
+            this.state.sortField,
             this.state.sortOrder,
             this.searchValue,
             this.columnFilters,
@@ -259,7 +274,7 @@ export class DataTableContainer extends React.Component {
             this.props.tableSettings,
             this.state.sizePerPage,
             0,
-            this.state.sortName,
+            this.state.sortField,
             this.state.sortOrder,
             this.searchValue,
             undefined,
@@ -363,12 +378,14 @@ export class DataTableContainer extends React.Component {
                         }
                         <DataTable
                           keyField={tableSettings.keyField}
+                          noDataIndication={tableSettings.noDataIndication}
                           extraButtons={tableSettings.extraButtons}
                           defaultSort={tableSettings.defaultSort}
                           tableColumns={this.tableColumns}
                           tableData={tableData}
                           DataTableExportData={exportData}
                           dataTotalSize={tableDataSize}
+                          onTableChange={this.onTableChange}
                           onPageChange={this.onPageChange}
                           onSizePerPageChange={this.onSizePerPageChange}
                           onSortChange={this.onSortChange}
@@ -378,7 +395,7 @@ export class DataTableContainer extends React.Component {
                           currentPage={this.state.currentPage}
                           sizePerPage={this.state.sizePerPage}
                           refreshTable={this.refreshTable}
-                          sortName={this.state.sortName}
+                          sortField={this.state.sortField}
                           sortOrder={this.state.sortOrder}
                           searchValue={this.searchValue}
                           isFiltered={isFiltered}
