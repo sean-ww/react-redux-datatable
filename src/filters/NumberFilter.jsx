@@ -80,7 +80,7 @@ class NumberFilter extends ColumnFilter {
     getColumnFilterProps = defaultValue => ({
         type: this.column.filter,
         placeholder: ' ',
-        numberComparators: ['=', '>', '>=', '<', '<=', '!=', '...'],
+        comparators: ['=', '>', '>=', '<', '<=', '!=', '...'],
         withoutEmptyComparatorOption: true,
         defaultValue,
     });

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
+import filterFactory, { textFilter, selectFilter, numberFilter } from 'react-bootstrap-table2-filter';
 import moment from 'moment';
 
 const menuButtonClass = {
@@ -279,11 +280,35 @@ class DataTable extends React.Component {
             totalSize: dataTotalSize,
         };
 
-        const columns = Object.values(tableColumns).map((filter) => {
+        const columns = Object.values(tableColumns).map((tableColumn) => {
+            console.log(tableColumn);
+            // set column filter, if searchable
+            let columnFilter = undefined;
+            if (tableColumn.column.searchable !== false) {
+                let defaultValue = '';
+                if (tableColumn.column.defaultValue) defaultValue = tableColumn.column.defaultValue;
+                const filterOptions = tableColumn.getColumnFilterProps(defaultValue);
+                console.log('aaaa', filterOptions);
+                if (filterOptions.type === 'TextFilter') {
+                    columnFilter = textFilter(filterOptions);
+                }
+                if (filterOptions.type === 'SelectFilter') {
+                    columnFilter = selectFilter(filterOptions);
+                }
+                if (filterOptions.type === 'NumberFilter') {
+                    columnFilter = numberFilter(filterOptions);
+                }
+                if (filterOptions.type === 'CustomDateRangeFilter') {
+                    // get other bits working first?
+                    // todo: create a DateRangeFilter
+                    // (for both CustomDateRangeFilter and DateRangeFilter?)
+                }
+            }
             return {
-                dataField: filter.column.key,
-                text: filter.column.title,
-                sort: !(filter.column.sortable === false),
+                dataField: tableColumn.column.key,
+                text: tableColumn.column.title,
+                sort: !(tableColumn.column.sortable === false),
+                filter: columnFilter,
             };
         });
 
@@ -301,6 +326,7 @@ class DataTable extends React.Component {
                     pagination={paginationFactory(paginationOptions)}
                     onTableChange={onTableChange}
                     noDataIndication={noDataIndication}
+                    filter={filterFactory()}
                 />
                 {/*<BootstrapTable*/}
                   {/*data={tableData || []}*/}
