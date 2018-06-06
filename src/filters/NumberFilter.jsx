@@ -27,6 +27,19 @@ class NumberFilter extends ColumnFilter {
     };
 
     /**
+     * Check if the filter has an empty value
+     *
+     * @param {string} number The number value entered.
+     * @return {boolean} True if the value is set.
+     */
+    hasEmptyValue = ({ number }) => {
+        if (!number || number === '') {
+            return true;
+        }
+        return false;
+    };
+
+    /**
      * Return a blank number filter item
      *
      * @return {{type: string, value: *}} A filter object item.
@@ -41,9 +54,10 @@ class NumberFilter extends ColumnFilter {
      * @param {number} value The numeric value of the filter.
      * @return {{key, type: string, value}} A column filter object.
      */
-    generateColumnFilter = (value) => {
+        // TODO: the docblock is wrong
+    generateColumnFilter = ({ comparator, number }) => {
         let type = 'like';
-        switch (value.comparator) {
+        switch (comparator) {
         case '=':
             type = 'eq';
             break;
@@ -67,7 +81,7 @@ class NumberFilter extends ColumnFilter {
         return {
             key: this.column.key,
             type,
-            value: value.number,
+            value: number,
         };
     };
 

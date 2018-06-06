@@ -53,6 +53,19 @@ class ColumnFilter {
     };
 
     /**
+     * Check if the filter has an empty value
+     *
+     * @param {string} value The value entered.
+     * @return {boolean} True if the value is set.
+     */
+    hasEmptyValue = (value) => {
+        if (!value || value === '') {
+            return true;
+        }
+        return false;
+    };
+
+    /**
      * Return a filter item
      *
      * @param {mixed} value The value of the filter.

@@ -64,6 +64,7 @@ export function fetchTableData(
             },
         }).then((response) => {
             if (response.data.searchSuccess) {
+                console.log('data returned');
                 dispatch({
                     type: `${dispatchType}_FULFILLED`,
                     payload: {

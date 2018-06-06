@@ -14,22 +14,22 @@ import CustomDateRangeFilter from './filters/CustomDateRangeFilter';
  */
 export const setupTableColumns = tableSettingsColumns => tableSettingsColumns.reduce((object, column) => {
     switch (column.filter) {
-    case 'SelectFilter': {
-        object[column.key] = new SelectFilter(column);
-        break;
-    }
-    case 'NumberFilter': {
-        object[column.key] = new NumberFilter(column);
-        break;
-    }
-    case 'CustomDateRangeFilter': {
-        object[column.key] = new CustomDateRangeFilter(column);
-        break;
-    }
-    default: {
-        object[column.key] = new TextFilter(column);
-        break;
-    }
+        case 'SelectFilter': {
+            object[column.key] = new SelectFilter(column);
+            break;
+        }
+        case 'NumberFilter': {
+            object[column.key] = new NumberFilter(column);
+            break;
+        }
+        case 'CustomDateRangeFilter': {
+            object[column.key] = new CustomDateRangeFilter(column);
+            break;
+        }
+        default: {
+            object[column.key] = new TextFilter(column);
+            break;
+        }
     }
     return object;
 }, {});
@@ -107,7 +107,27 @@ export const getDefaultFilteredColumns = tableColumns => Object.values(tableColu
  * @return {Object} A filter object matching react-bootstrap-table.
  */
 export const generateFilterObj = tableColumns => getDefaultFilteredColumns(tableColumns).reduce(
-    (object, filter) => ({ ...object, [filter.column.key]: filter.toFilterItem() }), {},
+    (object, filter) => ({...object, [filter.column.key]: filter.toFilterItem()}), {},
+);
+
+/**
+ * Get all filter values where they are not empty
+ *
+ * @param {Object} tableColumns An object containing key: value column filter objects.
+ * @param {Object} filters Filter objects matching react-bootstrap-table2.
+ * @return {Object} Filter value objects where the value is set.
+ */
+export const getFilterValues = (tableColumns, filters) => Object.keys(filters).reduce(
+    (object, filter) => {
+        if (tableColumns[filter].hasEmptyValue(filters[filter].filterVal)) {
+            return object;
+        }
+        return {
+            ...object,
+            [filter]: filters[filter].filterVal,
+        };
+    },
+    {},
 );
 
 /**
@@ -122,4 +142,4 @@ export const generateFilterObj = tableColumns => getDefaultFilteredColumns(table
  * @return {({key, type, value}|*)[]} An array of column filters.
  */
 export const generateColumnFilters = (tableColumns, filters) => Object.entries(filters)
-    .map(([key, filter]) => tableColumns[key].generateColumnFilter(filter.value));
+    .map(([key, filter]) => tableColumns[key].generateColumnFilter(filter));

@@ -10,6 +10,7 @@ import {
     setDefaultFilters,
     setStorageFilters,
     generateFilterObj,
+    getFilterValues,
     generateColumnFilters,
 } from './ColumnFilters';
 
@@ -43,37 +44,50 @@ export class DataTableContainer extends React.Component {
     }
 
     onTableChange = (type, { page = 1, sizePerPage = 10, filters, sortField, sortOrder }) => {
-        console.log(
-            'onTableChange',
-            type,
-            page,
-            sizePerPage,
-            filters,
-            sortField,
-            sortOrder,
-        );
-        // todo: check things like searchvalue from local storage work
-        const offset = (page - 1) * sizePerPage;
-        this.props.dispatch(fetchTableData(
-            this.props.tableSettings,
-            sizePerPage,
-            offset,
-            sortField,
-            sortOrder,
-            this.searchValue,
-            this.columnFilters,
-            this.props.apiLocation,
-        ));
-        this.setState({
-            sizePerPage,
-            currentPage: page,
-            sortField,
-            sortOrder,
-            lastRefresh: Date.now(),
-        });
+        // console.log('onTableChange');
+        // todo: test multiple tables on a page
+        // if (this.props.DataTableData && this.props.DataTableData[this.props.tableSettings.tableID]) {
+            console.log(
+                'onTableChange',
+                type,
+                page,
+                sizePerPage,
+                filters,
+                sortField,
+                sortOrder,
+            );
+            console.log(
+                'clear test',
+                this.state.clearingFilters,
+            );
+            console.log('filters', filters);
+            const filterValues = getFilterValues(this.tableColumns, filters);
+            console.log('filterValues', filterValues);
+            this.columnFilters = generateColumnFilters(this.tableColumns, filterValues);
+            // todo: check things like searchvalue from local storage work
+            const offset = (page - 1) * sizePerPage;
+            this.props.dispatch(fetchTableData(
+                this.props.tableSettings,
+                sizePerPage,
+                offset,
+                sortField,
+                sortOrder,
+                this.searchValue,
+                this.columnFilters,
+                this.props.apiLocation,
+            ));
+            this.setState({
+                sizePerPage,
+                currentPage: page,
+                sortField,
+                sortOrder,
+                lastRefresh: Date.now(),
+            });
+        // }
     };
 
     onFilterChange = (filterObj) => {
+        console.log('onFilterChange', filterObj);
         if (this.props.DataTableData && this.props.DataTableData[this.props.tableSettings.tableID]) {
             // check: do not update individually while clearing all filters
             if (!this.state.clearingFilters) {
@@ -110,6 +124,7 @@ export class DataTableContainer extends React.Component {
     };
 
     onSearchChange = (e) => {
+        console.log('onSearchChange');
         this.resetPagination();
         const text = e.target.value.trim();
         if (this.props.tableSettings.useLocalStorage) {

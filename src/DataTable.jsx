@@ -278,17 +278,27 @@ class DataTable extends React.Component {
             sizePerPageList: [10, 25, 50, 100],
             onSizePerPageChange,
             totalSize: dataTotalSize,
+            onSizePerPageChange: (sizePerPage, page) => {
+                console.log('Size per page change!!!');
+                console.log('Newest size per page:' + sizePerPage);
+                console.log('Newest page:' + page);
+            },
+            onPageChange: (page, sizePerPage) => {
+                console.log('Page change!!!');
+                console.log('Newest size per page:' + sizePerPage);
+                console.log('Newest page:' + page);
+            },
         };
 
         const columns = Object.values(tableColumns).map((tableColumn) => {
-            console.log(tableColumn);
+            // console.log(tableColumn);
             // set column filter, if searchable
-            let columnFilter = undefined;
+            let columnFilter;
             if (tableColumn.column.searchable !== false) {
                 let defaultValue = '';
                 if (tableColumn.column.defaultValue) defaultValue = tableColumn.column.defaultValue;
                 const filterOptions = tableColumn.getColumnFilterProps(defaultValue);
-                console.log('aaaa', filterOptions);
+                // console.log('aaaa', filterOptions);
                 if (filterOptions.type === 'TextFilter') {
                     columnFilter = textFilter(filterOptions);
                 }
@@ -308,7 +318,7 @@ class DataTable extends React.Component {
                 dataField: tableColumn.column.key,
                 text: tableColumn.column.title,
                 sort: !(tableColumn.column.sortable === false),
-                filter: columnFilter,
+                // filter: columnFilter,
             };
         });
 
