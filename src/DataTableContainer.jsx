@@ -47,7 +47,7 @@ export class DataTableContainer extends React.Component {
         // console.log('onTableChange');
         // todo: test multiple tables on a page
         // if (this.props.DataTableData && this.props.DataTableData[this.props.tableSettings.tableID]) {
-            console.log(
+        console.log(
                 'onTableChange',
                 type,
                 page,
@@ -56,17 +56,16 @@ export class DataTableContainer extends React.Component {
                 sortField,
                 sortOrder,
             );
-            console.log(
+        console.log(
                 'clear test',
                 this.state.clearingFilters,
             );
-            console.log('filters', filters);
-            const filterValues = getFilterValues(this.tableColumns, filters);
-            console.log('filterValues', filterValues);
-            this.columnFilters = generateColumnFilters(this.tableColumns, filterValues);
-            // todo: check things like searchvalue from local storage work
-            const offset = (page - 1) * sizePerPage;
-            this.props.dispatch(fetchTableData(
+        console.log('filters', filters);
+        const filterValues = getFilterValues(this.tableColumns, filters);
+        console.log('filterValues', filterValues);
+        this.columnFilters = generateColumnFilters(this.tableColumns, filterValues);
+        const offset = (page - 1) * sizePerPage;
+        this.props.dispatch(fetchTableData(
                 this.props.tableSettings,
                 sizePerPage,
                 offset,
@@ -76,13 +75,13 @@ export class DataTableContainer extends React.Component {
                 this.columnFilters,
                 this.props.apiLocation,
             ));
-            this.setState({
-                sizePerPage,
-                currentPage: page,
-                sortField,
-                sortOrder,
-                lastRefresh: Date.now(),
-            });
+        this.setState({
+            sizePerPage,
+            currentPage: page,
+            sortField,
+            sortOrder,
+            lastRefresh: Date.now(),
+        });
         // }
     };
 

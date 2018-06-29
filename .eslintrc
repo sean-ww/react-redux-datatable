@@ -13,7 +13,7 @@
         "react/jsx-indent": [ 2, 4 ],
 
         // max line length of 120 chars
-        "max-len": [1, 120, 2, {ignoreComments: true}],
+        "max-len": [1, 120, 2, {"ignoreComments": true}],
 
         // prefer es6 class
         "react/prefer-es6-class": [ 1, "always" ],

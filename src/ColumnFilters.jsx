@@ -14,22 +14,22 @@ import CustomDateRangeFilter from './filters/CustomDateRangeFilter';
  */
 export const setupTableColumns = tableSettingsColumns => tableSettingsColumns.reduce((object, column) => {
     switch (column.filter) {
-        case 'SelectFilter': {
-            object[column.key] = new SelectFilter(column);
-            break;
-        }
-        case 'NumberFilter': {
-            object[column.key] = new NumberFilter(column);
-            break;
-        }
-        case 'CustomDateRangeFilter': {
-            object[column.key] = new CustomDateRangeFilter(column);
-            break;
-        }
-        default: {
-            object[column.key] = new TextFilter(column);
-            break;
-        }
+    case 'SelectFilter': {
+        object[column.key] = new SelectFilter(column);
+        break;
+    }
+    case 'NumberFilter': {
+        object[column.key] = new NumberFilter(column);
+        break;
+    }
+    case 'CustomDateRangeFilter': {
+        object[column.key] = new CustomDateRangeFilter(column);
+        break;
+    }
+    default: {
+        object[column.key] = new TextFilter(column);
+        break;
+    }
     }
     return object;
 }, {});
@@ -107,7 +107,7 @@ export const getDefaultFilteredColumns = tableColumns => Object.values(tableColu
  * @return {Object} A filter object matching react-bootstrap-table.
  */
 export const generateFilterObj = tableColumns => getDefaultFilteredColumns(tableColumns).reduce(
-    (object, filter) => ({...object, [filter.column.key]: filter.toFilterItem()}), {},
+    (object, filter) => ({ ...object, [filter.column.key]: filter.toFilterItem() }), {},
 );
 
 /**

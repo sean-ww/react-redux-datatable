@@ -103,7 +103,7 @@ class CustomDateFilter extends React.Component {
         window.addEventListener('click', this.windowClick, false);
         window.addEventListener('scroll', this.positionPicker, false);
         window.addEventListener('resize', this.positionPicker, false);
-    }
+    };
 
     removeEvents = () => {
         window.removeEventListener('click', this.windowClick);
@@ -165,7 +165,11 @@ class CustomDateFilter extends React.Component {
 
         // Render the Calendar
         return (
-            <div id={`${columnKey}-date-filter`} class="custom-date-filter filter">
+            <div
+              onClick={e => e.stopPropagation()}
+              id={`${columnKey}-date-filter`}
+              class="custom-date-filter filter"
+            >
                 <span onClick={this.togglePicker} class="filter-value">
                     {displayValue}
                 </span>
@@ -195,7 +199,7 @@ class CustomDateFilter extends React.Component {
                         >
                             OK
                         </div>
-                        { from &&
+                        {from &&
                         <div
                           id="cidCourseListFilterClearFilterButton"
                           class="clearFilterButton"

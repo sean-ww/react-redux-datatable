@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
-import filterFactory, { textFilter, selectFilter, numberFilter } from 'react-bootstrap-table2-filter';
+import filterFactory, { textFilter, selectFilter, numberFilter, customFilter } from 'react-bootstrap-table2-filter';
 import moment from 'moment';
 
 const menuButtonClass = {
@@ -100,36 +100,36 @@ class DataTable extends React.Component {
         return (
             <div className="table-button-menu" sizeClass="btn-group-md">
                 <button
-                    {...menuButtonClass}
-                    onClick={() => this.props.refreshTable()}
+                  {...menuButtonClass}
+                  onClick={() => this.props.refreshTable()}
                 >
                     <span class="refresh-icon"><b /></span>
                 </button>
                 {filtersType === 'shown' &&
                 <button
-                    {...menuButtonClass}
-                    onClick={() => this.toggleFilters()}
+                  {...menuButtonClass}
+                  onClick={() => this.toggleFilters()}
                 >
                     <span class="filter-icon filter-icon-shown"><b /></span>Filter
                 </button>
                 }
                 {filtersType === 'filtered' &&
                 <button
-                    {...menuButtonClass}
-                    onClick={() => this.startClearingAllFilters()}
+                  {...menuButtonClass}
+                  onClick={() => this.startClearingAllFilters()}
                 >
                     <span class="filter-icon filter-icon-clear"><b /></span>Clear Filters
                 </button>
                 }
                 {filtersType === 'hidden' &&
                 <button
-                    {...menuButtonClass}
-                    onClick={() => this.toggleFilters()}
+                  {...menuButtonClass}
+                  onClick={() => this.toggleFilters()}
                 >
                     <span class="filter-icon"><b /></span>Filter
                 </button>
                 }
-                {/*{ props.exportCSVBtn }*/}
+                {/* { props.exportCSVBtn } */}
                 { this.props.extraButtons && this.props.extraButtons() }
             </div>
         );
@@ -138,12 +138,12 @@ class DataTable extends React.Component {
     renderSearchBox = () => (
         <div className="form-group form-group-sm react-bs-table-search-form">
             <input
-                type="text"
-                defaultValue={this.props.searchValue}
-                placeholder="Search"
-                onChange={this.props.onSearchChange}
+              type="text"
+              defaultValue={this.props.searchValue}
+              placeholder="Search"
+              onChange={this.props.onSearchChange}
             />
-            <span className="input-group-btn"></span>
+            <span className="input-group-btn" />
         </div>
     );
 
@@ -278,27 +278,22 @@ class DataTable extends React.Component {
             sizePerPageList: [10, 25, 50, 100],
             onSizePerPageChange,
             totalSize: dataTotalSize,
-            onSizePerPageChange: (sizePerPage, page) => {
-                console.log('Size per page change!!!');
-                console.log('Newest size per page:' + sizePerPage);
-                console.log('Newest page:' + page);
-            },
-            onPageChange: (page, sizePerPage) => {
-                console.log('Page change!!!');
-                console.log('Newest size per page:' + sizePerPage);
-                console.log('Newest page:' + page);
-            },
         };
 
         const columns = Object.values(tableColumns).map((tableColumn) => {
             // console.log(tableColumn);
+            // TODO: get filter local storage working
+            // TODO: test clear filters
+            // TODO: column formatters
+            // TODO: get export working
             // set column filter, if searchable
             let columnFilter;
+            let filterRenderer;
             if (tableColumn.column.searchable !== false) {
                 let defaultValue = '';
                 if (tableColumn.column.defaultValue) defaultValue = tableColumn.column.defaultValue;
                 const filterOptions = tableColumn.getColumnFilterProps(defaultValue);
-                // console.log('aaaa', filterOptions);
+                console.log('filterOptions', filterOptions);
                 if (filterOptions.type === 'TextFilter') {
                     columnFilter = textFilter(filterOptions);
                 }
@@ -308,17 +303,19 @@ class DataTable extends React.Component {
                 if (filterOptions.type === 'NumberFilter') {
                     columnFilter = numberFilter(filterOptions);
                 }
-                if (filterOptions.type === 'CustomDateRangeFilter') {
-                    // get other bits working first?
-                    // todo: create a DateRangeFilter
-                    // (for both CustomDateRangeFilter and DateRangeFilter?)
+                if (filterOptions.type === 'CustomFilter') {
+                    columnFilter = customFilter();
+                    filterRenderer = onFilter =>
+                        tableColumn.getCustomFilter(onFilter, filterOptions.customFilterParameters);
                 }
             }
             return {
                 dataField: tableColumn.column.key,
                 text: tableColumn.column.title,
                 sort: !(tableColumn.column.sortable === false),
-                // filter: columnFilter,
+                filter: columnFilter,
+                ...filterRenderer && { filterRenderer },
+                headerClasses: `${(this.state.showFilters ? '' : 'hide-filter')}`,
             };
         });
 
@@ -326,33 +323,33 @@ class DataTable extends React.Component {
             <div style={{ position: 'relative' }}>
                 { this.renderToolBar() }
                 <BootstrapTable
-                    remote={{ pagination: true }}
-                    keyField={keyField}
-                    data={tableData || []}
-                    columns={columns}
-                    defaultSorted={defaultSortOptions}
-                    striped
-                    hover
-                    pagination={paginationFactory(paginationOptions)}
-                    onTableChange={onTableChange}
-                    noDataIndication={noDataIndication}
-                    filter={filterFactory()}
+                  remote={{ pagination: true }}
+                  keyField={keyField}
+                  data={tableData || []}
+                  columns={columns}
+                  defaultSorted={defaultSortOptions}
+                  striped
+                  hover
+                  pagination={paginationFactory(paginationOptions)}
+                  onTableChange={onTableChange}
+                  noDataIndication={noDataIndication}
+                  filter={filterFactory()}
                 />
-                {/*<BootstrapTable*/}
-                  {/*data={tableData || []}*/}
-                  {/*exportCSV*/}
-                  {/*csvFileName={csvFileName}*/}
-                  {/*remote*/}
-                  {/*search*/}
-                  {/*striped*/}
-                  {/*hover*/}
-                  {/*pagination*/}
-                  {/*fetchInfo={{ dataTotalSize }}*/}
-                  {/*options={options}*/}
-                  {/*keyField={keyField}*/}
-                {/*>*/}
-                    {/*{ tableHeaderColumns }*/}
-                {/*</BootstrapTable>*/}
+                {/* <BootstrapTable */}
+                {/* data={tableData || []} */}
+                {/* exportCSV */}
+                {/* csvFileName={csvFileName} */}
+                {/* remote */}
+                {/* search */}
+                {/* striped */}
+                {/* hover */}
+                {/* pagination */}
+                {/* fetchInfo={{ dataTotalSize }} */}
+                {/* options={options} */}
+                {/* keyField={keyField} */}
+                {/* > */}
+                {/* { tableHeaderColumns } */}
+                {/* </BootstrapTable> */}
             </div>
         );
     }
