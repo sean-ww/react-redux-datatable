@@ -9,6 +9,7 @@ class NumberFilter extends ColumnFilter {
      */
     resetDefault = () => {
         this.column.defaultValue = {
+            number: this.getBaseDefault(),
             comparator: this.column.defaultValue.comparator,
         };
         return this.column;
@@ -51,10 +52,10 @@ class NumberFilter extends ColumnFilter {
     /**
      * Generate a column filter object
      *
+     * @param {string} comparator The comparator symbol.
      * @param {number} value The numeric value of the filter.
      * @return {{key, type: string, value}} A column filter object.
      */
-        // TODO: the docblock is wrong
     generateColumnFilter = ({ comparator, number }) => {
         let type = 'like';
         switch (comparator) {
@@ -89,7 +90,7 @@ class NumberFilter extends ColumnFilter {
      * Get the column filter properties for displaying
      *
      * @param {mixed} defaultValue The default value of the column filter.
-     * @return {{type, placeholder: string, numberComparators: string[], withoutEmptyComparatorOption: boolean, defaultValue: *}}
+     * @return {{type: *, placeholder: string, comparators: string[], withoutEmptyComparatorOption: boolean, defaultValue: *}}
      */
     getColumnFilterProps = defaultValue => ({
         type: this.column.filter,

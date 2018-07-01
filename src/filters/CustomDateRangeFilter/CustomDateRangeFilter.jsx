@@ -27,6 +27,17 @@ class CustomDateFilter extends React.Component {
         }
     }
 
+    componentDidMount() {
+        // export onFilter function to allow users to access
+        if (this.props.getFilter) {
+            this.props.getFilter(() => {
+                this.clearFilters();
+            });
+        }
+
+        this.filter();
+    }
+
     componentWillUnmount() {
         this.removeEvents();
     }
@@ -47,42 +58,40 @@ class CustomDateFilter extends React.Component {
         });
     };
 
-    customCleanFiltered = () => {
+    updateFilters = (fromDate, toDate) => {
+        const fromValue = moment(fromDate).format('YYYY-MM-DD');
+        let toValue;
+        if (moment.isDate(toDate)) {
+            this.setDisplayValue(fromDate, toDate);
+            toValue = moment(toDate)
+                .hours(23).minutes(59).seconds(59)
+                .format('YYYY-MM-DD HH:mm:ss');
+        } else {
+            this.setDisplayValue(fromDate, fromDate);
+            toValue = moment(fromDate)
+                .hours(23).minutes(59).seconds(59)
+                .format('YYYY-MM-DD HH:mm:ss');
+        }
+        this.props.onFilter({
+            from: fromValue,
+            to: toValue,
+        });
+    };
+
+    clearFilters = () => {
         this.setState({
             from: null,
             to: null,
             displayValue: '',
         });
-        this.props.filterHandler(); // clear filter
+        this.props.onFilter();
     };
 
     filter = () => {
         if (moment.isDate(this.state.from)) {
-            const fromValue = moment(this.state.from).format('YYYY-MM-DD');
-            let toValue;
-            if (moment.isDate(this.state.to)) {
-                this.setDisplayValue(this.state.from, this.state.to);
-                toValue = moment(this.state.to)
-                    .hours(23).minutes(59).seconds(59)
-                    .format('YYYY-MM-DD HH:mm:ss');
-            } else {
-                this.setDisplayValue(this.state.from, this.state.from);
-                toValue = moment(this.state.from)
-                    .hours(23).minutes(59).seconds(59)
-                    .format('YYYY-MM-DD HH:mm:ss');
-            }
-            this.props.filterHandler({
-                values: {
-                    from: fromValue,
-                    to: toValue,
-                },
-                type: 'between',
-            });
+            this.updateFilters(this.state.from, this.state.to);
         } else {
-            this.setState({
-                displayValue: '',
-            });
-            this.props.filterHandler(); // clear filter
+            this.clearFilters();
         }
         this.windowClick();
     };
@@ -216,13 +225,15 @@ class CustomDateFilter extends React.Component {
 }
 
 CustomDateFilter.propTypes = {
-    filterHandler: PropTypes.func.isRequired,
+    onFilter: PropTypes.func.isRequired,
     columnKey: PropTypes.string.isRequired,
-    defaultValue: PropTypes.object.isRequired,
+    defaultValue: PropTypes.object,
+    getFilter: PropTypes.func,
 };
 
 CustomDateFilter.defaultProps = {
-    defaultValue: null,
+    defaultValue: {},
+    getFilter: null,
 };
 
 export default CustomDateFilter;

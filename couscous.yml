@@ -32,9 +32,3 @@ menu:
                 overview:
                     text: Overview
                     relativeUrl: exporting-data/overview.html
-        methodsAPI:
-            text: Methods API
-            items:
-                overview:
-                    text: Overview
-                    relativeUrl: methods-api/overview.html

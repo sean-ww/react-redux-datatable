@@ -1,15 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import moment from 'moment';
+import { canUseDOM, exportToCSVFile } from './csvExport';
 import DataTable from './DataTable';
-import { fetchTableData, resetExport } from './DataTable.actions';
+import { fetchTableData, fetchExportData } from './DataTable.actions';
 import LoadingGif from './LoadingGif/LoadingGif';
 import {
+    setLocalStorageItem,
+    getLocalStorageItem,
+    updateLocalStorageItem,
+} from './localStorage';
+import {
     setupTableColumns,
-    clearDefaultFilterValues,
     setDefaultFilters,
     setStorageFilters,
-    generateFilterObj,
+    getDefaultFilterValues,
     getFilterValues,
     generateColumnFilters,
 } from './ColumnFilters';
@@ -19,22 +25,25 @@ export class DataTableContainer extends React.Component {
         super(props);
         this.state = {
             isFullscreen: false,
-            sizePerPage: 0,
-            currentPage: 0,
+            sizePerPage: 10,
+            currentPage: 1,
             sortField: undefined,
             sortOrder: undefined,
             clearingFilters: false,
             lastRefresh: 0,
         };
+        this.isSetup = false;
         this.searchValue = `${(this.props.tableSettings.defaultSearch ? this.props.tableSettings.defaultSearch : '')}`;
         this.columnFilters = undefined;
         this.setupTable();
+        this.initiateTable();
     }
 
     componentDidMount() {
         if (typeof this.props.ownProps.setRef !== 'undefined') {
             this.props.ownProps.setRef(this);
         }
+        this.isSetup = true;
     }
 
     componentWillUnmount() {
@@ -44,37 +53,27 @@ export class DataTableContainer extends React.Component {
     }
 
     onTableChange = (type, { page = 1, sizePerPage = 10, filters, sortField, sortOrder }) => {
-        // console.log('onTableChange');
-        // todo: test multiple tables on a page
-        // if (this.props.DataTableData && this.props.DataTableData[this.props.tableSettings.tableID]) {
-        console.log(
-                'onTableChange',
-                type,
-                page,
-                sizePerPage,
-                filters,
-                sortField,
-                sortOrder,
-            );
-        console.log(
-                'clear test',
-                this.state.clearingFilters,
-            );
-        console.log('filters', filters);
+        if (!this.isSetup || this.state.clearingFilters) return;
+
         const filterValues = getFilterValues(this.tableColumns, filters);
-        console.log('filterValues', filterValues);
         this.columnFilters = generateColumnFilters(this.tableColumns, filterValues);
-        const offset = (page - 1) * sizePerPage;
-        this.props.dispatch(fetchTableData(
-                this.props.tableSettings,
-                sizePerPage,
-                offset,
-                sortField,
-                sortOrder,
-                this.searchValue,
-                this.columnFilters,
-                this.props.apiLocation,
-            ));
+
+        if (this.props.tableSettings.useLocalStorage) {
+            updateLocalStorageItem('tableFilters', {
+                [this.props.tableSettings.tableID]: setStorageFilters(
+                    this.tableColumns,
+                    filterValues,
+                ),
+            });
+        }
+
+        this.getTableData({
+            sizePerPage,
+            page,
+            sortField,
+            sortOrder,
+        });
+
         this.setState({
             sizePerPage,
             currentPage: page,
@@ -82,111 +81,17 @@ export class DataTableContainer extends React.Component {
             sortOrder,
             lastRefresh: Date.now(),
         });
-        // }
-    };
-
-    onFilterChange = (filterObj) => {
-        console.log('onFilterChange', filterObj);
-        if (this.props.DataTableData && this.props.DataTableData[this.props.tableSettings.tableID]) {
-            // check: do not update individually while clearing all filters
-            if (!this.state.clearingFilters) {
-                this.columnFilters = generateColumnFilters(this.tableColumns, filterObj);
-                if (this.props.tableSettings.useLocalStorage) {
-                    const storageFilters = setStorageFilters(this.tableColumns, filterObj);
-                    const previousTableFilters = JSON.parse(global.window.localStorage.getItem('tableFilters'));
-                    let newTableFilters;
-                    if (previousTableFilters) {
-                        newTableFilters = {
-                            ...previousTableFilters,
-                            [this.props.tableSettings.tableID]: storageFilters,
-                        };
-                    } else {
-                        newTableFilters = {
-                            [this.props.tableSettings.tableID]: storageFilters,
-                        };
-                    }
-                    global.window.localStorage.setItem('tableFilters', JSON.stringify(newTableFilters));
-                }
-                this.resetPagination();
-                this.props.dispatch(fetchTableData(
-                    this.props.tableSettings,
-                    this.state.sizePerPage,
-                    0,
-                    this.state.sortField,
-                    this.state.sortOrder,
-                    this.searchValue,
-                    this.columnFilters,
-                    this.props.apiLocation,
-                ));
-            }
-        }
     };
 
     onSearchChange = (e) => {
-        console.log('onSearchChange');
-        this.resetPagination();
         const text = e.target.value.trim();
         if (this.props.tableSettings.useLocalStorage) {
-            const previousTableSearch = JSON.parse(global.window.localStorage.getItem('tableSearch'));
-            let newTableSearch;
-            if (previousTableSearch) {
-                newTableSearch = {
-                    ...previousTableSearch,
-                    [this.props.tableSettings.tableID]: text,
-                };
-            } else {
-                newTableSearch = {
-                    [this.props.tableSettings.tableID]: text,
-                };
-            }
-            global.window.localStorage.setItem('tableSearch', JSON.stringify(newTableSearch));
+            updateLocalStorageItem('tableSearch', {
+                [this.props.tableSettings.tableID]: text,
+            });
         }
         this.searchValue = text;
-        this.props.dispatch(fetchTableData(
-            this.props.tableSettings,
-            this.state.sizePerPage,
-            0,
-            this.state.sortField,
-            this.state.sortOrder,
-            this.searchValue,
-            this.columnFilters,
-            this.props.apiLocation,
-        ));
-    };
-
-    onSortChange = (sortField, sortOrder) => {
-        const offset = (this.state.currentPage - 1) * this.state.sizePerPage;
-        this.props.dispatch(fetchTableData(
-            this.props.tableSettings,
-            this.state.sizePerPage,
-            offset,
-            sortField,
-            sortOrder,
-            this.searchValue,
-            this.columnFilters,
-            this.props.apiLocation,
-        ));
-        this.setState({
-            sortField,
-            sortOrder,
-        });
-    };
-
-    onPageChange = (page, sizePerPage) => {
-        const offset = (page - 1) * sizePerPage;
-        this.props.dispatch(fetchTableData(
-            this.props.tableSettings,
-            sizePerPage,
-            offset,
-            this.state.sortField,
-            this.state.sortOrder,
-            this.searchValue,
-            this.columnFilters,
-            this.props.apiLocation,
-        ));
-        this.setState({
-            currentPage: page,
-        });
+        this.getTableData({});
     };
 
     onSizePerPageChange = (sizePerPage) => {
@@ -196,44 +101,59 @@ export class DataTableContainer extends React.Component {
     };
 
     onExportToCSV = () => {
-        const tableID = this.props.tableSettings.tableID;
-        if (this.props.DataTableExportData &&
-            this.props.DataTableExportData[tableID] &&
-            this.props.DataTableExportData[tableID].fetched) {
-            const exportData = this.props.DataTableExportData[tableID].data;
-            this.props.dispatch(resetExport(tableID));
-            return exportData;
-        } else if (!this.props.DataTableExportData ||
-            !this.props.DataTableExportData[tableID] ||
-            !this.props.DataTableExportData[tableID].fetching) {
-            this.props.dispatch(fetchTableData(
+        if (canUseDOM()) {
+            fetchExportData(
                 this.props.tableSettings,
-                1000,
-                0,
                 this.state.sortField,
                 this.state.sortOrder,
                 this.searchValue,
                 this.columnFilters,
                 this.props.apiLocation,
-            ));
+            ).then((data) => {
+                const fields = Object.values(this.tableColumns)
+                    .filter(filter => filter.column.export !== false)
+                    .map(tableColumn => tableColumn.column.key);
+
+                exportToCSVFile(
+                    fields,
+                    data,
+                    `exportDownload_${moment().format('YYYY-MM-DD_HH-mm')}.csv`,
+                );
+            });
         }
-        return false;
+    };
+
+    getTableData = ({
+        sizePerPage = this.state.sizePerPage,
+        page = 1,
+        sortField = this.state.sortField,
+        sortOrder = this.state.sortOrder,
+    }) => {
+        this.props.dispatch(fetchTableData(
+            this.props.tableSettings,
+            sizePerPage,
+            (page - 1) * sizePerPage,
+            sortField,
+            sortOrder,
+            this.searchValue,
+            this.columnFilters,
+            this.props.apiLocation,
+        ));
     };
 
     setupTable = () => {
-        console.log('setup');
         const { tableColumns } = this.props.tableSettings;
         this.tableColumns = setupTableColumns(tableColumns);
 
         if (this.props.tableSettings.useLocalStorage) {
             // set table search
-            const previousTableSearch = JSON.parse(global.window.localStorage.getItem('tableSearch'));
+            const previousTableSearch = getLocalStorageItem('tableSearch');
             if (previousTableSearch && previousTableSearch[this.props.tableSettings.tableID]) {
                 this.searchValue = previousTableSearch[this.props.tableSettings.tableID];
             }
 
             // set table filters
-            const previousTableFilters = JSON.parse(global.window.localStorage.getItem('tableFilters'));
+            const previousTableFilters = getLocalStorageItem('tableFilters');
             if (previousTableFilters && previousTableFilters[this.props.tableSettings.tableID]) {
                 setDefaultFilters(
                     this.tableColumns,
@@ -243,18 +163,18 @@ export class DataTableContainer extends React.Component {
         }
     };
 
+    initiateTable = () => {
+        const filterValues = getDefaultFilterValues(this.tableColumns);
+        this.columnFilters = generateColumnFilters(this.tableColumns, filterValues);
+        this.getTableData({
+            page: this.state.currentPage,
+        });
+    };
+
     refreshTable = () => {
-        const offset = (this.state.currentPage - 1) * this.state.sizePerPage;
-        this.props.dispatch(fetchTableData(
-            this.props.tableSettings,
-            this.state.sizePerPage,
-            offset,
-            this.state.sortField,
-            this.state.sortOrder,
-            this.searchValue,
-            this.columnFilters,
-            this.props.apiLocation,
-        ));
+        this.getTableData({
+            page: this.state.currentPage,
+        });
         this.setState({
             lastRefresh: Date.now(),
         });
@@ -268,42 +188,18 @@ export class DataTableContainer extends React.Component {
 
     clearFilters = () => {
         if (this.props.tableSettings.useLocalStorage) {
-            const blankFilters = setStorageFilters(this.tableColumns, {});
-            const previousTableFilters = JSON.parse(global.window.localStorage.getItem('tableFilters'));
-            let newTableFilters;
+            const previousTableFilters = getLocalStorageItem('tableFilters');
             if (previousTableFilters) {
-                newTableFilters = {
-                    ...previousTableFilters,
-                    [this.props.tableSettings.tableID]: blankFilters,
-                };
-            } else {
-                newTableFilters = {
-                    [this.props.tableSettings.tableID]: blankFilters,
-                };
+                const newTableFilters = { ...previousTableFilters };
+                delete newTableFilters[this.props.tableSettings.tableID];
+                setLocalStorageItem('tableFilters', newTableFilters);
             }
-            global.window.localStorage.setItem('tableFilters', JSON.stringify(newTableFilters));
         }
-        clearDefaultFilterValues(this.tableColumns);
-        this.props.dispatch(fetchTableData(
-            this.props.tableSettings,
-            this.state.sizePerPage,
-            0,
-            this.state.sortField,
-            this.state.sortOrder,
-            this.searchValue,
-            undefined,
-            this.props.apiLocation,
-        ));
+        this.columnFilters = undefined;
+        this.getTableData({});
         this.setState({
             currentPage: 1,
             clearingFilters: false,
-        });
-        this.columnFilters = undefined;
-    };
-
-    resetPagination = () => {
-        this.setState({
-            currentPage: 1,
         });
     };
 
@@ -315,7 +211,6 @@ export class DataTableContainer extends React.Component {
         const {
             tableSettings,
             DataTableData,
-            DataTableExportData,
         } = this.props;
         const minWidth = tableSettings.minWidth;
         const tableID = tableSettings.tableID;
@@ -346,11 +241,6 @@ export class DataTableContainer extends React.Component {
         let tableDataSize = 0;
         if (DataTableData && DataTableData[tableID] && DataTableData[tableID].dataTotalSize) {
             tableDataSize = DataTableData[tableID].dataTotalSize;
-        }
-
-        let exportData = null;
-        if (DataTableExportData && DataTableExportData[tableID]) {
-            exportData = DataTableExportData[tableID];
         }
 
         if (!tableSettings.extraToolbarItems) tableSettings.extraToolbarItems = null;
@@ -397,20 +287,14 @@ export class DataTableContainer extends React.Component {
                           defaultSort={tableSettings.defaultSort}
                           tableColumns={this.tableColumns}
                           tableData={tableData}
-                          DataTableExportData={exportData}
                           dataTotalSize={tableDataSize}
                           onTableChange={this.onTableChange}
-                          onPageChange={this.onPageChange}
                           onSizePerPageChange={this.onSizePerPageChange}
-                          onSortChange={this.onSortChange}
                           onSearchChange={this.onSearchChange}
-                          onFilterChange={this.onFilterChange}
                           onExportToCSV={this.onExportToCSV}
                           currentPage={this.state.currentPage}
                           sizePerPage={this.state.sizePerPage}
                           refreshTable={this.refreshTable}
-                          sortField={this.state.sortField}
-                          sortOrder={this.state.sortOrder}
                           searchValue={this.searchValue}
                           isFiltered={isFiltered}
                           startClearingFilters={this.startClearingFilters}
@@ -428,19 +312,16 @@ DataTableContainer.propTypes = {
     tableSettings: PropTypes.object.isRequired,
     apiLocation: PropTypes.string.isRequired,
     DataTableData: PropTypes.any,
-    DataTableExportData: PropTypes.object,
     ownProps: PropTypes.func,
 };
 
 DataTableContainer.defaultProps = {
-    DataTableExportData: null,
     DataTableData: null,
     ownProps: () => {},
 };
 
 const mapStateToProps = (state, ownProps) => ({
     DataTableData: state.DataTableReducer.DataTableData,
-    DataTableExportData: state.DataTableExportReducer.DataTableExportData,
     ownProps,
 });
 

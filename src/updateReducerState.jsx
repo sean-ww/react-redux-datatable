@@ -37,8 +37,4 @@ const updateState = (state, action) => ({
     DataTableData: updateDataTableData(state.DataTableData, action.payload),
 });
 
-export const updateExportState = (state, action) => ({
-    DataTableExportData: updateDataTableData(state.DataTableExportData, action.payload),
-});
-
 export default updateState;
