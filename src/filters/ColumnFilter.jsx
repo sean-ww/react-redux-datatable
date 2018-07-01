@@ -20,6 +20,20 @@ class ColumnFilter {
     }
 
     /**
+     * Retrieve the base default value
+     *
+     * @return {string}
+     */
+    getBaseDefault = () => '';
+
+    /**
+     * Retrieve the default column values
+     *
+     * @return {*|null}
+     */
+    getDefault = () => this.column.defaultValue;
+
+    /**
      * Set the default value of the column filter
      *
      * @param {mixed} value The value to be set as default.
@@ -36,7 +50,7 @@ class ColumnFilter {
      * @return {Object} The updated column object.
      */
     resetDefault = () => {
-        this.column.defaultValue = null;
+        this.column.defaultValue = this.getBaseDefault();
         return this.column;
     };
 
@@ -50,6 +64,19 @@ class ColumnFilter {
             return false;
         }
         return true;
+    };
+
+    /**
+     * Check if the filter has an empty value
+     *
+     * @param {string} value The value entered.
+     * @return {boolean} True if the value is set.
+     */
+    hasEmptyValue = (value) => {
+        if (!value || value === '') {
+            return true;
+        }
+        return false;
     };
 
     /**
@@ -87,7 +114,7 @@ class ColumnFilter {
     /**
      * Generate a column filter object
      *
-     * @param {mixed} value The value of the filter.
+     * @param {*} value The value of the filter.
      * @return {{key, type: string, value: *}} A column filter object.
      */
     generateColumnFilter = value => ({
@@ -97,29 +124,9 @@ class ColumnFilter {
     });
 
     /**
-     * Generate a column filter object for a custom filter
-     *
-     * @param {Object} value The value of the custom filter.
-     * @return {{key, type: string, value: *}} A column filter object.
-     */
-    generateCustomFilter = (value) => {
-        let filterValue = '';
-        if (typeof value.values !== 'undefined') {
-            filterValue = value.values;
-        } else if (typeof value.value !== 'undefined') {
-            filterValue = value.value;
-        }
-        return {
-            key: this.column.key,
-            type: value.type,
-            value: filterValue,
-        };
-    };
-
-    /**
      * Get the column filter properties for displaying
      *
-     * @param {mixed} defaultValue The default value of the column filter.
+     * @param {*} defaultValue The default value of the column filter.
      * @return {Object} React-bootstrap-table column filter properties.
      */
     getColumnFilterProps = defaultValue => ({

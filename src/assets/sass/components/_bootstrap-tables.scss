@@ -1,6 +1,7 @@
-.react-bs-table {
+.react-bootstrap-table {
     border-radius: 0 !important;
     border: 0 !important;
+    margin: 5px 10px;
 
     table {
         tr th,
@@ -18,12 +19,10 @@
 
     .dropdown {
         top: 6px;
-        right: 0px;
     }
 
     .dropup {
         top: 0px;
-        right: 0px;
     }
 
     .order.dropdown,
@@ -31,10 +30,15 @@
         display: inline;
     }
 
+    .order .dropdown,
+    .order .dropup {
+        display: none;
+    }
+
     .dropdown,
     .dropup {
         position: relative;
-        display: none;
+        right: 0px;
     }
 
     .dropup .caret,
@@ -209,7 +213,7 @@
     }
 }
 
-.react-bs-table-pagination,
+.react-bootstrap-table-pagination,
 .react-bs-table-tool-bar {
     .col-md-6 {
         width: 50%;
@@ -217,7 +221,7 @@
     }
 }
 
-.react-bs-table-pagination {
+.react-bootstrap-table-pagination {
     margin: 0px 10px !important;
 
     .row {
@@ -296,10 +300,14 @@
             border-bottom: 4px solid;
         }
     }
+
+    .react-bootstrap-table-page-btns-ul {
+        float: right;
+        margin-top: 0;
+    }
 }
 
 .react-bs-table-tool-bar {
-    margin: 0 !important;
     display: inline-block;
     width: 100%;
 

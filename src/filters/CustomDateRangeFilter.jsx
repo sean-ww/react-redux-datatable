@@ -10,6 +10,13 @@ import DateRangeFilter from './CustomDateRangeFilter/CustomDateRangeFilter';
  */
 class CustomDateRangeFilter extends ColumnFilter {
     /**
+     * Retrieve the base default value
+     *
+     * @return {object}
+     */
+    getBaseDefault = () => {};
+
+    /**
      * Set the default value of the column filter
      *
      * @param {{values: {to: date, from: date}}|*} value An object containing from and to values.
@@ -24,7 +31,7 @@ class CustomDateRangeFilter extends ColumnFilter {
                 to,
             };
         } else {
-            this.column.defaultValue = '';
+            this.column.defaultValue = this.getBaseDefault();
         }
         return this.column;
     };
@@ -32,7 +39,7 @@ class CustomDateRangeFilter extends ColumnFilter {
     /**
      * Return a between values filter item
      *
-     * @param {mixed} value The value of the filter.
+     * @param {mixed} values The values of the filter.
      * @return {{type: string, value: {key: string, type: string, values: *}}} A filter object item.
      */
     returnFilterItem = values => ({
@@ -60,36 +67,39 @@ class CustomDateRangeFilter extends ColumnFilter {
      * @param {Object} value The value of the custom filter.
      * @return {{key, type: string, value: *}} A column filter object.
      */
-    generateColumnFilter = value => this.generateCustomFilter(value);
+    generateColumnFilter = value => ({
+        key: this.column.key,
+        type: 'between',
+        value,
+    });
 
     /**
      * Return a Date Range Filter
      *
      * @param {Function} filterHandler React-bootstrap-table filter handler.
-     * @param {{columnKey: string, defaultValue: *}} customFilterParameters Filter key and default values.
+     * @param {Object} filterOptions Filter options.
      * @return {jsx} The Date Range Filter component.
      */
-    getCustomFilter = (filterHandler, customFilterParameters) => (
+    getCustomFilter = (filterHandler, filterOptions) => (
         <DateRangeFilter
-          filterHandler={filterHandler}
-          columnKey={customFilterParameters.columnKey}
-          defaultValue={customFilterParameters.defaultValue}
+          onFilter={filterHandler}
+          columnKey={filterOptions.columnKey}
+          defaultValue={filterOptions.defaultValue}
+          getFilter={filterOptions.getFilter}
         />
     );
 
     /**
      * Get the column filter properties for displaying
      *
-     * @param {mixed} defaultValue The default value of the column filter.
+     * @param {object} defaultValue The default value of the column filter.
      * @return {Object} React-bootstrap-table column filter properties.
      */
     getColumnFilterProps = defaultValue => ({
         type: 'CustomFilter',
         getElement: this.getCustomFilter,
-        customFilterParameters: {
-            columnKey: this.column.key,
-            defaultValue,
-        },
+        columnKey: this.column.key,
+        defaultValue,
     });
 }
 

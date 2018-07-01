@@ -9,6 +9,7 @@ class NumberFilter extends ColumnFilter {
      */
     resetDefault = () => {
         this.column.defaultValue = {
+            number: this.getBaseDefault(),
             comparator: this.column.defaultValue.comparator,
         };
         return this.column;
@@ -27,6 +28,19 @@ class NumberFilter extends ColumnFilter {
     };
 
     /**
+     * Check if the filter has an empty value
+     *
+     * @param {string} number The number value entered.
+     * @return {boolean} True if the value is set.
+     */
+    hasEmptyValue = ({ number }) => {
+        if (!number || number === '') {
+            return true;
+        }
+        return false;
+    };
+
+    /**
      * Return a blank number filter item
      *
      * @return {{type: string, value: *}} A filter object item.
@@ -38,12 +52,13 @@ class NumberFilter extends ColumnFilter {
     /**
      * Generate a column filter object
      *
+     * @param {string} comparator The comparator symbol.
      * @param {number} value The numeric value of the filter.
      * @return {{key, type: string, value}} A column filter object.
      */
-    generateColumnFilter = (value) => {
+    generateColumnFilter = ({ comparator, number }) => {
         let type = 'like';
-        switch (value.comparator) {
+        switch (comparator) {
         case '=':
             type = 'eq';
             break;
@@ -67,7 +82,7 @@ class NumberFilter extends ColumnFilter {
         return {
             key: this.column.key,
             type,
-            value: value.number,
+            value: number,
         };
     };
 
@@ -75,12 +90,12 @@ class NumberFilter extends ColumnFilter {
      * Get the column filter properties for displaying
      *
      * @param {mixed} defaultValue The default value of the column filter.
-     * @return {{type, placeholder: string, numberComparators: string[], withoutEmptyComparatorOption: boolean, defaultValue: *}}
+     * @return {{type: *, placeholder: string, comparators: string[], withoutEmptyComparatorOption: boolean, defaultValue: *}}
      */
     getColumnFilterProps = defaultValue => ({
         type: this.column.filter,
         placeholder: ' ',
-        numberComparators: ['=', '>', '>=', '<', '<=', '!=', '...'],
+        comparators: ['=', '>', '>=', '<', '<=', '!=', '...'],
         withoutEmptyComparatorOption: true,
         defaultValue,
     });

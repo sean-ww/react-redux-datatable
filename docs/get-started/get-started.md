@@ -3,11 +3,11 @@
 npm i --save react-redux-datatable
 ```
 
-#### Include Reducers
-You will need to add the ```DataTableReducer``` and the ```DataTableExportReducer``` to your store.
+#### Include Reducer
+You will need to add the ```DataTableReducer``` to your store.
 ```
 // in ECMAScript 6
-import { DataTableReducer, DataTableExportReducer } from 'react-redux-datatable';
+import { DataTableReducer } from 'react-redux-datatable';
 
 // ...combine with your existing reducers if applicable, and add to your store
 ```

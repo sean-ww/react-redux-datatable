@@ -147,53 +147,21 @@ describe('<DataTableContainer>', () => {
     });
 
     it('should refresh the table on refresh click', () => {
-        Component.find('.refresh-icon').parent().simulate('click');
+        expect(Component.state().lastRefresh).to.equal(0);
+        Component.find('.refresh-icon').parents().at(0).simulate('click');
         expect(Component.state().lastRefresh).to.be.greaterThan(0);
     });
 
     it('should hide/show column filters when clicking hide/show Filters', () => {
         expect(Component.find('.hide-filter')).to.have.length(9);
-        Component.find('.filter-icon').parent().simulate('click');
+        Component.find('.filter-icon').parents().at(0).simulate('click');
         expect(Component.find('.hide-filter')).to.have.length(0);
-        Component.find('.filter-icon').parent().simulate('click');
+        Component.find('.filter-icon').parents().at(0).simulate('click');
         expect(Component.find('.hide-filter')).to.have.length(9);
     });
 
     it('should display an export button', () => {
-        expect(Component.find('.export-icon').first().parent().text()).to.equal('Export');
-    });
-
-    describe('Export is clicked', () => {
-        beforeEach(() => {
-            Component.setProps({
-                DataTableExportData: {
-                    ExampleDataTable: {
-                        fetching: true,
-                    },
-                },
-            });
-        });
-
-        it('should display a preparing button', () => {
-            expect(Component.find('.export-icon').first().parent().text()).to.equal('Preparing');
-        });
-
-        describe('Export data is received', () => {
-            beforeEach(() => {
-                Component.setProps({
-                    DataTableExportData: {
-                        ExampleDataTable: {
-                            fetching: false,
-                            fetched: true,
-                        },
-                    },
-                });
-            });
-
-            it('should display a download button', () => {
-                expect(Component.find('.export-icon').first().parent().text()).to.equal('Download');
-            });
-        });
+        expect(Component.find('.export-icon').first().parents().at(0).text()).to.equal('Export');
     });
 
     it('should display an empty search input', () => {
@@ -216,9 +184,9 @@ describe('<DataTableContainer>', () => {
     });
 
     it('should display empty column filters', () => {
-        expect(Component.find('.sort-column .number-filter-input').first().prop('defaultValue')).to.be.undefined;
+        expect(Component.find('.number-filter-input').first().prop('defaultValue')).to.be.undefined;
         expect(Component.find('TextFilter').first().prop('defaultValue')).to.equal('');
-        expect(Component.find('CustomDateFilter').first().prop('defaultValue')).to.equal('');
+        expect(Component.find('CustomDateFilter').first().prop('defaultValue')).to.deep.equal({});
         expect(Component.find('SelectFilter').first().prop('defaultValue')).to.equal('');
     });
 
@@ -309,7 +277,7 @@ describe('<DataTableContainer>', () => {
         });
 
         it('should display column filters with default values', () => {
-            expect(NewComponent.find('.sort-column .number-filter-input').first().prop('defaultValue'))
+            expect(NewComponent.find('.number-filter-input').first().prop('defaultValue'))
                 .to.equal(66);
             expect(NewComponent.find('TextFilter').first().prop('defaultValue'))
                 .to.equal('Dave');
@@ -321,9 +289,9 @@ describe('<DataTableContainer>', () => {
 
         it('should clear all filters when clear filters is clicked', () => {
             NewComponent.find('.filter-icon-clear').first().simulate('click');
-            expect(NewComponent.find('.sort-column .number-filter-input').first().prop('defaultValue')).to.be.undefined;
+            expect(NewComponent.find('.number-filter-input').first().prop('defaultValue')).to.equal('');
             expect(NewComponent.find('TextFilter').first().prop('defaultValue')).to.equal('');
-            expect(NewComponent.find('CustomDateFilter').first().prop('defaultValue')).to.equal('');
+            expect(NewComponent.find('CustomDateFilter').first().prop('defaultValue')).to.deep.equal({});
             expect(NewComponent.find('SelectFilter').first().prop('defaultValue')).to.equal('');
         });
     });

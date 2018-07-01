@@ -36,15 +36,6 @@ export const setupTableColumns = tableSettingsColumns => tableSettingsColumns.re
 /* eslint-enable no-param-reassign */
 
 /**
- * Clear all default values from the table column filters
- *
- * @param {Object} tableColumns An object containing key: value column filter objects.
- */
-export const clearDefaultFilterValues = tableColumns => Object.values(tableColumns).forEach((filter) => {
-    filter.resetDefault();
-});
-
-/**
  * Set the table column default filter values
  *
  * @param {Object} tableColumns An object containing key: value column filter objects.
@@ -79,9 +70,15 @@ export const setStorageFilters = (tableColumns, filters) => Object.values(tableC
                 [filter.column.key]: filter.returnBlankFilterItem(),
             };
         }
+        if (!filters[filter.column.key].values) {
+            return {
+                ...object,
+                [filter.column.key]: filter.returnFilterItem(filters[filter.column.key]),
+            };
+        }
         return {
             ...object,
-            [filter.column.key]: filters[filter.column.key],
+            [filter.column.key]: filter.returnFilterItem(filters[filter.column.key].values),
         };
     },
     {},
@@ -98,16 +95,42 @@ export const getDefaultFilteredColumns = tableColumns => Object.values(tableColu
 );
 
 /**
- * Generate a filter object
- *
- * This functions converts table column filters to filter objects
- * (matching react-bootstrap-table).
+ * Get all filter values where they are not empty
  *
  * @param {Object} tableColumns An object containing key: value column filter objects.
- * @return {Object} A filter object matching react-bootstrap-table.
+ * @param {Object} filters Filter objects matching react-bootstrap-table2.
+ * @return {Object} Filter value objects where the value is set.
  */
-export const generateFilterObj = tableColumns => getDefaultFilteredColumns(tableColumns).reduce(
-    (object, filter) => ({ ...object, [filter.column.key]: filter.toFilterItem() }), {},
+export const getFilterValues = (tableColumns, filters) => Object.keys(filters).reduce(
+    (object, filter) => {
+        if (tableColumns[filter].hasEmptyValue(filters[filter].filterVal)) {
+            return object;
+        }
+        return {
+            ...object,
+            [filter]: filters[filter].filterVal,
+        };
+    },
+    {},
+);
+
+/**
+ * Get all default filter values where they are not empty
+ *
+ * @param {Object} tableColumns An object containing key: value column filter objects.
+ * @return {Object} Filter value objects where the value is set.
+ */
+export const getDefaultFilterValues = tableColumns => Object.keys(tableColumns).reduce(
+    (object, filter) => {
+        if (tableColumns[filter].hasEmptyValue(tableColumns[filter].getDefault())) {
+            return object;
+        }
+        return {
+            ...object,
+            [filter]: tableColumns[filter].getDefault(),
+        };
+    },
+    {},
 );
 
 /**
@@ -122,4 +145,4 @@ export const generateFilterObj = tableColumns => getDefaultFilteredColumns(table
  * @return {({key, type, value}|*)[]} An array of column filters.
  */
 export const generateColumnFilters = (tableColumns, filters) => Object.entries(filters)
-    .map(([key, filter]) => tableColumns[key].generateColumnFilter(filter.value));
+    .map(([key, filter]) => tableColumns[key].generateColumnFilter(filter));
