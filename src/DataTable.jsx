@@ -132,7 +132,7 @@ class DataTable extends React.Component {
 
     renderShowsTotal = (start, to, total) => (
         <div style={{ float: 'right', fontSize: '10px', marginTop: '4px', marginRight: '-66px' }}>
-            Showing { start } to { Math.max(to, 0) } of { total } Results
+            Showing { start } to { Math.max(to + 1, 0) } of { total } Results
         </div>
     );
 
