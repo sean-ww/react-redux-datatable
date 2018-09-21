@@ -1,6 +1,6 @@
 {
   "name": "react-redux-datatable",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Dynamic data table using React and Redux that fetches JSON from a predefined API.",
   "main": "./lib/index.js",
   "style": "./dist/styles.css",
@@ -78,8 +78,8 @@
     "cover": "BABEL_ENV=test nyc --reporter=lcov --reporter=text-lcov mocha test/.setup.jsx './src/**/*.spec.jsx'",
     "coveralls": "npm run cover && cat ./coverage/lcov.info | coveralls",
     "prod": "NODE_ENV=production webpack --watch --progress -p",
-    "test": "BABEL_ENV=dev mocha test/.setup.jsx './src/**/*.spec.jsx'",
-    "test:errors": "BABEL_ENV=dev mocha test/.setup.jsx './src/**/*.spec.jsx' -R spec"
+    "test": "mocha",
+    "test:errors": "mocha -R spec"
   },
   "repository": {
     "type": "git",

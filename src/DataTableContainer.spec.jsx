@@ -110,6 +110,10 @@ describe('<DataTableContainer>', () => {
         expect(Component).to.have.length(1);
     });
 
+    it('should display pagination with 0 results', () => {
+        expect(Component.find('.react-bootstrap-table-pagination').text()).contains('Showing 0 to 0 of 0 Results');
+    });
+
     it('should display a section toolbar title', () => {
         expect(Component.find('.section-toolbar-title').first().text()).to.equal('Requests Table');
     });
@@ -293,6 +297,32 @@ describe('<DataTableContainer>', () => {
             expect(NewComponent.find('TextFilter').first().prop('defaultValue')).to.equal('');
             expect(NewComponent.find('CustomDateFilter').first().prop('defaultValue')).to.deep.equal({});
             expect(NewComponent.find('SelectFilter').first().prop('defaultValue')).to.equal('');
+        });
+    });
+
+    describe('With 119 (fake) results', () => {
+        let NewComponent;
+        beforeEach(() => {
+            NewComponent = mount(
+                <DataTableContainer
+                    dispatch={() => {}}
+                    tableSettings={testTableSettings}
+                    apiLocation="fake/location"
+                    DataTableData={{
+                        ExampleDataTable: {
+                            data: [],
+                            dataTotalSize: 119,
+                            error: null,
+                            fetched: true,
+                            fetching: false,
+                        }
+                    }}
+                />,
+            );
+        });
+
+        it('should display pagination with 1 to 10 of 119 results', () => {
+            expect(NewComponent.find('.react-bootstrap-table-pagination').text()).contains('Showing 1 to 10 of 119 Results');
         });
     });
 });
