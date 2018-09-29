@@ -13,80 +13,80 @@
 // - Use a build script to generate your UMD build in the dist directory just before you publish
 // - That's it! Now when you npm publish you'll have a version available on npmcdn as well
 
-var webpack = require('webpack');
-var path = require('path');
-var colors = require('colors/safe');
-var isCoverage = process.env.BABEL_ENV === 'test';
+const webpack = require('webpack');
+const path = require('path');
+const colors = require('colors/safe');
+
+const isCoverage = process.env.BABEL_ENV === 'test';
 
 module.exports = {
-    context: __dirname,
-    devtool: '#cheap-module-source-map',
-    entry: {
-        'react-redux-datatable': 'src/index.jsx'
+  context: __dirname,
+  devtool: '#cheap-module-source-map',
+  entry: {
+    'react-redux-datatable': 'src/index.jsx',
+  },
+  externals: [{
+    react: {
+      root: 'React',
+      commonjs2: 'react',
+      commonjs: 'react',
+      amd: 'react',
     },
-    externals: [{
-        'react': {
-            root: 'React',
-            commonjs2: 'react',
-            commonjs: 'react',
-            amd: 'react'
-        }
-    }, {
-        'react-dom': {
-            root: 'ReactDOM',
-            commonjs2: 'react-dom',
-            commonjs: 'react-dom',
-            amd: 'react-dom'
-        }
-    }],
-    module: {
-        rules: [
-            {
-                test: /\.jsx?$/,
-                exclude: /(node_modules|bower_components|\.spec\.js)/,
-                enforce: 'pre',
-                loader: 'eslint-loader'
-            },
-            {
-                test: /\.jsx?$/,
-                exclude: /(node_modules|bower_components)/,
-                loader: 'babel-loader',
-                options: {
-                    presets: ['react', 'es2015', 'stage-0'],
-                    plugins: [].concat(isCoverage ? ['istanbul'] : [],
-                        [
-                            'react-html-attrs',
-                            'transform-decorators-legacy',
-                            'transform-class-properties',
-                            'transform-object-assign',
-                            'webpack-alias'
-                        ]
-                    )
-                }
-            }
-        ]
+  }, {
+    'react-dom': {
+      root: 'ReactDOM',
+      commonjs2: 'react-dom',
+      commonjs: 'react-dom',
+      amd: 'react-dom',
     },
-    resolve: {
-        modules: [
-            path.resolve(__dirname),
-            'node_modules'
-        ],
-        alias: {},
-        extensions: ['.js', '.jsx'],
-    },
-    output: {
-        path: __dirname + '/dist/',
-        filename: '[name].js',
-        library: 'ReactReduxDataTable',
-        libraryTarget: 'umd'
-    },
-    plugins: [
-        function() {
-            this.plugin('watch-run', function(watching, callback) {
-                console.log(colors.green('Start (UMD Build): '), colors.bgBlue.white(new Date()));
-                callback();
-            })
+  }],
+  module: {
+    rules: [
+      {
+        test: /\.jsx?$/,
+        exclude: /(node_modules|bower_components|\.spec\.js)/,
+        enforce: 'pre',
+        loader: 'eslint-loader',
+      },
+      {
+        test: /\.jsx?$/,
+        exclude: /(node_modules|bower_components)/,
+        loader: 'babel-loader',
+        options: {
+          presets: ['react', 'es2015', 'stage-0'],
+          plugins: [].concat(isCoverage ? ['istanbul'] : [],
+            [
+              'react-html-attrs',
+              'transform-decorators-legacy',
+              'transform-class-properties',
+              'transform-object-assign',
+              'webpack-alias',
+            ]),
         },
-        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/), // Ignore all optional deps of moment.js
-    ]
+      },
+    ],
+  },
+  resolve: {
+    modules: [
+      path.resolve(__dirname),
+      'node_modules',
+    ],
+    alias: {},
+    extensions: ['.js', '.jsx'],
+  },
+  output: {
+    path: `${__dirname}/dist/`,
+    filename: '[name].js',
+    library: 'ReactReduxDataTable',
+    libraryTarget: 'umd',
+  },
+  plugins: [
+    function () {
+      this.plugin('watch-run', (watching, callback) => {
+        console.log(colors.green('Start (UMD Build): '), colors.bgBlue.white(new Date()));
+        callback();
+      });
+    },
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/), // Ignore all optional deps of moment.js
+  ],
 };

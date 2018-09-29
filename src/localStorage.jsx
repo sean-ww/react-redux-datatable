@@ -5,10 +5,10 @@
  * @param {*} value The value to be set.
  */
 export const setLocalStorageItem = (itemName, value) => {
-    global.window.localStorage.setItem(
-        itemName,
-        JSON.stringify(value),
-    );
+  global.window.localStorage.setItem(
+    itemName,
+    JSON.stringify(value),
+  );
 };
 
 /**
@@ -18,7 +18,7 @@ export const setLocalStorageItem = (itemName, value) => {
  * @return {any} The local storage item.
  */
 export const getLocalStorageItem = itemName => JSON.parse(
-    global.window.localStorage.getItem(itemName),
+  global.window.localStorage.getItem(itemName),
 );
 
 /**
@@ -27,7 +27,7 @@ export const getLocalStorageItem = itemName => JSON.parse(
  * @param {string} itemName The name of the item to be removed.
  */
 export const removeLocalStorageItem = (itemName) => {
-    global.window.localStorage.removeItem(itemName);
+  global.window.localStorage.removeItem(itemName);
 };
 
 /**
@@ -37,8 +37,8 @@ export const removeLocalStorageItem = (itemName) => {
  * @param {*} value The value to be added/updated.
  */
 export const updateLocalStorageItem = (itemName, value) => {
-    setLocalStorageItem(itemName, {
-        ...getLocalStorageItem(itemName),
-        ...value,
-    });
+  setLocalStorageItem(itemName, {
+    ...getLocalStorageItem(itemName),
+    ...value,
+  });
 };

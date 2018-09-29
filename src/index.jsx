@@ -6,11 +6,11 @@ import getPosition from './filters/CustomDateRangeFilter/getPosition';
 import DateRangeInputField from './filters/CustomDateRangeFilter/DateRangeInputField';
 
 export {
-    DataTable,
-    DataTableReducer,
-    LoadingGif,
-    getPosition,
-    CustomDateRangeFilter,
-    DateRangeInputField,
+  DataTable,
+  DataTableReducer,
+  LoadingGif,
+  getPosition,
+  CustomDateRangeFilter,
+  DateRangeInputField,
 };
 export default DataTable;

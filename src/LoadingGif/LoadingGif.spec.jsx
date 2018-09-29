@@ -3,16 +3,15 @@ import { shallow } from 'enzyme';
 import { expect } from 'chai';
 import LoadingGif from './LoadingGif';
 
-describe( '<LoadingGif>', () => {
+describe('<LoadingGif>', () => {
+  let Component;
+  beforeEach(() => {
+    Component = shallow(
+      <LoadingGif />,
+    );
+  });
 
-    let Component;
-    beforeEach(() => {
-        Component = shallow(
-            <LoadingGif />
-        );
-    });
-
-    it( 'should display a rolling spinner', () => {
-        expect(Component.find('.rollingSpinner').first()).to.have.length(1);
-    });
+  it('should display a rolling spinner', () => {
+    expect(Component.find('.rollingSpinner').first()).to.have.length(1);
+  });
 });

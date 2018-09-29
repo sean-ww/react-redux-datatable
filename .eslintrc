@@ -1,4 +1,5 @@
 {
+    "root": true,
     "env": {
         "browser": true,
         "es6": true,
@@ -8,9 +9,9 @@
     "extends": "airbnb",
     "parser": "babel-eslint",
     "rules": {
-        // indentation of 4 spaces
-        "indent": [ 2, 4 ],
-        "react/jsx-indent": [ 2, 4 ],
+        // indentation of 2 spaces
+        "indent": [ 2, 2 ],
+        "react/jsx-indent": [ 2, 2 ],
 
         // max line length of 120 chars
         "max-len": [1, 120, 2, {"ignoreComments": true}],
@@ -48,6 +49,9 @@
         "import/no-absolute-path": 0,
 
         // turn off no-undef
-        "no-undef": 0
+        "no-undef": 0,
+
+        // turn off destructuring assignment
+        "react/destructuring-assignment": 0
     }
 }

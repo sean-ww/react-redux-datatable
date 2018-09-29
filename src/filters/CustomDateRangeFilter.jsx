@@ -23,32 +23,32 @@ class CustomDateRangeFilter extends ColumnFilter {
      * @return {Object} The updated column object.
      */
     setDefault = (value) => {
-        if (value.values) {
-            const from = new Date(value.values.from);
-            const to = new Date(value.values.to);
-            this.column.defaultValue = {
-                from,
-                to,
-            };
-        } else {
-            this.column.defaultValue = this.getBaseDefault();
-        }
-        return this.column;
+      if (value.values) {
+        const from = new Date(value.values.from);
+        const to = new Date(value.values.to);
+        this.column.defaultValue = {
+          from,
+          to,
+        };
+      } else {
+        this.column.defaultValue = this.getBaseDefault();
+      }
+      return this.column;
     };
 
     /**
      * Return a between values filter item
      *
-     * @param {mixed} values The values of the filter.
+     * @param {*} values The values of the filter.
      * @return {{type: string, value: {key: string, type: string, values: *}}} A filter object item.
      */
     returnFilterItem = values => ({
-        type: 'CustomFilter',
-        value: {
-            key: 'value',
-            type: 'between',
-            values,
-        },
+      type: 'CustomFilter',
+      value: {
+        key: 'value',
+        type: 'between',
+        values,
+      },
     });
 
     /**
@@ -57,8 +57,8 @@ class CustomDateRangeFilter extends ColumnFilter {
      * @return {{type: string, value: string}} A filter object item.
      */
     returnBlankFilterItem = () => ({
-        type: 'CustomFilter',
-        value: '',
+      type: 'CustomFilter',
+      value: '',
     });
 
     /**
@@ -68,9 +68,9 @@ class CustomDateRangeFilter extends ColumnFilter {
      * @return {{key, type: string, value: *}} A column filter object.
      */
     generateColumnFilter = value => ({
-        key: this.column.key,
-        type: 'between',
-        value,
+      key: this.column.key,
+      type: 'between',
+      value,
     });
 
     /**
@@ -81,12 +81,12 @@ class CustomDateRangeFilter extends ColumnFilter {
      * @return {jsx} The Date Range Filter component.
      */
     getCustomFilter = (filterHandler, filterOptions) => (
-        <DateRangeFilter
-          onFilter={filterHandler}
-          columnKey={filterOptions.columnKey}
-          defaultValue={filterOptions.defaultValue}
-          getFilter={filterOptions.getFilter}
-        />
+      <DateRangeFilter
+        onFilter={filterHandler}
+        columnKey={filterOptions.columnKey}
+        defaultValue={filterOptions.defaultValue}
+        getFilter={filterOptions.getFilter}
+      />
     );
 
     /**
@@ -96,10 +96,10 @@ class CustomDateRangeFilter extends ColumnFilter {
      * @return {Object} React-bootstrap-table column filter properties.
      */
     getColumnFilterProps = defaultValue => ({
-        type: 'CustomFilter',
-        getElement: this.getCustomFilter,
-        columnKey: this.column.key,
-        defaultValue,
+      type: 'CustomFilter',
+      getElement: this.getCustomFilter,
+      columnKey: this.column.key,
+      defaultValue,
     });
 }
 
