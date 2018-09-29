@@ -3,8 +3,7 @@ import moment from 'moment';
 import DataTable from '../src/DataTableContainer'; // import DataTable from 'react-redux-datatable';
 import '../dist/styles.css'; // import 'react-redux-datatable/dist/styles.css';
 
-const apiLocation = 'http://seanwallis.com/datatable-service/search';
-// const apiLocation = `${window.location.protocol}//${window.location.hostname}/datatable-service/search`;
+const apiLocation = `${window.location.protocol}//${window.location.hostname}/datatable-service/search`;
 
 const dateFormatter = cell => moment(cell).format('ddd, Do MMM YYYY HH:mm');
 
