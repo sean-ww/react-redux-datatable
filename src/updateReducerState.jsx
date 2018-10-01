@@ -27,11 +27,8 @@ const getPreviousDataTableData = (DataTableData, removeTableId) => {
  *
  * @return {Object} The new table data object.
  */
-const updateDataTableData = (DataTableData, tableUpdate) => Object.assign(
-  {},
-  getPreviousDataTableData(DataTableData, tableUpdate.tableId),
-  tableUpdate.tableData,
-);
+const updateDataTableData = (DataTableData, tableUpdate) =>
+  Object.assign({}, getPreviousDataTableData(DataTableData, tableUpdate.tableId), tableUpdate.tableData);
 
 const updateState = (state, action) => ({
   DataTableData: updateDataTableData(state.DataTableData, action.payload),

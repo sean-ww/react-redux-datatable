@@ -5,9 +5,7 @@ import DayPicker from 'react-day-picker';
 const currentYear = new Date().getFullYear();
 const currentDate = new Date();
 
-const YearMonthForm = ({
-  date, fromMonth, toMonth, localeUtils, onChange,
-}) => {
+const YearMonthForm = ({ date, fromMonth, toMonth, localeUtils, onChange }) => {
   const months = localeUtils.getMonths();
 
   const years = [];
@@ -22,22 +20,14 @@ const YearMonthForm = ({
 
   return (
     <form className="DayPicker-Caption">
-      <select
-        name="month"
-        onChange={handleChange}
-        value={date.getMonth()}
-      >
+      <select name="month" onChange={handleChange} value={date.getMonth()}>
         {months.map((month, i) => (
           <option key={month} value={i}>
             {month}
           </option>
         ))}
       </select>
-      <select
-        name="year"
-        onChange={handleChange}
-        value={date.getFullYear()}
-      >
+      <select name="year" onChange={handleChange} value={date.getFullYear()}>
         {years.map(year => (
           <option key={year} value={year}>
             {year}
@@ -57,48 +47,45 @@ YearMonthForm.propTypes = {
 };
 
 export class SelectDayPicker extends React.Component {
-    handleYearMonthChange = (month) => {
-      const updatedYear = month.getFullYear();
-      this.setState({
-        month,
-        fromMonth: new Date(updatedYear - 5, 0),
-        toMonth: new Date(updatedYear + 5, 11),
-      });
-    };
+  state = {
+    fromMonth: new Date(currentYear - 5, 0),
+    toMonth: new Date(currentYear + 5, 11),
+    month: currentDate,
+  };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      fromMonth: new Date(currentYear - 5, 0),
-      toMonth: new Date(currentYear + 5, 11),
-      month: currentDate,
-    };
+  handleYearMonthChange = month => {
+    const updatedYear = month.getFullYear();
+    this.setState({
+      month,
+      fromMonth: new Date(updatedYear - 5, 0),
+      toMonth: new Date(updatedYear + 5, 11),
+    });
+  };
+
+  render() {
+    const { handleDayClick, from, to } = this.props;
+    const { fromMonth, toMonth, month } = this.state;
+    return (
+      <div className="YearNavigation">
+        <DayPicker
+          onDayClick={handleDayClick}
+          selectedDays={[from, { from, to }]}
+          month={month}
+          fromMonth={fromMonth}
+          toMonth={toMonth}
+          captionElement={({ date, localeUtils }) => (
+            <YearMonthForm
+              date={date}
+              fromMonth={fromMonth}
+              toMonth={toMonth}
+              localeUtils={localeUtils}
+              onChange={this.handleYearMonthChange}
+            />
+          )}
+        />
+      </div>
+    );
   }
-
-    render() {
-      const { handleDayClick, from, to } = this.props;
-      const { fromMonth, toMonth, month } = this.state;
-      return (
-        <div className="YearNavigation">
-          <DayPicker
-            onDayClick={handleDayClick}
-            selectedDays={[from, { from, to }]}
-            month={month}
-            fromMonth={fromMonth}
-            toMonth={toMonth}
-            captionElement={({ date, localeUtils }) => (
-              <YearMonthForm
-                date={date}
-                fromMonth={fromMonth}
-                toMonth={toMonth}
-                localeUtils={localeUtils}
-                onChange={this.handleYearMonthChange}
-              />
-            )}
-          />
-        </div>
-      );
-    }
 }
 
 SelectDayPicker.propTypes = {

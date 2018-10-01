@@ -6,11 +6,7 @@ import { canUseDOM, exportToCSVFile } from './csvExport';
 import DataTable from './DataTable';
 import { fetchTableData, fetchExportData } from './DataTable.actions';
 import LoadingGif from './LoadingGif/LoadingGif';
-import {
-  setLocalStorageItem,
-  getLocalStorageItem,
-  updateLocalStorageItem,
-} from './localStorage';
+import { setLocalStorageItem, getLocalStorageItem, updateLocalStorageItem } from './localStorage';
 import {
   setupTableColumns,
   setDefaultFilters,
@@ -21,9 +17,7 @@ import {
 } from './ColumnFilters';
 
 export class DataTableContainer extends React.Component {
-  onTableChange = (type, {
-    page = 1, sizePerPage = 10, filters, sortField, sortOrder,
-  }) => {
+  onTableChange = (type, { page = 1, sizePerPage = 10, filters, sortField, sortOrder }) => {
     if (!this.isSetup || this.state.clearingFilters) return;
 
     const filterValues = getFilterValues(this.tableColumns, filters);
@@ -31,10 +25,7 @@ export class DataTableContainer extends React.Component {
 
     if (this.props.tableSettings.useLocalStorage) {
       updateLocalStorageItem('tableFilters', {
-        [this.props.tableSettings.tableID]: setStorageFilters(
-          this.tableColumns,
-          filterValues,
-        ),
+        [this.props.tableSettings.tableID]: setStorageFilters(this.tableColumns, filterValues),
       });
     }
 
@@ -53,18 +44,7 @@ export class DataTableContainer extends React.Component {
       lastRefresh: Date.now(), // eslint-disable-line react/no-unused-state
     });
   };
-  onSearchChange = ({ target: { value } }) => {
-    const text = value.trim();
-    const { tableSettings } = this.props;
-    if (tableSettings.useLocalStorage) {
-      updateLocalStorageItem('tableSearch', {
-        [tableSettings.tableID]: text,
-      });
-    }
-    this.searchValue = text;
-    this.getTableData({});
-  };
-  onSizePerPageChange = (sizePerPage) => {
+  onSizePerPageChange = sizePerPage => {
     this.setState({
       sizePerPage,
     });
@@ -78,16 +58,12 @@ export class DataTableContainer extends React.Component {
         this.searchValue,
         this.columnFilters,
         this.props.apiLocation,
-      ).then((data) => {
+      ).then(data => {
         const fields = Object.values(this.tableColumns)
           .filter(filter => filter.column.export !== false)
           .map(tableColumn => tableColumn.column.key);
 
-        exportToCSVFile(
-          fields,
-          data,
-          `exportDownload_${moment().format('YYYY-MM-DD_HH-mm')}.csv`,
-        );
+        exportToCSVFile(fields, data, `exportDownload_${moment().format('YYYY-MM-DD_HH-mm')}.csv`);
       });
     }
   };
@@ -97,16 +73,30 @@ export class DataTableContainer extends React.Component {
     sortField = this.state.sortField,
     sortOrder = this.state.sortOrder,
   }) => {
-    this.props.dispatch(fetchTableData(
-      this.props.tableSettings,
-      sizePerPage,
-      (page - 1) * sizePerPage,
-      sortField,
-      sortOrder,
-      this.searchValue,
-      this.columnFilters,
-      this.props.apiLocation,
-    ));
+    this.props.dispatch(
+      fetchTableData(
+        this.props.tableSettings,
+        sizePerPage,
+        (page - 1) * sizePerPage,
+        sortField,
+        sortOrder,
+        this.searchValue,
+        this.columnFilters,
+        this.props.apiLocation,
+      ),
+    );
+  };
+
+  onSearchChange = ({ target: { value } }) => {
+    const text = value.trim();
+    const { tableSettings } = this.props;
+    if (tableSettings.useLocalStorage) {
+      updateLocalStorageItem('tableSearch', {
+        [tableSettings.tableID]: text,
+      });
+    }
+    this.searchValue = text;
+    this.getTableData({});
   };
   setupTable = () => {
     const { tableColumns } = this.props.tableSettings;
@@ -122,13 +112,48 @@ export class DataTableContainer extends React.Component {
       // set table filters
       const previousTableFilters = getLocalStorageItem('tableFilters');
       if (previousTableFilters && previousTableFilters[this.props.tableSettings.tableID]) {
-        setDefaultFilters(
-          this.tableColumns,
-          previousTableFilters[this.props.tableSettings.tableID],
-        );
+        setDefaultFilters(this.tableColumns, previousTableFilters[this.props.tableSettings.tableID]);
       }
     }
   };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      isFullscreen: false,
+      sizePerPage: 10,
+      currentPage: 1,
+      sortField: undefined,
+      sortOrder: undefined,
+      clearingFilters: false,
+      lastRefresh: 0, // eslint-disable-line react/no-unused-state
+    };
+    this.isSetup = false;
+    this.searchValue = `${props.tableSettings.defaultSearch || ''}`;
+    this.columnFilters = undefined;
+    this.setupTable();
+    this.initiateTable();
+  }
+
+  componentDidMount() {
+    const {
+      ownProps: { setRef },
+    } = this.props;
+    if (typeof setRef !== 'undefined') {
+      setRef(this);
+    }
+    this.isSetup = true;
+  }
+
+  componentWillUnmount() {
+    const {
+      ownProps: { setRef },
+    } = this.props;
+    if (typeof setRef !== 'undefined') {
+      setRef(null);
+    }
+  }
+
   initiateTable = () => {
     const filterValues = getDefaultFilterValues(this.tableColumns);
     this.columnFilters = generateColumnFilters(this.tableColumns, filterValues);
@@ -136,6 +161,7 @@ export class DataTableContainer extends React.Component {
       page: this.state.currentPage,
     });
   };
+
   refreshTable = () => {
     this.getTableData({
       page: this.state.currentPage,
@@ -144,11 +170,13 @@ export class DataTableContainer extends React.Component {
       lastRefresh: Date.now(), // eslint-disable-line react/no-unused-state
     });
   };
+
   startClearingFilters = () => {
     this.setState({
       clearingFilters: true,
     });
   };
+
   clearFilters = () => {
     if (this.props.tableSettings.useLocalStorage) {
       const previousTableFilters = getLocalStorageItem('tableFilters');
@@ -165,64 +193,27 @@ export class DataTableContainer extends React.Component {
       clearingFilters: false,
     });
   };
+
   makeFullscreen = () => {
     this.setState(prevState => ({ isFullscreen: !prevState.isFullscreen }));
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      isFullscreen: false,
-      sizePerPage: 10,
-      currentPage: 1,
-      sortField: undefined,
-      sortOrder: undefined,
-      clearingFilters: false,
-      lastRefresh: 0, // eslint-disable-line react/no-unused-state
-    };
-    this.isSetup = false;
-    this.searchValue = `${(props.tableSettings.defaultSearch || '')}`;
-    this.columnFilters = undefined;
-    this.setupTable();
-    this.initiateTable();
-  }
-
-  componentDidMount() {
-    const { ownProps: { setRef } } = this.props;
-    if (typeof setRef !== 'undefined') {
-      setRef(this);
-    }
-    this.isSetup = true;
-  }
-
-  componentWillUnmount() {
-    const { ownProps: { setRef } } = this.props;
-    if (typeof setRef !== 'undefined') {
-      setRef(null);
-    }
-  }
-
   render() {
-    const {
-      tableSettings,
-      DataTableData,
-    } = this.props;
+    const { tableSettings, DataTableData } = this.props;
 
-    if (!tableSettings.tableID
-      || (DataTableData && DataTableData[tableSettings.tableID] && DataTableData[tableSettings.tableID].error)
+    if (
+      !tableSettings.tableID ||
+      (DataTableData && DataTableData[tableSettings.tableID] && DataTableData[tableSettings.tableID].error)
     ) {
       return (
         <div class="status_message offline">
-          <p>
-            The table failed to initialise. Please check you are connected to the internet and try again.
-          </p>
+          <p>The table failed to initialise. Please check you are connected to the internet and try again.</p>
         </div>
       );
     }
 
-    const isLoading = !DataTableData
-        || !DataTableData[tableSettings.tableID]
-        || !DataTableData[tableSettings.tableID].fetched;
+    const isLoading =
+      !DataTableData || !DataTableData[tableSettings.tableID] || !DataTableData[tableSettings.tableID].fetched;
 
     const isFiltered = this.columnFilters && this.columnFilters.length > 0;
 
@@ -241,43 +232,37 @@ export class DataTableContainer extends React.Component {
       <div
         class={`
                 ${tableSettings.wrapperType}
-                ${(this.state.isFullscreen ? 'section-isFullscreen' : '')}
+                ${this.state.isFullscreen ? 'section-isFullscreen' : ''}
                 react-datatable
             `}
       >
-        { tableSettings.displayTitle
-              && (
-                <div class="section-toolbar">
-                  <span class="section-toolbar-title">
-                    {tableSettings.displayTitle}
-                  </span>
-                  { tableSettings.extraToolbarItems && tableSettings.extraToolbarItems() }
-                  <div class="section-toolbar-group">
-                    <button
-                      type="button"
-                      class={`
+        {tableSettings.displayTitle && (
+          <div class="section-toolbar">
+            <span class="section-toolbar-title">{tableSettings.displayTitle}</span>
+            {tableSettings.extraToolbarItems && tableSettings.extraToolbarItems()}
+            <div class="section-toolbar-group">
+              <button
+                type="button"
+                class={`
                             section-toolbar-icon
                             section-toolbar-fullscreen
-                            ${(this.state.isFullscreen ? 'section-toolbar-isFullscreen' : '')}
+                            ${this.state.isFullscreen ? 'section-toolbar-isFullscreen' : ''}
                         `}
-                      title="Toggle Fullscreen"
-                      onClick={this.makeFullscreen}
-                    >
-                          Fullscreen
-                    </button>
-                  </div>
-                </div>
-              )
-        }
+                title="Toggle Fullscreen"
+                onClick={this.makeFullscreen}
+              >
+                Fullscreen
+              </button>
+            </div>
+          </div>
+        )}
         <div class="inner" style={{ overflow: 'auto' }}>
           <div style={{ minWidth: tableSettings.minWidth }}>
-            { isLoading
-              && (
-                <div class="loadingContainer" style={{ opacity: 0.3 }}>
-                  <LoadingGif />
-                </div>
-              )
-            }
+            {isLoading && (
+              <div class="loadingContainer" style={{ opacity: 0.3 }}>
+                <LoadingGif />
+              </div>
+            )}
             <DataTable
               keyField={tableSettings.keyField}
               noDataIndication={tableSettings.noDataIndication}

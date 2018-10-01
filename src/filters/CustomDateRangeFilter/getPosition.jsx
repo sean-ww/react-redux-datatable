@@ -7,7 +7,7 @@
  * @param {Object} element The element we are finding the position of.
  * @returns {{x: number, y: number}} The coordinates of the element.
  */
-export default (element) => {
+export default element => {
   let xPos = 0;
   let yPos = 0;
 
@@ -17,12 +17,12 @@ export default (element) => {
       const xScroll = element.scrollLeft || document.documentElement.scrollLeft;
       const yScroll = element.scrollTop || document.documentElement.scrollTop;
 
-      xPos += ((element.offsetLeft - xScroll) + element.clientLeft);
-      yPos += ((element.offsetTop - yScroll) + element.clientTop);
+      xPos += element.offsetLeft - xScroll + element.clientLeft;
+      yPos += element.offsetTop - yScroll + element.clientTop;
     } else {
       // for all other non-BODY elements
-      xPos += ((element.offsetLeft - element.scrollLeft) + element.clientLeft);
-      yPos += ((element.offsetTop - element.scrollTop) + element.clientTop);
+      xPos += element.offsetLeft - element.scrollLeft + element.clientLeft;
+      yPos += element.offsetTop - element.scrollTop + element.clientTop;
     }
 
     element = element.offsetParent;

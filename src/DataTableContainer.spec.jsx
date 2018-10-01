@@ -85,24 +85,14 @@ const testTableSettings = {
 describe('<DataTableContainer>', () => {
   it('should call componentDidMount', () => {
     sinon.spy(DataTableContainer.prototype, 'componentDidMount');
-    mount(
-      <DataTableContainer
-        dispatch={() => {}}
-        tableSettings={testTableSettings}
-        apiLocation="fake/location"
-      />,
-    );
+    mount(<DataTableContainer dispatch={() => {}} tableSettings={testTableSettings} apiLocation="fake/location" />);
     expect(DataTableContainer.prototype.componentDidMount.calledOnce).to.equal(true);
   });
 
   let Component;
   beforeEach(() => {
     Component = mount(
-      <DataTableContainer
-        dispatch={() => {}}
-        tableSettings={testTableSettings}
-        apiLocation="fake/location"
-      />,
+      <DataTableContainer dispatch={() => {}} tableSettings={testTableSettings} apiLocation="fake/location" />,
     );
   });
 
@@ -115,11 +105,19 @@ describe('<DataTableContainer>', () => {
   });
 
   it('should display a section toolbar title', () => {
-    expect(Component.find('.section-toolbar-title').first().text()).to.equal('Requests Table');
+    expect(
+      Component.find('.section-toolbar-title')
+        .first()
+        .text(),
+    ).to.equal('Requests Table');
   });
 
   it('should display a Fullscreen toggle', () => {
-    expect(Component.find('.section-toolbar-fullscreen').first().text()).to.equal('Fullscreen');
+    expect(
+      Component.find('.section-toolbar-fullscreen')
+        .first()
+        .text(),
+    ).to.equal('Fullscreen');
   });
 
   it('should display a LoadingGif', () => {
@@ -128,9 +126,13 @@ describe('<DataTableContainer>', () => {
 
   it('should toggle full screen when clicking Toggle Fullscreen', () => {
     expect(Component.find('.section-isFullscreen')).to.have.length(0);
-    Component.find('.section-toolbar-fullscreen').first().simulate('click');
+    Component.find('.section-toolbar-fullscreen')
+      .first()
+      .simulate('click');
     expect(Component.find('.section-isFullscreen')).to.have.length(1);
-    Component.find('.section-toolbar-fullscreen').first().simulate('click');
+    Component.find('.section-toolbar-fullscreen')
+      .first()
+      .simulate('click');
     expect(Component.find('.section-isFullscreen')).to.have.length(0);
   });
 
@@ -152,25 +154,43 @@ describe('<DataTableContainer>', () => {
 
   it('should refresh the table on refresh click', () => {
     expect(Component.state().lastRefresh).to.equal(0);
-    Component.find('.refresh-icon').parents().at(0).simulate('click');
+    Component.find('.refresh-icon')
+      .parents()
+      .at(0)
+      .simulate('click');
     expect(Component.state().lastRefresh).to.be.greaterThan(0);
   });
 
   it('should hide/show column filters when clicking hide/show Filters', () => {
     expect(Component.find('.hide-filter')).to.have.length(9);
-    Component.find('.filter-icon').parents().at(0).simulate('click');
+    Component.find('.filter-icon')
+      .parents()
+      .at(0)
+      .simulate('click');
     expect(Component.find('.hide-filter')).to.have.length(0);
-    Component.find('.filter-icon').parents().at(0).simulate('click');
+    Component.find('.filter-icon')
+      .parents()
+      .at(0)
+      .simulate('click');
     expect(Component.find('.hide-filter')).to.have.length(9);
   });
 
   it('should display an export button', () => {
-    expect(Component.find('.export-icon').first().parents().at(0)
-      .text()).to.equal('Export');
+    expect(
+      Component.find('.export-icon')
+        .first()
+        .parents()
+        .at(0)
+        .text(),
+    ).to.equal('Export');
   });
 
   it('should display an empty search input', () => {
-    expect(Component.find('.react-bs-table-search-form input').first().props().defaultValue).to.equal('');
+    expect(
+      Component.find('.react-bs-table-search-form input')
+        .first()
+        .props().defaultValue,
+    ).to.equal('');
   });
 
   it('should display a search input with a default search term', () => {
@@ -178,21 +198,36 @@ describe('<DataTableContainer>', () => {
       defaultSearch: 'my search term',
     });
     const NewComponent = mount(
-      <DataTableContainer
-        dispatch={() => {}}
-        tableSettings={newTableSettings}
-        apiLocation="fake/location"
-      />,
+      <DataTableContainer dispatch={() => {}} tableSettings={newTableSettings} apiLocation="fake/location" />,
     );
-    expect(NewComponent.find('.react-bs-table-search-form input').first().props().defaultValue)
-      .to.equal('my search term');
+    expect(
+      NewComponent.find('.react-bs-table-search-form input')
+        .first()
+        .props().defaultValue,
+    ).to.equal('my search term');
   });
 
   it('should display empty column filters', () => {
-    expect(Component.find('.number-filter-input').first().prop('defaultValue')).to.be.undefined; // eslint-disable-line no-unused-expressions
-    expect(Component.find('TextFilter').first().prop('defaultValue')).to.equal('');
-    expect(Component.find('CustomDateFilter').first().prop('defaultValue')).to.deep.equal({});
-    expect(Component.find('SelectFilter').first().prop('defaultValue')).to.equal('');
+    expect(
+      Component.find('.number-filter-input')
+        .first()
+        .prop('defaultValue'),
+    ).to.be.undefined;
+    expect(
+      Component.find('TextFilter')
+        .first()
+        .prop('defaultValue'),
+    ).to.equal('');
+    expect(
+      Component.find('CustomDateFilter')
+        .first()
+        .prop('defaultValue'),
+    ).to.deep.equal({});
+    expect(
+      Component.find('SelectFilter')
+        .first()
+        .prop('defaultValue'),
+    ).to.equal('');
   });
 
   describe('Default values are set', () => {
@@ -273,31 +308,57 @@ describe('<DataTableContainer>', () => {
         ],
       });
       NewComponent = mount(
-        <DataTableContainer
-          dispatch={() => {}}
-          tableSettings={newTableSettings}
-          apiLocation="fake/location"
-        />,
+        <DataTableContainer dispatch={() => {}} tableSettings={newTableSettings} apiLocation="fake/location" />,
       );
     });
 
     it('should display column filters with default values', () => {
-      expect(NewComponent.find('.number-filter-input').first().prop('defaultValue'))
-        .to.equal(66);
-      expect(NewComponent.find('TextFilter').first().prop('defaultValue'))
-        .to.equal('Dave');
-      expect(NewComponent.find('CustomDateFilter').first().prop('defaultValue'))
-        .to.equal(dateRangeDefault);
-      expect(NewComponent.find('SelectFilter').first().prop('defaultValue'))
-        .to.equal('Amend');
+      expect(
+        NewComponent.find('.number-filter-input')
+          .first()
+          .prop('defaultValue'),
+      ).to.equal(66);
+      expect(
+        NewComponent.find('TextFilter')
+          .first()
+          .prop('defaultValue'),
+      ).to.equal('Dave');
+      expect(
+        NewComponent.find('CustomDateFilter')
+          .first()
+          .prop('defaultValue'),
+      ).to.equal(dateRangeDefault);
+      expect(
+        NewComponent.find('SelectFilter')
+          .first()
+          .prop('defaultValue'),
+      ).to.equal('Amend');
     });
 
     it('should clear all filters when clear filters is clicked', () => {
-      NewComponent.find('.filter-icon-clear').first().simulate('click');
-      expect(NewComponent.find('.number-filter-input').first().prop('defaultValue')).to.equal('');
-      expect(NewComponent.find('TextFilter').first().prop('defaultValue')).to.equal('');
-      expect(NewComponent.find('CustomDateFilter').first().prop('defaultValue')).to.deep.equal({});
-      expect(NewComponent.find('SelectFilter').first().prop('defaultValue')).to.equal('');
+      NewComponent.find('.filter-icon-clear')
+        .first()
+        .simulate('click');
+      expect(
+        NewComponent.find('.number-filter-input')
+          .first()
+          .prop('defaultValue'),
+      ).to.equal('');
+      expect(
+        NewComponent.find('TextFilter')
+          .first()
+          .prop('defaultValue'),
+      ).to.equal('');
+      expect(
+        NewComponent.find('CustomDateFilter')
+          .first()
+          .prop('defaultValue'),
+      ).to.deep.equal({});
+      expect(
+        NewComponent.find('SelectFilter')
+          .first()
+          .prop('defaultValue'),
+      ).to.equal('');
     });
   });
 

@@ -6,9 +6,7 @@ import LoadingGif from './LoadingGif';
 describe('<LoadingGif>', () => {
   let Component;
   beforeEach(() => {
-    Component = shallow(
-      <LoadingGif />,
-    );
+    Component = shallow(<LoadingGif />);
   });
 
   it('should display a rolling spinner', () => {

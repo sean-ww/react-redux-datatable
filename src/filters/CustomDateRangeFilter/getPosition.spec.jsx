@@ -52,30 +52,32 @@ describe('getPosition()', () => {
     },
   ];
 
-  assertions.forEach(({
-    testName,
-    tagName,
-    offsetLeft,
-    offsetTop,
-    scrollLeft,
-    scrollTop,
-    clientLeft,
-    clientTop,
-    expectedX,
-    expectedY,
-  }) => {
-    it(`should return an elements coordinates (${testName})`, () => {
-      const mockElement = {};
-      mockElement.tagName = tagName;
-      mockElement.offsetLeft = offsetLeft;
-      mockElement.offsetTop = offsetTop;
-      mockElement.scrollLeft = scrollLeft;
-      mockElement.scrollTop = scrollTop;
-      mockElement.clientLeft = clientLeft;
-      mockElement.clientTop = clientTop;
-      mockElement.offsetParent = null;
-      expect(getPostion(mockElement).x).to.equal(expectedX);
-      expect(getPostion(mockElement).y).to.equal(expectedY);
-    });
-  });
+  assertions.forEach(
+    ({
+      testName,
+      tagName,
+      offsetLeft,
+      offsetTop,
+      scrollLeft,
+      scrollTop,
+      clientLeft,
+      clientTop,
+      expectedX,
+      expectedY,
+    }) => {
+      it(`should return an elements coordinates (${testName})`, () => {
+        const mockElement = {};
+        mockElement.tagName = tagName;
+        mockElement.offsetLeft = offsetLeft;
+        mockElement.offsetTop = offsetTop;
+        mockElement.scrollLeft = scrollLeft;
+        mockElement.scrollTop = scrollTop;
+        mockElement.clientLeft = clientLeft;
+        mockElement.clientTop = clientTop;
+        mockElement.offsetParent = null;
+        expect(getPostion(mockElement).x).to.equal(expectedX);
+        expect(getPostion(mockElement).y).to.equal(expectedY);
+      });
+    },
+  );
 });

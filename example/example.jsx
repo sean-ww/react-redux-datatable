@@ -91,11 +91,6 @@ const exampleTableSettings = {
   ],
 };
 
-const ExampleDataTable = () => (
-  <DataTable
-    tableSettings={exampleTableSettings}
-    apiLocation={apiLocation}
-  />
-);
+const ExampleDataTable = () => <DataTable tableSettings={exampleTableSettings} apiLocation={apiLocation} />;
 
 export default ExampleDataTable;
