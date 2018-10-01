@@ -45,17 +45,14 @@ export class DataTableContainer extends React.Component {
     this.isSetup = true;
   }
 
-  onSearchChange = ({ target: { value } }) => {
-    const text = value.trim();
-    const { tableSettings } = this.props;
-    if (tableSettings.useLocalStorage) {
-      updateLocalStorageItem('tableSearch', {
-        [tableSettings.tableID]: text,
-      });
+  componentWillUnmount() {
+    const {
+      ownProps: { setRef },
+    } = this.props;
+    if (typeof setRef !== 'undefined') {
+      setRef(null);
     }
-    this.searchValue = text;
-    this.getTableData({});
-  };
+  }
 
   onTableChange = (type, { page = 1, sizePerPage = 10, filters, sortField, sortOrder }) => {
     if (!this.isSetup || this.state.clearingFilters) return;
@@ -85,14 +82,17 @@ export class DataTableContainer extends React.Component {
     });
   };
 
-  componentWillUnmount() {
-    const {
-      ownProps: { setRef },
-    } = this.props;
-    if (typeof setRef !== 'undefined') {
-      setRef(null);
+  onSearchChange = ({ target: { value } }) => {
+    const text = value.trim();
+    const { tableSettings } = this.props;
+    if (tableSettings.useLocalStorage) {
+      updateLocalStorageItem('tableSearch', {
+        [tableSettings.tableID]: text,
+      });
     }
-  }
+    this.searchValue = text;
+    this.getTableData({});
+  };
 
   onSizePerPageChange = sizePerPage => {
     this.setState({
