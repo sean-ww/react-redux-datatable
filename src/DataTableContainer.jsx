@@ -17,18 +17,6 @@ import {
 } from './ColumnFilters';
 
 export class DataTableContainer extends React.Component {
-  onSearchChange = ({ target: { value } }) => {
-    const text = value.trim();
-    const { tableSettings } = this.props;
-    if (tableSettings.useLocalStorage) {
-      updateLocalStorageItem('tableSearch', {
-        [tableSettings.tableID]: text,
-      });
-    }
-    this.searchValue = text;
-    this.getTableData({});
-  };
-
   constructor(props) {
     super(props);
     this.state = {
@@ -56,6 +44,18 @@ export class DataTableContainer extends React.Component {
     }
     this.isSetup = true;
   }
+
+  onSearchChange = ({ target: { value } }) => {
+    const text = value.trim();
+    const { tableSettings } = this.props;
+    if (tableSettings.useLocalStorage) {
+      updateLocalStorageItem('tableSearch', {
+        [tableSettings.tableID]: text,
+      });
+    }
+    this.searchValue = text;
+    this.getTableData({});
+  };
 
   onTableChange = (type, { page = 1, sizePerPage = 10, filters, sortField, sortOrder }) => {
     if (!this.isSetup || this.state.clearingFilters) return;
