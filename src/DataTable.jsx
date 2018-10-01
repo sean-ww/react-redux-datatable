@@ -5,15 +5,30 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 import filterFactory, { textFilter, selectFilter, numberFilter, customFilter } from 'react-bootstrap-table2-filter';
 
 class DataTable extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showFilters: this.props.isFiltered,
+      clearFilters: false,
+    };
+    this.colRef = {};
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if (nextState.clearFilters) this.clearAllFilters();
+  }
+
   menuButtonClass = () => ({
     className: 'table-button table-button-menu-item',
   });
+
   startClearingAllFilters = () => {
     this.props.startClearingFilters();
     this.setState({
       clearFilters: true,
     });
   };
+
   clearAllFilters = () => {
     Object.values(this.props.tableColumns)
       .filter(filter => filter.column.searchable !== false)
@@ -26,9 +41,11 @@ class DataTable extends React.Component {
     });
     this.props.clearFilters();
   };
+
   toggleFilters = () => {
     this.setState(prevState => ({ showFilters: !prevState.showFilters }));
   };
+
   renderExportCSVButton = () => (
     <button type="button" {...this.menuButtonClass()} onClick={() => this.props.onExportToCSV()}>
       <span className="export-icon">
@@ -37,6 +54,7 @@ class DataTable extends React.Component {
       Export
     </button>
   );
+
   renderCustomButtonGroup = () => {
     let filtersType = 'hidden';
     if (this.state.showFilters) {
@@ -82,6 +100,7 @@ class DataTable extends React.Component {
       </div>
     );
   };
+
   renderSearchBox = () => (
     <div className="form-group form-group-sm react-bs-table-search-form">
       <input
@@ -93,6 +112,7 @@ class DataTable extends React.Component {
       <span className="input-group-btn" />
     </div>
   );
+
   renderToolBar = () => (
     <div class="react-bs-table-tool-bar">
       <div class="row">
@@ -101,6 +121,7 @@ class DataTable extends React.Component {
       </div>
     </div>
   );
+
   renderShowsTotal = (start, to, total) => (
     <div
       style={{
@@ -113,19 +134,6 @@ class DataTable extends React.Component {
       Showing {start} to {Math.max(to + 1, 0)} of {total} Results
     </div>
   );
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      showFilters: this.props.isFiltered,
-      clearFilters: false,
-    };
-    this.colRef = {};
-  }
-
-  componentWillUpdate(nextProps, nextState) {
-    if (nextState.clearFilters) this.clearAllFilters();
-  }
 
   render() {
     const {

@@ -17,76 +17,6 @@ import {
 } from './ColumnFilters';
 
 export class DataTableContainer extends React.Component {
-  onTableChange = (type, { page = 1, sizePerPage = 10, filters, sortField, sortOrder }) => {
-    if (!this.isSetup || this.state.clearingFilters) return;
-
-    const filterValues = getFilterValues(this.tableColumns, filters);
-    this.columnFilters = generateColumnFilters(this.tableColumns, filterValues);
-
-    if (this.props.tableSettings.useLocalStorage) {
-      updateLocalStorageItem('tableFilters', {
-        [this.props.tableSettings.tableID]: setStorageFilters(this.tableColumns, filterValues),
-      });
-    }
-
-    this.getTableData({
-      sizePerPage,
-      page,
-      sortField,
-      sortOrder,
-    });
-
-    this.setState({
-      sizePerPage,
-      currentPage: page,
-      sortField,
-      sortOrder,
-      lastRefresh: Date.now(), // eslint-disable-line react/no-unused-state
-    });
-  };
-  onSizePerPageChange = sizePerPage => {
-    this.setState({
-      sizePerPage,
-    });
-  };
-  onExportToCSV = () => {
-    if (canUseDOM()) {
-      fetchExportData(
-        this.props.tableSettings,
-        this.state.sortField,
-        this.state.sortOrder,
-        this.searchValue,
-        this.columnFilters,
-        this.props.apiLocation,
-      ).then(data => {
-        const fields = Object.values(this.tableColumns)
-          .filter(filter => filter.column.export !== false)
-          .map(tableColumn => tableColumn.column.key);
-
-        exportToCSVFile(fields, data, `exportDownload_${moment().format('YYYY-MM-DD_HH-mm')}.csv`);
-      });
-    }
-  };
-  getTableData = ({
-    sizePerPage = this.state.sizePerPage,
-    page = 1,
-    sortField = this.state.sortField,
-    sortOrder = this.state.sortOrder,
-  }) => {
-    this.props.dispatch(
-      fetchTableData(
-        this.props.tableSettings,
-        sizePerPage,
-        (page - 1) * sizePerPage,
-        sortField,
-        sortOrder,
-        this.searchValue,
-        this.columnFilters,
-        this.props.apiLocation,
-      ),
-    );
-  };
-
   onSearchChange = ({ target: { value } }) => {
     const text = value.trim();
     const { tableSettings } = this.props;
@@ -97,24 +27,6 @@ export class DataTableContainer extends React.Component {
     }
     this.searchValue = text;
     this.getTableData({});
-  };
-  setupTable = () => {
-    const { tableColumns } = this.props.tableSettings;
-    this.tableColumns = setupTableColumns(tableColumns);
-
-    if (this.props.tableSettings.useLocalStorage) {
-      // set table search
-      const previousTableSearch = getLocalStorageItem('tableSearch');
-      if (previousTableSearch && previousTableSearch[this.props.tableSettings.tableID]) {
-        this.searchValue = previousTableSearch[this.props.tableSettings.tableID];
-      }
-
-      // set table filters
-      const previousTableFilters = getLocalStorageItem('tableFilters');
-      if (previousTableFilters && previousTableFilters[this.props.tableSettings.tableID]) {
-        setDefaultFilters(this.tableColumns, previousTableFilters[this.props.tableSettings.tableID]);
-      }
-    }
   };
 
   constructor(props) {
@@ -145,6 +57,34 @@ export class DataTableContainer extends React.Component {
     this.isSetup = true;
   }
 
+  onTableChange = (type, { page = 1, sizePerPage = 10, filters, sortField, sortOrder }) => {
+    if (!this.isSetup || this.state.clearingFilters) return;
+
+    const filterValues = getFilterValues(this.tableColumns, filters);
+    this.columnFilters = generateColumnFilters(this.tableColumns, filterValues);
+
+    if (this.props.tableSettings.useLocalStorage) {
+      updateLocalStorageItem('tableFilters', {
+        [this.props.tableSettings.tableID]: setStorageFilters(this.tableColumns, filterValues),
+      });
+    }
+
+    this.getTableData({
+      sizePerPage,
+      page,
+      sortField,
+      sortOrder,
+    });
+
+    this.setState({
+      sizePerPage,
+      currentPage: page,
+      sortField,
+      sortOrder,
+      lastRefresh: Date.now(), // eslint-disable-line react/no-unused-state
+    });
+  };
+
   componentWillUnmount() {
     const {
       ownProps: { setRef },
@@ -153,6 +93,70 @@ export class DataTableContainer extends React.Component {
       setRef(null);
     }
   }
+
+  onSizePerPageChange = sizePerPage => {
+    this.setState({
+      sizePerPage,
+    });
+  };
+
+  onExportToCSV = () => {
+    if (canUseDOM()) {
+      fetchExportData(
+        this.props.tableSettings,
+        this.state.sortField,
+        this.state.sortOrder,
+        this.searchValue,
+        this.columnFilters,
+        this.props.apiLocation,
+      ).then(data => {
+        const fields = Object.values(this.tableColumns)
+          .filter(filter => filter.column.export !== false)
+          .map(tableColumn => tableColumn.column.key);
+
+        exportToCSVFile(fields, data, `exportDownload_${moment().format('YYYY-MM-DD_HH-mm')}.csv`);
+      });
+    }
+  };
+
+  getTableData = ({
+    sizePerPage = this.state.sizePerPage,
+    page = 1,
+    sortField = this.state.sortField,
+    sortOrder = this.state.sortOrder,
+  }) => {
+    this.props.dispatch(
+      fetchTableData(
+        this.props.tableSettings,
+        sizePerPage,
+        (page - 1) * sizePerPage,
+        sortField,
+        sortOrder,
+        this.searchValue,
+        this.columnFilters,
+        this.props.apiLocation,
+      ),
+    );
+  };
+
+  setupTable = () => {
+    const { tableColumns } = this.props.tableSettings;
+    this.tableColumns = setupTableColumns(tableColumns);
+
+    if (this.props.tableSettings.useLocalStorage) {
+      // set table search
+      const previousTableSearch = getLocalStorageItem('tableSearch');
+      if (previousTableSearch && previousTableSearch[this.props.tableSettings.tableID]) {
+        this.searchValue = previousTableSearch[this.props.tableSettings.tableID];
+      }
+
+      // set table filters
+      const previousTableFilters = getLocalStorageItem('tableFilters');
+      if (previousTableFilters && previousTableFilters[this.props.tableSettings.tableID]) {
+        setDefaultFilters(this.tableColumns, previousTableFilters[this.props.tableSettings.tableID]);
+      }
+    }
+  };
 
   initiateTable = () => {
     const filterValues = getDefaultFilterValues(this.tableColumns);
