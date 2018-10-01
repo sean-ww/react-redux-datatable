@@ -1,19 +1,19 @@
 #### Available Options
 
-| Name            | Type     | Description                                                                                       |
-| ----            | ------   | -----------                                                                                       |
-| title           | string   | Required: The column heading to be displayed.                                                     |
-| key             | string   | Required: The column key.                                                                         |
-| hidden          | bool     | If true, hides the column. Defaults to false.                                                     |
-| filter          | string   | The filter type to be used by the column.                                                         |
-| defaultValue    | object   | The default value specific to the filter type.                                                    |
-| filterOptions   | object   | Key-value paris of filter options eg. { key: 'value', key: 'value' }. [See More](#filter-options) |
-| width           | integer  | Define a fixed width for the column.                                                              |
-| export          | bool     | If false, the column will get excluded from the export.                                           |
-| dataFormat      | function | A function can be used to format cell values eg. (cell) => { return cell; }                       |
-| formatExtraData | any      | This can be used to provide extra data to dataFormat.                                             |
-| searchable      | bool     | If false, the column cannot be searched.                                                          |
-| sortable        | bool     | If false, the column cannot be sorted by.                                                         |
+| Name            | Type     | Required? | Description                                                                                       |
+| ----            | ----     | --------- | -----------                                                                                       |
+| key             | string   | Yes       | The column key.                                                                                   |
+| title           | string   | Yes       | The column heading to be displayed.                                                               |
+| dataFormat      | function | -         | A function can be used to format cell values eg. (cell) => { return cell; }                       |
+| defaultValue    | object   | -         | The default value specific to the filter type.                                                    |
+| export          | bool     | -         | If false, the column will get excluded from the export.                                           |
+| filter          | string   | -         | The filter type to be used by the column.                                                         |
+| filterOptions   | object   | -         | Key-value paris of filter options eg. { key: 'value', key: 'value' }. [See More](#filter-options) |
+| formatExtraData | any      | -         | This can be used to provide extra data to dataFormat.                                             |
+| hidden          | bool     | -         | If true, hides the column. Defaults to false.                                                     |
+| searchable      | bool     | -         | If false, the column cannot be searched.                                                          |
+| sortable        | bool     | -         | If false, the column cannot be sorted by.                                                         |
+| width           | integer  | -         | Define a fixed width for the column.                                                              |
 
 ##### Filter Options
 

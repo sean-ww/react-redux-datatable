@@ -8,6 +8,16 @@ import ColumnFilter from './ColumnFilter';
  */
 class SelectFilter extends ColumnFilter {
   /**
+   * Constructor
+   *
+   * Call the parent construct and set the default filter type.
+   */
+  constructor(column) {
+    super(column);
+    this.type = 'eq';
+  }
+
+  /**
    * Get the column filter properties for displaying
    *
    * @param {*} defaultValue The default value of the column filter.
@@ -18,16 +28,6 @@ class SelectFilter extends ColumnFilter {
     options: this.column.filterOptions,
     defaultValue,
   });
-
-  /**
-   * Constructor
-   *
-   * Call the parent construct and set the default filter type.
-   */
-  constructor(column) {
-    super(column);
-    this.type = 'eq';
-  }
 }
 
 export default SelectFilter;

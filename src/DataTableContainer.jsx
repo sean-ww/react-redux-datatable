@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { forbidExtraProps } from 'airbnb-prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import TableSettingsShape from './shapes/TableSettingsShape';
 import { canUseDOM, exportToCSVFile } from './csvExport';
 import DataTable from './DataTable';
 import { fetchTableData, fetchExportData } from './DataTable.actions';
@@ -16,12 +18,27 @@ import {
   generateColumnFilters,
 } from './ColumnFilters';
 
+import { SIZE_PER_PAGE } from './constants';
+
+const propTypes = forbidExtraProps({
+  dispatch: PropTypes.func.isRequired,
+  tableSettings: TableSettingsShape.isRequired,
+  apiLocation: PropTypes.string.isRequired,
+  DataTableData: PropTypes.any,
+  ownProps: PropTypes.func,
+});
+
+const defaultProps = {
+  DataTableData: null,
+  ownProps: () => {},
+};
+
 export class DataTableContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isFullscreen: false,
-      sizePerPage: 10,
+      sizePerPage: SIZE_PER_PAGE,
       currentPage: 1,
       sortField: undefined,
       sortOrder: undefined,
@@ -294,18 +311,8 @@ export class DataTableContainer extends React.Component {
   }
 }
 
-DataTableContainer.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  tableSettings: PropTypes.object.isRequired,
-  apiLocation: PropTypes.string.isRequired,
-  DataTableData: PropTypes.any,
-  ownProps: PropTypes.func,
-};
-
-DataTableContainer.defaultProps = {
-  DataTableData: null,
-  ownProps: () => {},
-};
+DataTableContainer.propTypes = propTypes;
+DataTableContainer.defaultProps = defaultProps;
 
 const mapStateToProps = (state, ownProps) => ({
   DataTableData: state.DataTableReducer.DataTableData,

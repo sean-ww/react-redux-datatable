@@ -5,6 +5,20 @@ import { DateUtils } from 'react-day-picker';
 import getPosition from './getPosition';
 import DateField from './DateRangeInputField';
 
+import { DISPLAY_DATE_FORMAT, ISO_8601_DATE_FORMAT, ISO_8601_DATETIME_FORMAT } from '../../constants';
+
+const propTypes = {
+  columnKey: PropTypes.string.isRequired,
+  onFilter: PropTypes.func.isRequired,
+  defaultValue: PropTypes.object,
+  getFilter: PropTypes.func,
+};
+
+const defaultProps = {
+  defaultValue: {},
+  getFilter: null,
+};
+
 class CustomDateFilter extends React.Component {
   state = {
     showPicker: false,
@@ -43,11 +57,11 @@ class CustomDateFilter extends React.Component {
     if (moment.isDate(fromDate)) {
       if (moment.isDate(toDate)) {
         displayValue = `
-              ${moment(fromDate).format('DD/MM/YYYY')}
+              ${moment(fromDate).format(DISPLAY_DATE_FORMAT)}
               ${' - '}
-              ${moment(toDate).format('DD/MM/YYYY')}
+              ${moment(toDate).format(DISPLAY_DATE_FORMAT)}
               `;
-      } else displayValue = moment(fromDate).format('DD/MM/YYYY');
+      } else displayValue = moment(fromDate).format(DISPLAY_DATE_FORMAT);
     }
     this.setState({
       displayValue,
@@ -55,7 +69,7 @@ class CustomDateFilter extends React.Component {
   };
 
   updateFilters = (fromDate, toDate) => {
-    const fromValue = moment(fromDate).format('YYYY-MM-DD');
+    const fromValue = moment(fromDate).format(ISO_8601_DATE_FORMAT);
     let toValue;
     if (moment.isDate(toDate)) {
       this.setDisplayValue(fromDate, toDate);
@@ -63,14 +77,14 @@ class CustomDateFilter extends React.Component {
         .hours(23)
         .minutes(59)
         .seconds(59)
-        .format('YYYY-MM-DD HH:mm:ss');
+        .format(ISO_8601_DATETIME_FORMAT);
     } else {
       this.setDisplayValue(fromDate, fromDate);
       toValue = moment(fromDate)
         .hours(23)
         .minutes(59)
         .seconds(59)
-        .format('YYYY-MM-DD HH:mm:ss');
+        .format(ISO_8601_DATETIME_FORMAT);
     }
     this.props.onFilter({
       from: fromValue,
@@ -219,16 +233,7 @@ class CustomDateFilter extends React.Component {
   }
 }
 
-CustomDateFilter.propTypes = {
-  onFilter: PropTypes.func.isRequired,
-  columnKey: PropTypes.string.isRequired,
-  defaultValue: PropTypes.object,
-  getFilter: PropTypes.func,
-};
-
-CustomDateFilter.defaultProps = {
-  defaultValue: {},
-  getFilter: null,
-};
+CustomDateFilter.propTypes = propTypes;
+CustomDateFilter.defaultProps = defaultProps;
 
 export default CustomDateFilter;
