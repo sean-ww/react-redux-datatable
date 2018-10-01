@@ -21,12 +21,5 @@ export const exportToCSVFile = (fields, data, filename) => {
   const csv = json2csvParser.parse(data);
 
   const { saveAs } = fileSaver;
-  saveAs(
-    new Blob(
-      ['\ufeff', csv],
-      { type: 'text/csv;charset=utf-8' },
-    ),
-    filename,
-    true,
-  );
+  saveAs(new Blob(['\ufeff', csv], { type: 'text/csv;charset=utf-8' }), filename, true);
 };

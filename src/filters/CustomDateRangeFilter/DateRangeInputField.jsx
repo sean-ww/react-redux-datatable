@@ -5,9 +5,7 @@ import DatePicker from './SelectDayPicker/SelectDayPicker';
 
 const dateRangeText = dayType => (
   <div className="dateRangeText">
-    Please select the
-    {' '}
-    <strong>{`${dayType} day`}</strong>
+    Please select the <strong>{`${dayType} day`}</strong>
     {'.'}
   </div>
 );
@@ -24,30 +22,16 @@ const DateRangeInputField = ({ handleDayClick, from, to }) => (
   <div style={{ display: 'inline-block' }}>
     {!from && !to && dateRangeText('first')}
     {from && !to && dateRangeText('last')}
-    {from && to
-            && (
-              <div class="dateRangeText">
-                You chose from
-                {' '}
-                {moment(from) <= moment(to)
-                    && `${moment(from).format('DD/MM/YYYY')} to `
-                }
-                {
-                  moment(to).format('DD/MM/YYYY')
-                }
-                {moment(from) > moment(to)
-                    && ` to ${moment(from).format('DD/MM/YYYY')}`
-                }
-                .
-              </div>
-            )
-    }
+    {from &&
+      to && (
+        <div class="dateRangeText">
+          You chose from {moment(from) <= moment(to) && `${moment(from).format('DD/MM/YYYY')} to `}
+          {moment(to).format('DD/MM/YYYY')}
+          {moment(from) > moment(to) && ` to ${moment(from).format('DD/MM/YYYY')}`}.
+        </div>
+      )}
 
-    <DatePicker
-      handleDayClick={handleDayClick}
-      from={from}
-      to={to}
-    />
+    <DatePicker handleDayClick={handleDayClick} from={from} to={to} />
   </div>
 );
 

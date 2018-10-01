@@ -7,18 +7,15 @@ import DateRangeInputField from './DateRangeInputField';
 describe('<DateRangeInputField>', () => {
   let Component;
   beforeEach(() => {
-    Component = shallow(
-      <DateRangeInputField
-        handleDayClick={() => {}}
-        from={null}
-        to={null}
-      />,
-    );
+    Component = shallow(<DateRangeInputField handleDayClick={() => {}} from={null} to={null} />);
   });
 
   it('should display Please select the first day', () => {
-    expect(Component.find('.dateRangeText').first().text())
-      .to.equal('Please select the first day.');
+    expect(
+      Component.find('.dateRangeText')
+        .first()
+        .text(),
+    ).to.equal('Please select the first day.');
   });
 
   describe('Select the first day', () => {
@@ -28,8 +25,11 @@ describe('<DateRangeInputField>', () => {
     });
 
     it('should display Please select the last day', () => {
-      expect(Component.find('.dateRangeText').first().text())
-        .to.equal('Please select the last day.');
+      expect(
+        Component.find('.dateRangeText')
+          .first()
+          .text(),
+      ).to.equal('Please select the last day.');
     });
 
     describe('Select the last day after the first', () => {
@@ -39,8 +39,11 @@ describe('<DateRangeInputField>', () => {
       });
 
       it('should display the date range selected', () => {
-        expect(Component.find('.dateRangeText').first().text())
-          .to.equal('You chose from 31/10/2011 to 20/06/2012.');
+        expect(
+          Component.find('.dateRangeText')
+            .first()
+            .text(),
+        ).to.equal('You chose from 31/10/2011 to 20/06/2012.');
       });
     });
 
@@ -51,8 +54,11 @@ describe('<DateRangeInputField>', () => {
       });
 
       it('should display the date range selected', () => {
-        expect(Component.find('.dateRangeText').first().text())
-          .to.equal('You chose from 20/06/2010 to 31/10/2011.');
+        expect(
+          Component.find('.dateRangeText')
+            .first()
+            .text(),
+        ).to.equal('You chose from 20/06/2010 to 31/10/2011.');
       });
     });
 
@@ -63,8 +69,11 @@ describe('<DateRangeInputField>', () => {
       });
 
       it('should display the date range selected', () => {
-        expect(Component.find('.dateRangeText').first().text())
-          .to.equal('You chose from 31/10/2011 to 31/10/2011.');
+        expect(
+          Component.find('.dateRangeText')
+            .first()
+            .text(),
+        ).to.equal('You chose from 31/10/2011 to 31/10/2011.');
       });
     });
   });
