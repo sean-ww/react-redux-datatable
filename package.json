@@ -82,7 +82,7 @@
     "build:umd:min": "webpack --config webpack.umd.min.config.js --progress -p",
     "cover": "BABEL_ENV=test nyc --reporter=lcov --reporter=text-lcov mocha test/.setup.jsx './src/**/*.spec.jsx'",
     "coveralls": "npm run cover && cat ./coverage/lcov.info | coveralls",
-    "fix": "./node_modules/.bin/eslint --fix './src/**/*.jsx' './example/**/*.jsx'",
+    "fix": "./node_modules/.bin/eslint --fix './src/**/*.jsx'",
     "prod": "NODE_ENV=production webpack --watch --progress -p",
     "test": "mocha",
     "test:errors": "mocha -R spec"

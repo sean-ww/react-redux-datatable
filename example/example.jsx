@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import DataTable from '../src/DataTableContainer'; // import DataTable from 'react-redux-datatable';
-import '../dist/styles.css'; // import 'react-redux-datatable/dist/styles.css'; // eslint-disable-line import/no-unresolved
+import '../dist/styles.css'; // import 'react-redux-datatable/dist/styles.css';
 
 const apiLocation = `${window.location.protocol}//${window.location.hostname}/datatable-service/search`;
 
