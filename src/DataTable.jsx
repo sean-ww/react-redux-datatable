@@ -3,6 +3,39 @@ import PropTypes from 'prop-types';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import filterFactory, { textFilter, selectFilter, numberFilter, customFilter } from 'react-bootstrap-table2-filter';
+import { forbidExtraProps } from 'airbnb-prop-types';
+
+import { NO_DATA_INDICATOR } from './constants';
+
+const propTypes = forbidExtraProps({
+  dataTotalSize: PropTypes.number.isRequired,
+  clearFilters: PropTypes.func.isRequired,
+  currentPage: PropTypes.number.isRequired,
+  keyField: PropTypes.string.isRequired,
+  onExportToCSV: PropTypes.func.isRequired,
+  onSearchChange: PropTypes.func.isRequired,
+  onSizePerPageChange: PropTypes.func.isRequired,
+  onTableChange: PropTypes.func.isRequired,
+  refreshTable: PropTypes.func.isRequired,
+  sizePerPage: PropTypes.number.isRequired,
+  startClearingFilters: PropTypes.func.isRequired,
+  tableColumns: PropTypes.object.isRequired,
+  defaultSort: PropTypes.array,
+  extraButtons: PropTypes.func,
+  isFiltered: PropTypes.bool,
+  noDataIndication: PropTypes.any,
+  searchValue: PropTypes.string,
+  tableData: PropTypes.any,
+});
+
+const defaultProps = {
+  defaultSort: null,
+  extraButtons: null,
+  isFiltered: false,
+  noDataIndication: NO_DATA_INDICATOR,
+  searchValue: undefined,
+  tableData: null,
+};
 
 class DataTable extends React.Component {
   constructor(props) {
@@ -242,34 +275,7 @@ class DataTable extends React.Component {
   }
 }
 
-DataTable.propTypes = {
-  keyField: PropTypes.string.isRequired,
-  noDataIndication: PropTypes.any,
-  extraButtons: PropTypes.func,
-  defaultSort: PropTypes.array,
-  tableColumns: PropTypes.object.isRequired,
-  tableData: PropTypes.any,
-  dataTotalSize: PropTypes.number.isRequired,
-  onTableChange: PropTypes.func.isRequired,
-  onSizePerPageChange: PropTypes.func.isRequired,
-  onSearchChange: PropTypes.func.isRequired,
-  onExportToCSV: PropTypes.func.isRequired,
-  currentPage: PropTypes.number.isRequired,
-  sizePerPage: PropTypes.number.isRequired,
-  refreshTable: PropTypes.func.isRequired,
-  searchValue: PropTypes.string,
-  startClearingFilters: PropTypes.func.isRequired,
-  clearFilters: PropTypes.func.isRequired,
-  isFiltered: PropTypes.bool,
-};
-
-DataTable.defaultProps = {
-  noDataIndication: 'There is no data to display',
-  extraButtons: null,
-  defaultSort: null,
-  tableData: null,
-  searchValue: undefined,
-  isFiltered: false,
-};
+DataTable.propTypes = propTypes;
+DataTable.defaultProps = defaultProps;
 
 export default DataTable;

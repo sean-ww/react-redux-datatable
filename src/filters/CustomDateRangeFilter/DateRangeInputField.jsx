@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import DatePicker from './SelectDayPicker/SelectDayPicker';
 
+import { DISPLAY_DATE_FORMAT } from '../../constants';
+
 const dateRangeText = dayType => (
   <div className="dateRangeText">
     Please select the <strong>{`${dayType} day`}</strong>
@@ -25,9 +27,9 @@ const DateRangeInputField = ({ handleDayClick, from, to }) => (
     {from &&
       to && (
         <div class="dateRangeText">
-          You chose from {moment(from) <= moment(to) && `${moment(from).format('DD/MM/YYYY')} to `}
-          {moment(to).format('DD/MM/YYYY')}
-          {moment(from) > moment(to) && ` to ${moment(from).format('DD/MM/YYYY')}`}.
+          You chose from {moment(from) <= moment(to) && `${moment(from).format(DISPLAY_DATE_FORMAT)} to `}
+          {moment(to).format(DISPLAY_DATE_FORMAT)}
+          {moment(from) > moment(to) && ` to ${moment(from).format(DISPLAY_DATE_FORMAT)}`}.
         </div>
       )}
 
