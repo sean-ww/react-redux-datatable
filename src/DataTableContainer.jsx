@@ -92,6 +92,9 @@ export class DataTableContainer extends React.Component {
         }
         this.searchValue = text;
         this.getTableData({});
+        this.setState({
+            currentPage: 1,
+        });
     };
 
     onSizePerPageChange = (sizePerPage) => {
