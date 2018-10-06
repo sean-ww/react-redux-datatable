@@ -7,14 +7,14 @@
  * @returns {Object} The previous data table data, less the updated table.
  */
 const getPreviousDataTableData = (DataTableData, removeTableId) => {
-    if (typeof DataTableData !== 'object') return {};
-    return Object.keys(DataTableData)
-        .filter(table => table !== removeTableId)
-        .reduce((obj, key) => {
-            const prevObj = Object.assign({}, obj);
-            prevObj[key] = DataTableData[key];
-            return prevObj;
-        }, {});
+  if (typeof DataTableData !== 'object') return {};
+  return Object.keys(DataTableData)
+    .filter(table => table !== removeTableId)
+    .reduce((obj, key) => {
+      const prevObj = Object.assign({}, obj);
+      prevObj[key] = DataTableData[key];
+      return prevObj;
+    }, {});
 };
 
 /**
@@ -27,14 +27,11 @@ const getPreviousDataTableData = (DataTableData, removeTableId) => {
  *
  * @return {Object} The new table data object.
  */
-const updateDataTableData = (DataTableData, tableUpdate) => Object.assign(
-    {},
-    getPreviousDataTableData(DataTableData, tableUpdate.tableId),
-    tableUpdate.tableData,
-);
+const updateDataTableData = (DataTableData, tableUpdate) =>
+  Object.assign({}, getPreviousDataTableData(DataTableData, tableUpdate.tableId), tableUpdate.tableData);
 
 const updateState = (state, action) => ({
-    DataTableData: updateDataTableData(state.DataTableData, action.payload),
+  DataTableData: updateDataTableData(state.DataTableData, action.payload),
 });
 
 export default updateState;
