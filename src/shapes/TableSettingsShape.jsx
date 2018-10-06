@@ -4,9 +4,9 @@ import TableColumnsShape from './TableColumnsShape';
 
 import { SORT_TYPES } from '../constants';
 
-export default {
+export default PropTypes.shape({
   keyField: PropTypes.string.isRequired,
-  tableColumns: TableColumnsShape.isRequired,
+  tableColumns: PropTypes.arrayOf(TableColumnsShape).isRequired,
   tableID: PropTypes.string.isRequired,
   defaultSearch: PropTypes.string,
   defaultSort: PropTypes.arrayOf(PropTypes.string, PropTypes.oneOf(SORT_TYPES)),
@@ -17,4 +17,4 @@ export default {
   noDataIndication: PropTypes.node,
   useLocalStorage: PropTypes.bool,
   wrapperType: PropTypes.string,
-};
+});

@@ -25,12 +25,12 @@ const propTypes = forbidExtraProps({
   tableSettings: TableSettingsShape.isRequired,
   apiLocation: PropTypes.string.isRequired,
   DataTableData: PropTypes.any,
-  ownProps: PropTypes.func,
+  ownProps: PropTypes.object,
 });
 
 const defaultProps = {
   DataTableData: null,
-  ownProps: () => {},
+  ownProps: {},
 };
 
 export class DataTableContainer extends React.Component {
