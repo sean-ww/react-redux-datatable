@@ -106,7 +106,6 @@ const exampleTableSettings = {
 //     <Provider store={store}><DataTable tableSettings={exampleTableSettings} apiLocation={apiLocation} /></Provider>
 //   ));
 
-console.log('exampleTableSettings', exampleTableSettings);
 storiesOf('DataTable', module).add('with TEST1', () => (
   <Provider store={store}>
     <DataTable tableSettings={exampleTableSettings} apiLocation={apiLocation} />
