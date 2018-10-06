@@ -21,6 +21,7 @@
     "url-search-params-polyfill": "^1.2.0"
   },
   "devDependencies": {
+    "@storybook/react": "^3.4.11",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "^7.1.1",
@@ -85,6 +86,7 @@
     "coveralls": "npm run cover && cat ./coverage/lcov.info | coveralls",
     "fix": "./node_modules/.bin/eslint --fix './src/**/*.jsx'",
     "prod": "NODE_ENV=production webpack --watch --progress -p",
+    "storybook": "BABEL_ENV=dev start-storybook -p 9001 -c .storybook",
     "test": "mocha",
     "test:errors": "mocha -R spec"
   },
