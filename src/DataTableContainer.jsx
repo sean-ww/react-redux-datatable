@@ -99,7 +99,7 @@ export class DataTableContainer extends React.Component {
     });
   };
 
-  onSearchChange = (e) => {
+  onSearchChange = e => {
     const text = e.target.value.trim();
     if (this.props.tableSettings.useLocalStorage) {
       updateLocalStorageItem('tableSearch', {

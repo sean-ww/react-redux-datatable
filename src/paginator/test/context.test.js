@@ -3,8 +3,8 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import BootstrapTable from 'react-bootstrap-table-next/src/bootstrap-table';
 
-import Pagination from '../src/pagination';
-import Const from '../src/const';
+import Pagination from '../src/Pagination';
+import Const from '../src/constants';
 import createPaginationContext from '../src/context';
 import paginationFactory from '../index';
 
@@ -101,17 +101,6 @@ describe('PaginationContext', () => {
       expect(pagination.prop('onSizePerPageChange')).toEqual(instance.handleChangeSizePerPage);
       expect(pagination.prop('sizePerPageList')).toEqual(Const.SIZE_PER_PAGE_LIST);
       expect(pagination.prop('paginationSize')).toEqual(Const.PAGINATION_SIZE);
-      expect(pagination.prop('pageStartIndex')).toEqual(Const.PAGE_START_INDEX);
-      expect(pagination.prop('withFirstAndLast')).toEqual(Const.With_FIRST_AND_LAST);
-      expect(pagination.prop('alwaysShowAllBtns')).toEqual(Const.SHOW_ALL_PAGE_BTNS);
-      expect(pagination.prop('firstPageText')).toEqual(Const.FIRST_PAGE_TEXT);
-      expect(pagination.prop('prePageText')).toEqual(Const.PRE_PAGE_TEXT);
-      expect(pagination.prop('nextPageText')).toEqual(Const.NEXT_PAGE_TEXT);
-      expect(pagination.prop('lastPageText')).toEqual(Const.LAST_PAGE_TEXT);
-      expect(pagination.prop('firstPageTitle')).toEqual(Const.FIRST_PAGE_TITLE);
-      expect(pagination.prop('prePageTitle')).toEqual(Const.PRE_PAGE_TITLE);
-      expect(pagination.prop('nextPageTitle')).toEqual(Const.NEXT_PAGE_TITLE);
-      expect(pagination.prop('lastPageTitle')).toEqual(Const.LAST_PAGE_TITLE);
       expect(pagination.prop('hideSizePerPage')).toEqual(Const.HIDE_SIZE_PER_PAGE);
       expect(pagination.prop('hideSizePerPage')).toEqual(Const.HIDE_SIZE_PER_PAGE);
       expect(pagination.prop('paginationTotalRenderer')).toBeNull();
@@ -400,42 +389,6 @@ describe('PaginationContext', () => {
     });
   });
 
-  describe('when options.showTotal is defined', () => {
-    const showTotal = true;
-
-    beforeEach(() => {
-      wrapper = shallow(shallowContext({
-        ...defaultPagination,
-        showTotal
-      }));
-      wrapper.render();
-    });
-
-    it('should rendering Pagination correctly', () => {
-      const pagination = wrapper.find(Pagination);
-      expect(pagination.length).toBe(1);
-      expect(pagination.prop('showTotal')).toEqual(showTotal);
-    });
-  });
-
-  describe('when options.pageStartIndex is defined', () => {
-    const pageStartIndex = -1;
-
-    beforeEach(() => {
-      wrapper = shallow(shallowContext({
-        ...defaultPagination,
-        pageStartIndex
-      }));
-      wrapper.render();
-    });
-
-    it('should rendering Pagination correctly', () => {
-      const pagination = wrapper.find(Pagination);
-      expect(pagination.length).toBe(1);
-      expect(pagination.prop('pageStartIndex')).toEqual(pageStartIndex);
-    });
-  });
-
   describe('when options.sizePerPageList is defined', () => {
     const sizePerPageList = [10, 40];
 
@@ -469,42 +422,6 @@ describe('PaginationContext', () => {
       const pagination = wrapper.find(Pagination);
       expect(pagination.length).toBe(1);
       expect(pagination.prop('paginationSize')).toEqual(paginationSize);
-    });
-  });
-
-  describe('when options.withFirstAndLast is defined', () => {
-    const withFirstAndLast = false;
-
-    beforeEach(() => {
-      wrapper = shallow(shallowContext({
-        ...defaultPagination,
-        withFirstAndLast
-      }));
-      wrapper.render();
-    });
-
-    it('should rendering Pagination correctly', () => {
-      const pagination = wrapper.find(Pagination);
-      expect(pagination.length).toBe(1);
-      expect(pagination.prop('withFirstAndLast')).toEqual(withFirstAndLast);
-    });
-  });
-
-  describe('when options.alwaysShowAllBtns is defined', () => {
-    const alwaysShowAllBtns = true;
-
-    beforeEach(() => {
-      wrapper = shallow(shallowContext({
-        ...defaultPagination,
-        alwaysShowAllBtns
-      }));
-      wrapper.render();
-    });
-
-    it('should rendering Pagination correctly', () => {
-      const pagination = wrapper.find(Pagination);
-      expect(pagination.length).toBe(1);
-      expect(pagination.prop('alwaysShowAllBtns')).toEqual(alwaysShowAllBtns);
     });
   });
 
@@ -597,17 +514,6 @@ describe('PaginationContext', () => {
       expect(pagination.prop('firstPageTitle')).toEqual(firstPageTitle);
     });
   });
-
-  describe('when options.prePageTitle is defined', () => {
-    const prePageTitle = 'PRE';
-
-    beforeEach(() => {
-      wrapper = shallow(shallowContext({
-        ...defaultPagination,
-        prePageTitle
-      }));
-      wrapper.render();
-    });
 
     it('should rendering Pagination correctly', () => {
       const pagination = wrapper.find(Pagination);

@@ -1,16 +1,7 @@
-const getNormalizedPage = (
-  page,
-  pageStartIndex
-) => {
-  const offset = Math.abs(1 - pageStartIndex);
-  return page + offset;
-};
-
 const endIndex = (
   page,
-  sizePerPage,
-  pageStartIndex
-) => (getNormalizedPage(page, pageStartIndex) * sizePerPage) - 1;
+  sizePerPage
+) => (page * sizePerPage) - 1;
 
 const startIndex = (
   end,
@@ -20,13 +11,12 @@ const startIndex = (
 export const alignPage = (
   data,
   page,
-  sizePerPage,
-  pageStartIndex
+  sizePerPage
 ) => {
   const dataSize = data.length;
 
-  if (page < pageStartIndex || page > (Math.floor(dataSize / sizePerPage) + pageStartIndex)) {
-    return pageStartIndex;
+  if (page < 1 || page > (Math.floor(dataSize / sizePerPage) + 1)) {
+    return 1;
   }
   return page;
 };
@@ -34,17 +24,15 @@ export const alignPage = (
 export const getByCurrPage = (
   data,
   page,
-  sizePerPage,
-  pageStartIndex
+  sizePerPage
 ) => {
     console.log('getByCurrPage', data,
         page,
-        sizePerPage,
-        pageStartIndex);
+        sizePerPage);
   const dataSize = data.length;
   if (!dataSize) return [];
 
-  const end = endIndex(page, sizePerPage, pageStartIndex);
+  const end = endIndex(page, sizePerPage);
   const start = startIndex(end, sizePerPage);
 
   const result = [];

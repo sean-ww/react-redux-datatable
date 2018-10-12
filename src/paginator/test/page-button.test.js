@@ -2,7 +2,7 @@ import React from 'react';
 import sinon from 'sinon';
 import { shallow } from 'enzyme';
 
-import PageButton from '../src/page-button';
+import PageButton from '../src/PageButton';
 
 describe('PageButton', () => {
   let wrapper;

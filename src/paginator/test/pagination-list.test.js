@@ -2,8 +2,8 @@ import React from 'react';
 import sinon from 'sinon';
 import { shallow } from 'enzyme';
 
-import PageButton from '../src/page-button';
-import PaginationList from '../src/pagination-list';
+import PageButton from '../src/PageButton';
+import PaginationList from '../src/PaginationList';
 
 describe('PaginationList', () => {
   let wrapper;

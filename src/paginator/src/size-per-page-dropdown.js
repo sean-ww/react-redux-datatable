@@ -3,12 +3,13 @@ import cs from 'classnames';
 import PropTypes from 'prop-types';
 import { BootstrapContext } from './bootstrap';
 import SizePerPageOption from './size-per-page-option';
+import { SIZE_PER_PAGE_LIST } from './constants';
 
 const sizePerPageDefaultClass = 'react-bs-table-sizePerPage-dropdown';
 
-const SizePerPageDropDown = (props) => {
+const SizePerPageDropDown = props => {
   const {
-    open,
+    isOpen,
     hidden,
     onClick,
     onBlur,
@@ -16,87 +17,69 @@ const SizePerPageDropDown = (props) => {
     className,
     variation,
     btnContextual,
-    currSizePerPage,
-    onSizePerPageChange
+    currentSizePerPage,
+    onSizePerPageChange,
   } = props;
 
   const dropDownStyle = { visibility: hidden ? 'hidden' : 'visible' };
-  const openClass = open ? 'open show' : '';
-  const dropdownClasses = cs(
-    openClass,
-    sizePerPageDefaultClass,
-    variation,
-    className,
-  );
+  const openClass = isOpen ? 'open show' : '';
+  const dropdownClasses = cs(openClass, sizePerPageDefaultClass, variation, className);
 
   return (
     <BootstrapContext.Consumer>
-      {
-        ({ bootstrap4 }) => (
-          <span
-            style={ dropDownStyle }
-            className={ dropdownClasses }
+      {({ bootstrap4 }) => (
+        <span style={dropDownStyle} className={dropdownClasses}>
+          <button
+            id="pageDropDown"
+            className={`btn ${btnContextual} dropdown-toggle`}
+            data-toggle="dropdown"
+            aria-expanded={isOpen}
+            onClick={onClick}
+            onBlur={onBlur}
           >
-            <button
-              id="pageDropDown"
-              className={ `btn ${btnContextual} dropdown-toggle` }
-              data-toggle="dropdown"
-              aria-expanded={ open }
-              onClick={ onClick }
-              onBlur={ onBlur }
-            >
-              { currSizePerPage }
-              { ' ' }
-              {
-                bootstrap4 ? null : (
-                  <span>
-                    <span className="caret" />
-                  </span>
-                )
-              }
-            </button>
-            <ul
-              className={ `dropdown-menu ${openClass}` }
-              role="menu"
-              aria-labelledby="pageDropDown"
-            >
-              {
-                options.map(option => (
-                  <SizePerPageOption
-                    { ...option }
-                    key={ option.text }
-                    bootstrap4={ bootstrap4 }
-                    onSizePerPageChange={ onSizePerPageChange }
-                  />
-                ))
-              }
-            </ul>
-          </span>
-        )
-      }
+            {currentSizePerPage}{' '}
+            {bootstrap4 ? null : (
+              <span>
+                <span className="caret" />
+              </span>
+            )}
+          </button>
+          <ul className={`dropdown-menu ${openClass}`} role="menu" aria-labelledby="pageDropDown">
+            {options.map(option => (
+              <SizePerPageOption
+                key={option}
+                text={option}
+                page={option}
+                bootstrap4={bootstrap4}
+                onSizePerPageChange={onSizePerPageChange}
+              />
+            ))}
+          </ul>
+        </span>
+      )}
     </BootstrapContext.Consumer>
   );
 };
 
 SizePerPageDropDown.propTypes = {
-  currSizePerPage: PropTypes.string.isRequired,
-  options: PropTypes.array.isRequired,
+  currentSizePerPage: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   onBlur: PropTypes.func.isRequired,
   onSizePerPageChange: PropTypes.func.isRequired,
-  open: PropTypes.bool,
+  options: PropTypes.array,
+  isOpen: PropTypes.bool,
   hidden: PropTypes.bool,
   btnContextual: PropTypes.string,
   variation: PropTypes.oneOf(['dropdown', 'dropup']),
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 SizePerPageDropDown.defaultProps = {
-  open: false,
+  options: SIZE_PER_PAGE_LIST,
+  isOpen: false,
   hidden: false,
   btnContextual: 'btn-default btn-secondary',
   variation: 'dropdown',
-  className: ''
+  className: '',
 };
-
 
 export default SizePerPageDropDown;

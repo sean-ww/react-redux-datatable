@@ -3,8 +3,8 @@ import sinon from 'sinon';
 import { shallow } from 'enzyme';
 
 import SizePerPageDropDown from '../src/size-per-page-dropdown';
-import PaginationList from '../src/pagination-list';
-import Pagination from '../src/pagination';
+import PaginationList from '../src/PaginationList';
+import Pagination from '../src/Pagination';
 
 describe('Pagination', () => {
   let wrapper;
@@ -15,14 +15,7 @@ describe('Pagination', () => {
     sizePerPageList: [10, 20, 30, 50],
     currPage: 1,
     currSizePerPage: 10,
-    pageStartIndex: 1,
     paginationSize: 5,
-    withFirstAndLast: true,
-    firstPageText: '<<',
-    prePageText: '<',
-    nextPageText: '>',
-    lastPageText: '>>',
-    alwaysShowAllBtns: false,
     onPageChange: sinon.stub(),
     onSizePerPageChange: sinon.stub(),
     hidePageListOnlyOnePage: false,
@@ -47,8 +40,7 @@ describe('Pagination', () => {
     it('should having correct state', () => {
       expect(instance.state).toBeDefined();
       expect(instance.state.totalPages).toEqual(instance.calculateTotalPage());
-      expect(instance.state.lastPage).toEqual(
-        instance.calculateLastPage(instance.state.totalPages));
+      expect(instance.state.lastPage).toEqual(instance.calculateTotalPage());
       expect(instance.state.dropdownOpen).toBeFalsy();
     });
 
@@ -127,8 +119,7 @@ describe('Pagination', () => {
       it('should setting correct state.lastPage', () => {
         instance.componentWillReceiveProps(nextProps);
         const totalPages = instance.calculateTotalPage(nextProps.currSizePerPage);
-        expect(instance.state.lastPage).toEqual(
-          instance.calculateLastPage(totalPages));
+        expect(instance.state.lastPage).toEqual(totalPages);
       });
     });
 
@@ -150,8 +141,7 @@ describe('Pagination', () => {
         instance.componentWillReceiveProps(nextProps);
         const totalPages = instance.calculateTotalPage(
           nextProps.currSizePerPage, nextProps.dataSize);
-        expect(instance.state.lastPage).toEqual(
-          instance.calculateLastPage(totalPages));
+        expect(instance.state.lastPage).toEqual(totalPages);
       });
     });
   });
@@ -269,7 +259,7 @@ describe('Pagination', () => {
     it('should calling props.onPageChange correctly when new page is eq props.firstPageText', () => {
       instance.handleChangePage(props.firstPageText);
       expect(props.onPageChange.callCount).toBe(1);
-      expect(props.onPageChange.calledWith(props.pageStartIndex)).toBeTruthy();
+      expect(props.onPageChange.calledWith(1)).toBeTruthy();
     });
 
     it('should calling props.onPageChange correctly when new page is a numeric page', () => {
