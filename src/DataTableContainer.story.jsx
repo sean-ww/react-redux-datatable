@@ -1,7 +1,11 @@
 import React from 'react';
-import moment from 'moment';
-import DataTable from '../src/DataTableContainer'; // import DataTable from 'react-redux-datatable';
-import '../dist/styles.css'; // import 'react-redux-datatable/dist/styles.css';
+import { storiesOf } from '@storybook/react';
+import { Provider } from 'react-redux';
+import moment from 'moment/moment';
+import DataTable from './DataTableContainer';
+import store from '../example/store';
+
+import './assets/sass/styles.scss';
 
 const apiLocation = 'http://seanwallis.com/datatable-service/search';
 
@@ -91,6 +95,8 @@ const exampleTableSettings = {
   ],
 };
 
-const ExampleDataTable = () => <DataTable tableSettings={exampleTableSettings} apiLocation={apiLocation} />;
-
-export default ExampleDataTable;
+storiesOf('DataTable', module).add('Basic Example', () => (
+  <Provider store={store}>
+    <DataTable tableSettings={exampleTableSettings} apiLocation={apiLocation} />
+  </Provider>
+));
