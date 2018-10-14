@@ -3,14 +3,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { forbidExtraProps, nonNegativeInteger } from 'airbnb-prop-types';
 import { calculateFromTo, calculatePageCount, createListItems } from './Pagination.helpers';
-import SizePerPageDropDown from './size-per-page-dropdown';
-import PaginationList from './PaginationList';
-import PaginationTotal from './PaginationTotal';
+import SizePerPageSelect from './SizePerPageSelect/SizePerPageSelect';
+import PaginationList from './PaginationList/PaginationList';
+import PaginationTotal from './PaginationTotal/PaginationTotal';
 import { LIST_ITEMS } from './constants';
-
-// todo: proptypes etc on top of each file again...
-// todo: convert any remaining js files
-// todo: make use of the folder structure
 
 const propTypes = forbidExtraProps({
   dataSize: nonNegativeInteger.isRequired,
@@ -80,12 +76,12 @@ class Pagination extends React.Component {
     return (
       <div className="row react-bootstrap-table-pagination">
         <div className="col-md-6 col-xs-6 col-sm-6 col-lg-6">
-          <SizePerPageDropDown
+          <SizePerPageSelect
             currentSizePerPage={`${currentSizePerPage}`}
-            onSizePerPageChange={this.handleChangeSizePerPage}
-            onClick={this.toggleDropDown}
-            onBlur={this.closeDropDown}
             isOpen={isDropDownOpen}
+            onBlur={this.closeDropDown}
+            onClick={this.toggleDropDown}
+            onSizePerPageChange={this.handleChangeSizePerPage}
           />
           <PaginationTotal start={from} to={to} total={dataSize} />
         </div>

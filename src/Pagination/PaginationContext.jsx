@@ -13,7 +13,7 @@ export default (isRemotePagination, handleRemotePageChange) => {
     };
 
     static defaultProps = {
-      children: undefined,
+      children: null,
     };
 
     handleChangePage = selectedPage => {
@@ -60,7 +60,6 @@ export default (isRemotePagination, handleRemotePageChange) => {
             currentSizePerPage={options.sizePerPage}
             onPageChange={this.handleChangePage}
             onSizePerPageChange={this.handleChangeSizePerPage}
-            paginationTotalRenderer={options.paginationTotalRenderer}
           />
         </PaginationContext.Provider>
       );

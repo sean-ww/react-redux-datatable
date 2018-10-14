@@ -19,5 +19,3 @@ export const LIST_ITEMS = {
     TITLE: 'last page',
   },
 };
-
-// todo: type-check constants and their existence in test

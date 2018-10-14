@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import BootstrapTable from 'react-bootstrap-table-next';
 import filterFactory, { textFilter, selectFilter, numberFilter, customFilter } from 'react-bootstrap-table2-filter';
 import { forbidExtraProps, nonNegativeInteger } from 'airbnb-prop-types';
-import paginationFactory from './paginator';
+import paginationFactory from './Pagination';
 
 import { NO_DATA_INDICATOR } from './constants';
 

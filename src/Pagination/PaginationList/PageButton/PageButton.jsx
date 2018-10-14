@@ -6,7 +6,6 @@ const propTypes = {
   onPageChange: PropTypes.func.isRequired,
   page: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   active: PropTypes.bool.isRequired,
-  disabled: PropTypes.bool.isRequired,
   title: PropTypes.string,
 };
 
@@ -21,10 +20,9 @@ class PageButton extends Component {
   };
 
   render() {
-    const { page, title, active, disabled } = this.props;
+    const { page, title, active } = this.props;
     const classes = cs({
       active,
-      disabled,
       'page-item': true,
     });
 

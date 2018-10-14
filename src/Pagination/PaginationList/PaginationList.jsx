@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import PageButton from './PageButton';
+import PageButton from './PageButton/PageButton';
 
 const propTypes = {
   pages: PropTypes.arrayOf(
     PropTypes.shape({
       page: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
       active: PropTypes.bool,
-      disable: PropTypes.bool,
       title: PropTypes.string,
     }),
   ).isRequired,

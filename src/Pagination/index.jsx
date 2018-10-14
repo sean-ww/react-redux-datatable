@@ -1,4 +1,4 @@
-import createContext from './src/context';
+import createContext from './PaginationContext';
 
 export default (options = {}) => ({
   createContext,
