@@ -7,7 +7,6 @@ import store from '../example/store';
 
 import './assets/sass/styles.scss';
 
-// const apiLocation = `${window.location.protocol}//${window.location.hostname}/datatable-service/search`;
 const apiLocation = 'http://seanwallis.com/datatable-service/search';
 
 const dateFormatter = cell => moment(cell).format('ddd, Do MMM YYYY HH:mm');
@@ -96,17 +95,7 @@ const exampleTableSettings = {
   ],
 };
 
-// todo: try addDecorator?
-
-// storiesOf('DataTable', module)
-//   .add('with TEST1', () => (
-//     <Provider store={store}><DataTable tableSettings={exampleTableSettings} apiLocation={apiLocation} /></Provider>
-//   ))
-//   .add('with some TEST2', () => (
-//     <Provider store={store}><DataTable tableSettings={exampleTableSettings} apiLocation={apiLocation} /></Provider>
-//   ));
-
-storiesOf('DataTable', module).add('with TEST1', () => (
+storiesOf('DataTable', module).add('Basic Example', () => (
   <Provider store={store}>
     <DataTable tableSettings={exampleTableSettings} apiLocation={apiLocation} />
   </Provider>

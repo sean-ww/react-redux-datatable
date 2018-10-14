@@ -17,14 +17,12 @@ npm install
 
 ### Development
 
-You can get started with development by building the example.
-You will need a working api to do this.
-See ```apiLocation``` in example/example.jsx.
+You can get started with development by using storybook:
 ```
-npm run build:example:watch
+npm run storybook
 ```
 
-You can then view example/index.html locally.
+You can then go to the provided localhost link.
 
 ### Running Tests
 
