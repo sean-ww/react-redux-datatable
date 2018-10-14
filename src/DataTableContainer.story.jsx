@@ -5,7 +5,7 @@ import moment from 'moment/moment';
 import DataTable from './DataTableContainer';
 import store from '../example/store';
 
-import '../dist/styles.css'; // import 'react-redux-datatable/dist/styles.css';
+import './assets/sass/styles.scss';
 
 // const apiLocation = `${window.location.protocol}//${window.location.hostname}/datatable-service/search`;
 const apiLocation = 'http://seanwallis.com/datatable-service/search';

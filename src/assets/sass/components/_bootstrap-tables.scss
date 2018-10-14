@@ -195,14 +195,21 @@
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
     background-clip: padding-box;
 
-    > li > a {
+    > li > a,
+    > li > button {
         display: block;
         padding: 3px 14px;
         clear: both;
+        font-size: 10px;
         font-weight: normal;
         line-height: 1.42857;
         color: #333333;
         white-space: nowrap;
+        background: none;
+        border: 0;
+        text-decoration: underline;
+        width: 100%;
+        text-align: left;
 
         &:hover,
         &:focus {

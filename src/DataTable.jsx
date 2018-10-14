@@ -1,23 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import BootstrapTable from 'react-bootstrap-table-next';
-import paginationFactory from 'react-bootstrap-table2-paginator';
 import filterFactory, { textFilter, selectFilter, numberFilter, customFilter } from 'react-bootstrap-table2-filter';
-import { forbidExtraProps } from 'airbnb-prop-types';
+import { forbidExtraProps, nonNegativeInteger } from 'airbnb-prop-types';
+import paginationFactory from './Pagination';
 
 import { NO_DATA_INDICATOR } from './constants';
 
 const propTypes = forbidExtraProps({
-  dataTotalSize: PropTypes.number.isRequired,
+  dataTotalSize: nonNegativeInteger.isRequired,
   clearFilters: PropTypes.func.isRequired,
-  currentPage: PropTypes.number.isRequired,
+  currentPage: nonNegativeInteger.isRequired,
   keyField: PropTypes.string.isRequired,
   onExportToCSV: PropTypes.func.isRequired,
   onSearchChange: PropTypes.func.isRequired,
   onSizePerPageChange: PropTypes.func.isRequired,
   onTableChange: PropTypes.func.isRequired,
   refreshTable: PropTypes.func.isRequired,
-  sizePerPage: PropTypes.number.isRequired,
+  sizePerPage: nonNegativeInteger.isRequired,
   startClearingFilters: PropTypes.func.isRequired,
   tableColumns: PropTypes.object.isRequired,
   defaultSort: PropTypes.array,
@@ -155,19 +155,6 @@ class DataTable extends React.Component {
     </div>
   );
 
-  renderShowsTotal = (start, to, total) => (
-    <div
-      style={{
-        float: 'right',
-        fontSize: '10px',
-        marginTop: '4px',
-        marginRight: '-66px',
-      }}
-    >
-      Showing {start} to {Math.max(to + 1, 0)} of {total} Results
-    </div>
-  );
-
   render() {
     const {
       keyField,
@@ -195,12 +182,9 @@ class DataTable extends React.Component {
 
     // Add pagination options
     const paginationOptions = {
-      paginationTotalRenderer: this.renderShowsTotal,
-      showTotal: true,
+      onSizePerPageChange,
       page: currentPage,
       sizePerPage,
-      sizePerPageList: [10, 25, 50, 100],
-      onSizePerPageChange,
       totalSize: dataTotalSize,
     };
 
