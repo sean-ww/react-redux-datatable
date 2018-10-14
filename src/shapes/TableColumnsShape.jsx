@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { nonNegativeInteger } from 'airbnb-prop-types';
 
-export default {
+export default PropTypes.shape({
   key: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   dataFormat: PropTypes.func,
@@ -14,4 +14,4 @@ export default {
   searchable: PropTypes.bool,
   sortable: PropTypes.bool,
   width: nonNegativeInteger,
-};
+});
