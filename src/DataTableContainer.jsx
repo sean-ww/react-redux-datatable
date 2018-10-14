@@ -99,16 +99,18 @@ export class DataTableContainer extends React.Component {
     });
   };
 
-  onSearchChange = ({ target: { value } }) => {
-    const text = value.trim();
-    const { tableSettings } = this.props;
-    if (tableSettings.useLocalStorage) {
+  onSearchChange = e => {
+    const text = e.target.value.trim();
+    if (this.props.tableSettings.useLocalStorage) {
       updateLocalStorageItem('tableSearch', {
-        [tableSettings.tableID]: text,
+        [this.props.tableSettings.tableID]: text,
       });
     }
     this.searchValue = text;
     this.getTableData({});
+    this.setState({
+      currentPage: 1,
+    });
   };
 
   onSizePerPageChange = sizePerPage => {
