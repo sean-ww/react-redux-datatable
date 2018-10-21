@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { forbidExtraProps } from 'airbnb-prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import axios from 'axios';
 import TableSettingsShape from './shapes/TableSettingsShape';
 import { canUseDOM, exportToCSVFile } from './csvExport';
 import DataTable from './DataTable';
@@ -20,15 +21,20 @@ import {
 
 import { SIZE_PER_PAGE } from './constants';
 
+const defaultAxiosInstance = axios.create();
+defaultAxiosInstance.defaults.timeout = 60000;
+
 const propTypes = forbidExtraProps({
   dispatch: PropTypes.func.isRequired,
   tableSettings: TableSettingsShape.isRequired,
   apiLocation: PropTypes.string.isRequired,
+  axiosInstance: PropTypes.func,
   DataTableData: PropTypes.any,
   ownProps: PropTypes.object,
 });
 
 const defaultProps = {
+  axiosInstance: defaultAxiosInstance,
   DataTableData: null,
   ownProps: {},
 };
@@ -128,6 +134,7 @@ export class DataTableContainer extends React.Component {
         this.searchValue,
         this.columnFilters,
         this.props.apiLocation,
+        this.props.axiosInstance,
       ).then(data => {
         const fields = Object.values(this.tableColumns)
           .filter(filter => filter.column.export !== false)
@@ -154,6 +161,7 @@ export class DataTableContainer extends React.Component {
         this.searchValue,
         this.columnFilters,
         this.props.apiLocation,
+        this.props.axiosInstance,
       ),
     );
   };

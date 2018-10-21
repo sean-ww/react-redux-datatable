@@ -17,7 +17,14 @@ npm install
 
 ### Development
 
-You can get started with development by using storybook:
+You can get started with development by using storybook.
+
+First generate some data:
+```
+npm run storybook:build
+```
+
+Then run the storybook:
 ```
 npm run storybook
 ```

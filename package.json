@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "@storybook/react": "^3.4.11",
+    "axios-mock-adapter": "^1.15.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "^7.1.1",
@@ -54,8 +55,11 @@
     "eslint-plugin-jsx-a11y": "^6.1.1",
     "eslint-plugin-prettier": "^2.7.0",
     "eslint-plugin-react": "^7.11.1",
+    "faker": "^4.1.0",
     "history": "^3.2.1",
     "jsdom": "^9.11.0",
+    "json-schema-faker": "^0.5.0-rc16",
+    "mingo": "^2.2.4",
     "mocha": "^5.2.0",
     "mocha-lcov-reporter": "^1.3.0",
     "node-sass": "^4.9.3",
@@ -90,6 +94,7 @@
     "fix": "./node_modules/.bin/eslint --fix './src/**/*.jsx'",
     "prod": "NODE_ENV=production webpack --watch --progress -p",
     "storybook": "BABEL_ENV=dev start-storybook -p 9001 -c .storybook",
+    "storybook:build": "node .storybook/mocks/api/generateMockData.js",
     "test": "mocha"
   },
   "repository": {
