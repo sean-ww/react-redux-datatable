@@ -1,8 +1,4 @@
-import axios from 'axios';
 import 'url-search-params-polyfill';
-
-const instance = axios.create();
-instance.defaults.timeout = 60000;
 
 const dispatchError = (dispatch, tableSettings, error) =>
   dispatch({
@@ -33,9 +29,17 @@ const prepareFetchTableParams = (tableSettings, limit, offset, sortName, sortOrd
   return params;
 };
 
-export const fetchExportData = (tableSettings, sortName, sortOrder, searchValue, columnFilters, apiLocation) => {
+export const fetchExportData = (
+  tableSettings,
+  sortName,
+  sortOrder,
+  searchValue,
+  columnFilters,
+  apiLocation,
+  axiosInstance,
+) => {
   const params = prepareFetchTableParams(tableSettings, 1000, 0, sortName, sortOrder, searchValue, columnFilters);
-  return instance
+  return axiosInstance
     .post(apiLocation, params, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
@@ -59,6 +63,7 @@ export const fetchTableData = (
   searchValue,
   columnFilters,
   apiLocation,
+  axiosInstance,
 ) => dispatch => {
   dispatch({
     type: 'FETCH_TABLE_DATA',
@@ -77,7 +82,7 @@ export const fetchTableData = (
   });
 
   const params = prepareFetchTableParams(tableSettings, limit, offset, sortName, sortOrder, searchValue, columnFilters);
-  instance
+  axiosInstance
     .post(apiLocation, params, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',

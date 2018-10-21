@@ -2,12 +2,17 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { Provider } from 'react-redux';
 import moment from 'moment/moment';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
+import SEARCH_DATA from '../.storybook/mocks/api/search.json'; // eslint-disable-line import/no-unresolved
+import search from '../.storybook/mocks/api/search';
 import DataTable from './DataTableContainer';
 import store from '../example/store';
 
 import './assets/sass/styles.scss';
 
-const apiLocation = 'http://seanwallis.com/datatable-service/search';
+const mock = new MockAdapter(axios);
+const MOCK_API_LOCATION = 'http://localhost/api/search';
 
 const dateFormatter = cell => moment(cell).format('ddd, Do MMM YYYY HH:mm');
 
@@ -95,8 +100,14 @@ const exampleTableSettings = {
   ],
 };
 
-storiesOf('DataTable', module).add('Basic Example', () => (
-  <Provider store={store}>
-    <DataTable tableSettings={exampleTableSettings} apiLocation={apiLocation} />
-  </Provider>
-));
+storiesOf('DataTable', module).add('Basic Example', () => {
+  mock.onPost(MOCK_API_LOCATION).reply(config => {
+    const params = new URLSearchParams(decodeURIComponent(config.data));
+    return [200, search(SEARCH_DATA, params)];
+  });
+  return (
+    <Provider store={store}>
+      <DataTable tableSettings={exampleTableSettings} apiLocation={MOCK_API_LOCATION} axiosInstance={axios} />
+    </Provider>
+  );
+});
