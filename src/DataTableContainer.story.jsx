@@ -4,8 +4,8 @@ import { Provider } from 'react-redux';
 import moment from 'moment/moment';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import SEARCH_DATA from '../.storybook/mocks/api/search.json';
-import search from '../.storybook/mocks/api/search'; // eslint-disable-line import/no-unresolved
+import SEARCH_DATA from '../.storybook/mocks/api/search.json'; // eslint-disable-line import/no-unresolved
+import search from '../.storybook/mocks/api/search';
 import DataTable from './DataTableContainer';
 import store from '../example/store';
 
