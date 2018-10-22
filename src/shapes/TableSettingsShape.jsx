@@ -13,6 +13,7 @@ export default PropTypes.shape({
   displayTitle: PropTypes.string,
   extraToolbarItems: PropTypes.func,
   extraButtons: PropTypes.func,
+  headers: PropTypes.object,
   minWidth: nonNegativeInteger,
   noDataIndication: PropTypes.node,
   useLocalStorage: PropTypes.bool,

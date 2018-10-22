@@ -1,4 +1,5 @@
 import 'url-search-params-polyfill';
+import { REQUEST_HEADERS } from './constants';
 
 const dispatchError = (dispatch, tableSettings, error) =>
   dispatch({
@@ -41,9 +42,7 @@ export const fetchExportData = (
   const params = prepareFetchTableParams(tableSettings, 1000, 0, sortName, sortOrder, searchValue, columnFilters);
   return axiosInstance
     .post(apiLocation, params, {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
-      },
+      headers: tableSettings.headers || REQUEST_HEADERS,
     })
     .then(response => {
       if (response.data.searchSuccess) {
@@ -84,9 +83,7 @@ export const fetchTableData = (
   const params = prepareFetchTableParams(tableSettings, limit, offset, sortName, sortOrder, searchValue, columnFilters);
   axiosInstance
     .post(apiLocation, params, {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
-      },
+      headers: tableSettings.headers || REQUEST_HEADERS,
     })
     .then(response => {
       if (response.data.searchSuccess) {

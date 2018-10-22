@@ -79,6 +79,7 @@ Then the tableSettings post parameter would contain a corresponding json object:
 | displayTitle      | string   | -         | This adds a title above the table.                                               |
 | extraToolbarItems | function | -         | A way of passing extra items to the toolbar. [See More](#extra-toolbar-items)    |
 | extraButtons      | function | -         | A way of passing extra buttons to the table. [See More](#extra-buttons)          |
+| headers           | object   | -         | Override the default request headers. [See More](#request-headers)               |
 | minWidth          | integer  | -         | Define a minimum width for the table.                                            |
 | noDataIndication  | mixed    | -         | The text or component to render within the table if there are no results.        |
 | useLocalStorage   | bool     | -         | If true the table filters will be stored using local storage.                    |
@@ -139,6 +140,28 @@ const ExtraButton = () =>
 const tableSettings = {
     tableID: 'myTable',
     extraButtons: ExtraButton,
+    ...otherSettings,
+}
+```
+
+##### Request Headers
+
+The default headers are:
+```
+{
+  'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+}
+```
+
+You can override this using the headers setting:
+```
+const tableSettings = {
+    tableID: 'myTable',
+    headers: {
+        'Accept-Charset': 'utf-8',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Language': 'da',
+    },
     ...otherSettings,
 }
 ```
