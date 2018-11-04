@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import DataTableReducer from '../src/DataTable.reducer';
+import DataTableReducer from '../../DataTable.reducer';
 
 export default combineReducers({
   DataTableReducer,

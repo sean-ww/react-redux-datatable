@@ -18,7 +18,7 @@ module.exports = {
       presets,
       plugins,
       ignore: [
-        "**/*.spec.jsx",
+        "**/*.test.jsx",
       ],
     },
     dev: {

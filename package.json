@@ -5,6 +5,7 @@
   "main": "./lib/index.js",
   "style": "./dist/styles.css",
   "dependencies": {
+    "@babel/runtime": "^7.1.2",
     "airbnb-prop-types": "^2.11.0",
     "axios": "0.15.3",
     "classnames": "^2.2.6",
@@ -22,6 +23,7 @@
     "url-search-params-polyfill": "^1.2.0"
   },
   "devDependencies": {
+    "@storybook/addon-options": "^4.0.2",
     "@storybook/react": "^3.4.11",
     "axios-mock-adapter": "^1.15.0",
     "babel-cli": "^6.26.0",
@@ -56,6 +58,7 @@
     "eslint-plugin-prettier": "^2.7.0",
     "eslint-plugin-react": "^7.11.1",
     "faker": "^4.1.0",
+    "gh-pages": "^2.0.1",
     "history": "^3.2.1",
     "jsdom": "^9.11.0",
     "json-schema-faker": "^0.5.0-rc16",
@@ -89,8 +92,9 @@
     "build:styles": "sass src/assets/sass/styles.scss dist/styles.css --style compressed",
     "build:umd": "webpack --config webpack.umd.config.js --progress",
     "build:umd:min": "webpack --config webpack.umd.min.config.js --progress -p",
-    "cover": "BABEL_ENV=test nyc --reporter=lcov --reporter=text-lcov mocha test/.setup.jsx './src/**/*.spec.jsx'",
+    "cover": "BABEL_ENV=test nyc --reporter=lcov --reporter=text-lcov mocha test/.setup.jsx './src/**/*.test.jsx'",
     "coveralls": "npm run cover && cat ./coverage/lcov.info | coveralls",
+    "deploy": "couscous generate && build-storybook -o .couscous/generated/demo && node .dev/deploy.js",
     "fix": "./node_modules/.bin/eslint --fix './src/**/*.jsx'",
     "prod": "NODE_ENV=production webpack --watch --progress -p",
     "storybook": "BABEL_ENV=dev start-storybook -p 9001 -c .storybook",
