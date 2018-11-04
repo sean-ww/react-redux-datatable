@@ -9,10 +9,7 @@ Dynamic data table using React and Redux that fetches JSON from a predefined API
 
 ![Example](react-redux-datatable.png)
 
-#### Version 2 / React 16
-Version 2 works with React 16 builds upon [react-bootstrap-table2](https://github.com/react-bootstrap-table/react-bootstrap-table2).
-* Filter and search data by text or by column values
-* Built in ability to filter date ranges, number, text and select lists
+* Filter column values by date ranges, number, text and select lists
 * Paginate and Sort data
 * Configurable table and column widths
 * Ability to add custom filters and column formatters
@@ -22,12 +19,9 @@ Version 2 works with React 16 builds upon [react-bootstrap-table2](https://githu
 * Toggle full screen view
 * Export to csv
 
-#### Version 1 / React < 16
-Version 1 supports older versions of react and uses [react-bootstrap-table](https://github.com/AllenFang/react-bootstrap-table).
-
 ### Demo
 
-[View the Demo](http://seanwallis.com/datatable-demo/)
+[View the Demo](https://sean-ww.github.io/react-redux-datatable/demo)
 
 ### Documentation
 
