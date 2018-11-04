@@ -11,7 +11,7 @@ before_install:
   - nvm install stable
 
 install:
-   - npm install --production
+   - npm install
    - npm run storybook:init
 
 before_script:
