@@ -12,17 +12,17 @@ before_install:
 
 install:
    - npm install --production
-   - npm run storybook:build
+   - npm run storybook:init
 
 before_script:
   - gem install sass
   - mkdir dist
-  - gem install travis
-  - travis login --pro --debug --github-token $PA_TOKEN
+#  - gem install travis
+#  - travis login --pro --debug --github-token $PA_TOKEN
   - composer require couscous/couscous
 
 script:
-  - npm test && npm run build && vendor/bin/couscous generate
+  - npm test && npm run build && vendor/bin/couscous generate && npm run storybook:build
 
 deploy:
   provider: pages

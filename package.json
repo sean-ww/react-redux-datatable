@@ -92,11 +92,12 @@
     "build:umd:min": "webpack --config webpack.umd.min.config.js --progress -p",
     "cover": "BABEL_ENV=test nyc --reporter=lcov --reporter=text-lcov mocha test/.setup.jsx './src/**/*.test.jsx'",
     "coveralls": "npm run cover && cat ./coverage/lcov.info | coveralls",
-    "deploy": "build-storybook -o .couscous/generated/demo && node .dev/deploy.js",
+    "deploy": "couscous generate && npm run storybook:build && node .dev/deploy.js",
     "fix": "./node_modules/.bin/eslint --fix './src/**/*.jsx'",
     "prod": "NODE_ENV=production webpack --watch --progress -p",
     "storybook": "BABEL_ENV=dev start-storybook -p 9001 -c .storybook",
-    "storybook:build": "node .storybook/mocks/api/generateMockData.js",
+    "storybook:init": "node .storybook/mocks/api/generateMockData.js",
+    "storybook:build": "build-storybook -o .couscous/generated/demo",
     "test": "mocha"
   },
   "repository": {
