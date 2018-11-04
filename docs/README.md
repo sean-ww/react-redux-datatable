@@ -8,7 +8,7 @@
 Dynamic data table using React and Redux that fetches JSON from a predefined API. Designed to build asynchronous React-Redux tables quickly and consistently.
 
 ![Example](https://github.com/sean-ww/react-redux-datatable/raw/master/react-redux-datatable.png)
-TESTER
+
 #### Version 2 / React 16
 Version 2 works with React 16 builds upon [react-bootstrap-table2](https://github.com/react-bootstrap-table/react-bootstrap-table2).
 * Filter and search data by text or by column values
