@@ -3,6 +3,17 @@ language: php
 php:
   - 7.2
 
+jobs:
+  include:
+      -
+        if: branch = master
+  include:
+    - script: ./test 1 # uses the default stage name "test"
+    - script: ./test 2
+    - stage: deploy
+      script: ./deploy target-1
+    - script: ./deploy target-2
+
 # Cache node packages
 cache:
   directories:
@@ -14,7 +25,6 @@ before_install:
 
 # Install dependencies and couscous
 install:
-   - composer global require couscous/couscous
    - npm install --production
 
 # Install sass and create the dist directory
@@ -23,7 +33,8 @@ before_script:
   - mkdir dist
   - gem install travis
   - travis login --pro --debug --github-token $PA_TOKEN
+  - composer require couscous/couscous
 
 # Build and deploy
 script:
-  - npm test && npm run build && npm run deploy
+  - npm test && npm run build && bin/couscous generate && build-storybook -o .couscous/generated/demo && node .dev/deploy.js
