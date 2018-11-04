@@ -77,69 +77,82 @@
 <tr>
 <th>Name</th>
 <th>Type</th>
+<th>Required?</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>title</td>
-<td>string</td>
-<td>Required: The column heading to be displayed.</td>
-</tr>
-<tr>
 <td>key</td>
 <td>string</td>
-<td>Required: The column key.</td>
+<td>Yes</td>
+<td>The column key.</td>
 </tr>
 <tr>
-<td>hidden</td>
-<td>bool</td>
-<td>If true, hides the column. Defaults to false.</td>
-</tr>
-<tr>
-<td>filter</td>
+<td>title</td>
 <td>string</td>
-<td>The filter type to be used by the column.</td>
-</tr>
-<tr>
-<td>defaultValue</td>
-<td>object</td>
-<td>The default value specific to the filter type.</td>
-</tr>
-<tr>
-<td>filterOptions</td>
-<td>object</td>
-<td>Key-value paris of filter options eg. { key: 'value', key: 'value' }. <a href="#filter-options">See More</a></td>
-</tr>
-<tr>
-<td>width</td>
-<td>integer</td>
-<td>Define a fixed width for the column.</td>
-</tr>
-<tr>
-<td>export</td>
-<td>bool</td>
-<td>If false, the column will get excluded from the export.</td>
+<td>Yes</td>
+<td>The column heading to be displayed.</td>
 </tr>
 <tr>
 <td>dataFormat</td>
 <td>function</td>
+<td>-</td>
 <td>A function can be used to format cell values eg. (cell) =&gt; { return cell; }</td>
+</tr>
+<tr>
+<td>defaultValue</td>
+<td>object</td>
+<td>-</td>
+<td>The default value specific to the filter type.</td>
+</tr>
+<tr>
+<td>export</td>
+<td>bool</td>
+<td>-</td>
+<td>If false, the column will get excluded from the export.</td>
+</tr>
+<tr>
+<td>filter</td>
+<td>string</td>
+<td>-</td>
+<td>The filter type to be used by the column.</td>
+</tr>
+<tr>
+<td>filterOptions</td>
+<td>object</td>
+<td>-</td>
+<td>Key-value paris of filter options eg. { key: 'value', key: 'value' }. <a href="#filter-options">See More</a></td>
 </tr>
 <tr>
 <td>formatExtraData</td>
 <td>any</td>
+<td>-</td>
 <td>This can be used to provide extra data to dataFormat.</td>
+</tr>
+<tr>
+<td>hidden</td>
+<td>bool</td>
+<td>-</td>
+<td>If true, hides the column. Defaults to false.</td>
 </tr>
 <tr>
 <td>searchable</td>
 <td>bool</td>
+<td>-</td>
 <td>If false, the column cannot be searched.</td>
 </tr>
 <tr>
 <td>sortable</td>
 <td>bool</td>
+<td>-</td>
 <td>If false, the column cannot be sorted by.</td>
+</tr>
+<tr>
+<td>width</td>
+<td>integer</td>
+<td>-</td>
+<td>Define a fixed width for the column.</td>
 </tr>
 </tbody>
 </table>
