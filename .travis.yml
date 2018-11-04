@@ -3,25 +3,33 @@ language: php
 php:
   - 7.2
 
-# Cache node packages
-cache:
-  directories:
-    - node_modules
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $PA_TOKEN
+  keep-history: true
+  on:
+    branch: master
 
-# Get a stable version of node.js
-before_install:
-  - nvm install stable
+  # Cache node packages
+  cache:
+    directories:
+      - node_modules
 
-# Install dependencies and couscous
-install:
-   - composer require couscous/couscous
-   - npm install --production
+  # Get a stable version of node.js
+  before_install:
+    - nvm install stable
 
-# Install sass and create the dist directory
-before_script:
-  - gem install sass
-  - mkdir dist
+  # Install dependencies and couscous
+  install:
+     - composer global require couscous/couscous
+     - npm install --production
 
-# Build and deploy
-script:
-  - npm test && npm run build && npm run deploy
+  # Install sass and create the dist directory
+  before_script:
+    - gem install sass
+    - mkdir dist
+
+  # Build and deploy
+  script:
+    - npm test && npm run build && npm run deploy
