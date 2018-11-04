@@ -1,21 +1,30 @@
 # Project language
-language: node_js
-node_js:
-  - "stable"
+language: php
+php:
+  - 7.2
 
 # Cache node packages
 cache:
   directories:
     - node_modules
 
+# Get a stable version of node.js
+before_install:
+  - nvm install stable
+
+# Install dependencies and couscous
+install:
+   - composer require couscous/couscous
+   - npm install
+
 # Install sass and create the dist directory
 before_script:
   - gem install sass
   - mkdir dist
 
-# Run tests and build
+# Run tests, build and deploy
 script:
-  - npm test && npm run build
+  - npm test && npm run build && npm run deploy
 
 # Update code coverage
 after_script:
