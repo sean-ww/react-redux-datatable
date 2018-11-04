@@ -14,7 +14,7 @@
         "webpack-alias"
       ],
       "ignore": [
-        "**/*.spec.jsx"
+        "**/*.test.jsx"
       ]
     },
     "dev": {
