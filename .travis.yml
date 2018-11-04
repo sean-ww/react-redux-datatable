@@ -3,17 +3,6 @@ language: php
 php:
   - 7.2
 
-jobs:
-  include:
-      -
-        if: branch = master
-  include:
-    - script: ./test 1 # uses the default stage name "test"
-    - script: ./test 2
-    - stage: deploy
-      script: ./deploy target-1
-    - script: ./deploy target-2
-
 # Cache node packages
 cache:
   directories:
