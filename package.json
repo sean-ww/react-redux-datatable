@@ -85,10 +85,8 @@
     "babel-polyfill": "^6.23.0"
   },
   "scripts": {
-    "build": "npm run fix && npm run build:styles && npm run build:commonjs && npm run build:example && npm run build:umd && npm run build:umd:min",
+    "build": "npm run fix && npm run build:styles && npm run build:commonjs && npm run build:umd && npm run build:umd:min",
     "build:commonjs": "BABEL_ENV=commonjs babel src --out-dir lib",
-    "build:example": "webpack --config webpack.example.config.js --progress -p",
-    "build:example:watch": "BABEL_ENV=test webpack --config webpack.example.config.js --watch --progress -p",
     "build:styles": "sass src/assets/sass/styles.scss dist/styles.css --style compressed",
     "build:umd": "webpack --config webpack.umd.config.js --progress",
     "build:umd:min": "webpack --config webpack.umd.min.config.js --progress -p",

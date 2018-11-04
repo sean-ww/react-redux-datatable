@@ -15,17 +15,13 @@ before_install:
 # Install dependencies and couscous
 install:
    - composer require couscous/couscous
-   - npm install
+   - npm install --production
 
 # Install sass and create the dist directory
 before_script:
   - gem install sass
   - mkdir dist
 
-# Run tests, build and deploy
+# Build and deploy
 script:
   - npm test && npm run build && npm run deploy
-
-# Update code coverage
-after_script:
-  - travis_retry npm run coveralls
