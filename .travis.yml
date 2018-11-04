@@ -4,26 +4,28 @@ php:
   - 7.2
 
 # Cache node packages
-cache:
-  directories:
-    - node_modules
+#cache:
+#  directories:
+#    - node_modules
 
 # Get a stable version of node.js
-before_install:
-  - nvm install stable
+#before_install:
+#  - nvm install stable
 
 # Install dependencies and couscous
-install:
-   - npm install --production
+#install:
+#   - npm install --production
 
 # Install sass and create the dist directory
 before_script:
-  - gem install sass
-  - mkdir dist
-  - gem install travis
-  - travis login --pro --debug --github-token $PA_TOKEN
+#  - gem install sass
+#  - mkdir dist
+#  - gem install travis
+#  - travis login --pro --debug --github-token $PA_TOKEN
   - composer require couscous/couscous
 
 # Build and deploy
 script:
-  - npm test && npm run build && bin/couscous generate && build-storybook -o .couscous/generated/demo && node .dev/deploy.js
+  - ls
+  - couscous generate
+#  - npm test && npm run build && couscous generate && build-storybook -o .couscous/generated/demo && node .dev/deploy.js
