@@ -71,37 +71,149 @@
                 <div class="wy-nav-content">
             <div class="rst-content">
                 <div role="main" class="document">
-                    <h1 id="react-redux-datatable">react-redux-datatable</h1>
-<p><a href="https://travis-ci.org/sean-ww/react-redux-datatable"><img src="https://travis-ci.org/sean-ww/react-redux-datatable.svg?branch=master" alt="Build Status" /></a>
-<a href="https://coveralls.io/github/sean-ww/react-redux-datatable?branch=master"><img src="https://coveralls.io/repos/github/sean-ww/react-redux-datatable/badge.svg?branch=master" alt="Coverage Status" /></a>
-<a href="https://www.npmjs.org/package/react-redux-datatable"><img src="https://img.shields.io/npm/v/react-redux-datatable.svg" alt="Version" /></a>
-<a href="https://raw.githubusercontent.com/sean-ww/react-redux-datatable/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="GitHub license" /></a></p>
-<p>Dynamic data table using React and Redux that fetches JSON from a predefined API. Designed to build asynchronous React-Redux tables quickly and consistently.</p>
-<p><img src="https://github.com/sean-ww/react-redux-datatable/raw/master/react-redux-datatable.png" alt="Example" /></p>
-<h4 id="version-2--react-16">Version 2 / React 16</h4>
-<p>Version 2 works with React 16 builds upon <a href="https://github.com/react-bootstrap-table/react-bootstrap-table2">react-bootstrap-table2</a>.</p>
-<ul>
-<li>Filter and search data by text or by column values</li>
-<li>Built in ability to filter date ranges, number, text and select lists</li>
-<li>Paginate and Sort data</li>
-<li>Configurable table and column widths</li>
-<li>Ability to add custom filters and column formatters</li>
-<li>Optional local storage of filter data</li>
-<li>Uses React and Redux with a predefined API</li>
-<li>Add table headers</li>
-<li>Toggle full screen view</li>
-<li>Export to csv</li>
-</ul>
-<h4 id="version-1--react-lt-16">Version 1 / React &lt; 16</h4>
-<p>Version 1 supports older versions of react and uses <a href="https://github.com/AllenFang/react-bootstrap-table">react-bootstrap-table</a>.</p>
-<h3 id="demo">Demo</h3>
-<p><a href="http://seanwallis.com/datatable-demo/">View the Demo</a></p>
-<h3 id="documentation">Documentation</h3>
-<p><a href="https://sean-ww.github.io/react-redux-datatable">You will find full documentation here</a></p>
-<h3 id="contributing">Contributing</h3>
-<p>See the <a href="https://github.com/sean-ww/react-datatable/blob/master/contributing.html">Contributors Guide</a></p>
-<h3 id="license">License</h3>
-<p>The MIT License (MIT). Please view the <a href="https://github.com/sean-ww/react-datatable/blob/master/LICENSE">License File</a> for more information.</p>
+                    <h4 id="available-options">Available Options</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required?</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>key</td>
+<td>string</td>
+<td>Yes</td>
+<td>The column key.</td>
+</tr>
+<tr>
+<td>title</td>
+<td>string</td>
+<td>Yes</td>
+<td>The column heading to be displayed.</td>
+</tr>
+<tr>
+<td>dataFormat</td>
+<td>function</td>
+<td>-</td>
+<td>A function can be used to format cell values eg. (cell) =&gt; { return cell; }</td>
+</tr>
+<tr>
+<td>defaultValue</td>
+<td>object</td>
+<td>-</td>
+<td>The default value specific to the filter type.</td>
+</tr>
+<tr>
+<td>export</td>
+<td>bool</td>
+<td>-</td>
+<td>If false, the column will get excluded from the export.</td>
+</tr>
+<tr>
+<td>filter</td>
+<td>string</td>
+<td>-</td>
+<td>The filter type to be used by the column.</td>
+</tr>
+<tr>
+<td>filterOptions</td>
+<td>object</td>
+<td>-</td>
+<td>Key-value paris of filter options eg. { key: 'value', key: 'value' }. <a href="#filter-options">See More</a></td>
+</tr>
+<tr>
+<td>formatExtraData</td>
+<td>any</td>
+<td>-</td>
+<td>This can be used to provide extra data to dataFormat.</td>
+</tr>
+<tr>
+<td>hidden</td>
+<td>bool</td>
+<td>-</td>
+<td>If true, hides the column. Defaults to false.</td>
+</tr>
+<tr>
+<td>searchable</td>
+<td>bool</td>
+<td>-</td>
+<td>If false, the column cannot be searched.</td>
+</tr>
+<tr>
+<td>sortable</td>
+<td>bool</td>
+<td>-</td>
+<td>If false, the column cannot be sorted by.</td>
+</tr>
+<tr>
+<td>width</td>
+<td>integer</td>
+<td>-</td>
+<td>Define a fixed width for the column.</td>
+</tr>
+</tbody>
+</table>
+<h5 id="filter-options">Filter Options</h5>
+<h6 id="text-filter">Text Filter</h6>
+<p>This is the default filter and does not need to be named.</p>
+<pre><code>{
+    title: 'First Name',
+    key: 'first_name',
+},</code></pre>
+<p>Text Filter will post:</p>
+<pre><code class="language-json">{
+  "key":"first_name",
+  "type":"like",
+  "value":"search value"
+}</code></pre>
+<h6 id="select-filter">Select Filter</h6>
+<p>This provides a select box with predefined options.</p>
+<pre><code>{
+    title: 'Type',
+    key: 'type',
+    filter: 'SelectFilter',
+    filterOptions: {
+        Add: 'Add',
+        Amend: 'Amend',
+        Remove: 'Remove',
+    },
+},</code></pre>
+<p>Select Filter will post:</p>
+<pre><code class="language-json">{
+  "key":"type",
+  "type":"eq",
+  "value":"Amend"
+}</code></pre>
+<h6 id="number-filter">Number Filter</h6>
+<p>This allows your to filter using a number with a logical comparator.</p>
+<pre><code>{
+    title: 'Ref',
+    key: 'ref_id',
+    filter: 'NumberFilter',
+    defaultValue: { comparator: '=' }, // define the default comparator
+},</code></pre>
+<p>Number Filter will post:</p>
+<pre><code class="language-json">{
+  "key":"ref_id",
+  "type":"eq", // eq, gt, gteq, lt, lteq, nteq, like
+  "value":"119"
+}</code></pre>
+<h6 id="date-range-filter">Date Range Filter</h6>
+<p>This provides a select box with predefined options.</p>
+<pre><code>{
+    title: 'Date Created',
+    key: 'created_at',
+    filter: 'CustomDateRangeFilter',
+},</code></pre>
+<p>Date Range Filter will post:</p>
+<pre><code class="language-json">{
+  "key":"created_at",
+  "type":"between",
+  "value":{"from":"2017-10-01","to":"2017-10-05"}
+}</code></pre>
                 </div>
 
                 <footer>
