@@ -9,7 +9,7 @@ deploy:
   github-token: $PA_TOKEN
   keep-history: true
   on:
-    branch: master
+    branch: test-24
 
   # Cache node packages
   cache:
