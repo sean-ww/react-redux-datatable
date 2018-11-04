@@ -22,4 +22,13 @@ before_script:
   - composer require couscous/couscous
 
 script:
-  - npm test && npm run build && vendor/bin/couscous generate && npm run deploy
+  - npm test && npm run build && vendor/bin/couscous generate
+
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $PA_TOKEN
+  local-dir: .couscous/generated
+  keep-history: true
+  on:
+    branch: test-24
