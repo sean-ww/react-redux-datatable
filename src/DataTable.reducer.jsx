@@ -1,22 +1,25 @@
 import update from './updateReducerState';
 
-export default function reducer(state = {
+export default function reducer(
+  state = {
     DataTableData: {},
-}, action) {
-    switch (action.type) {
+  },
+  action,
+) {
+  switch (action.type) {
     case 'FETCH_TABLE_DATA': {
-        return update(state, action);
+      return update(state, action);
     }
     case 'FETCH_TABLE_DATA_REJECTED': {
-        return update(state, action);
+      return update(state, action);
     }
     case 'FETCH_TABLE_DATA_FULFILLED': {
-        return update(state, action);
+      return update(state, action);
     }
     default: {
-        return {
-            ...state,
-        };
+      return {
+        ...state,
+      };
     }
-    }
+  }
 }

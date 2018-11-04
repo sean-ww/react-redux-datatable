@@ -1,53 +1,73 @@
 {
-    "env": {
-        "browser": true,
-        "es6": true,
-        "node": true,
-        "mocha": true
-    },
-    "extends": "airbnb",
-    "parser": "babel-eslint",
-    "rules": {
-        // indentation of 4 spaces
-        "indent": [ 2, 4 ],
-        "react/jsx-indent": [ 2, 4 ],
+  "root": true,
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true,
+    "mocha": true
+  },
+  "plugins": [
+    "prettier",
+    "chai-friendly"
+  ],
+  "extends": [
+    "airbnb",
+    "prettier"
+  ],
+  "parser": "babel-eslint",
+  "rules": {
+    // turn on prettier errors
+    "prettier/prettier": "error",
 
-        // max line length of 120 chars
-        "max-len": [1, 120, 2, {"ignoreComments": true}],
+    // prefer es6 class
+    "react/prefer-es6-class": [ "warn", "always" ],
 
-        // prefer es6 class
-        "react/prefer-es6-class": [ 1, "always" ],
+    // allow the use of class and for
+    "react/no-unknown-property": [ "error", {"ignore": ["class", "for"]}],
+    "jsx-a11y/label-has-for": "off",
 
-        // allow the use of class and for
-        "react/no-unknown-property": [2, {"ignore": ["class", "for"]}],
-        "jsx-a11y/label-has-for": 0,
+    // allow all prop types except 'any'
+    "react/forbid-prop-types": "off",
 
-        // allow all prop types except 'any'
-        "react/forbid-prop-types": 0,
+    // allow static element interactions
+    "jsx-a11y/no-static-element-interactions": "off",
 
-        // allow static element interactions
-        "jsx-a11y/no-static-element-interactions": 0,
+    // allow dangling underscores
+    "no-underscore-dangle": "off",
 
-        // allow dangling underscores
-        "no-underscore-dangle": 0,
+    // turn off syntax restrictions
+    "no-restricted-syntax": "off",
 
-        // turn off syntax restrictions
-        "no-restricted-syntax": 0,
+    // allow aliases without issue
+    "import/no-extraneous-dependencies": "off",
+    "import/extensions": "off",
+    "import/no-unresolved": [
+        "error", {}
+    ],
 
-        // allow aliases without issue
-        "import/no-extraneous-dependencies": 0,
-        "import/extensions": 0,
-        "import/no-unresolved": [
-            "error", {}
-        ],
+    // turn off radix
+    "radix": "off",
 
-        // turn off radix
-        "radix": 0,
+    // turn off no absolute path
+    "import/no-absolute-path": "off",
 
-        // turn off no absolute path
-        "import/no-absolute-path": 0,
+    // turn off no-undef
+    "no-undef": "off",
 
-        // turn off no-undef
-        "no-undef": 0
-    }
+    // turn off destructuring assignment
+    "react/destructuring-assignment": "off",
+
+    // allow omitting arrow parens when there is only one argument
+    "arrow-parens": ["error", "as-needed"],
+
+    // turn off object curly newline
+    "object-curly-newline": "off",
+
+    // turn off one jsx expression per line
+    "react/jsx-one-expression-per-line": "off",
+
+    // make the ruleset chai friendly
+    "no-unused-expressions": 0,
+    "chai-friendly/no-unused-expressions": 2
+  }
 }

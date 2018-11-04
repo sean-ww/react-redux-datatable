@@ -5,235 +5,235 @@ import { DateUtils } from 'react-day-picker';
 import getPosition from './getPosition';
 import DateField from './DateRangeInputField';
 
+import { DISPLAY_DATE_FORMAT, ISO_8601_DATE_FORMAT, ISO_8601_DATETIME_FORMAT } from '../../constants';
+
+const propTypes = {
+  columnKey: PropTypes.string.isRequired,
+  onFilter: PropTypes.func.isRequired,
+  defaultValue: PropTypes.object,
+  getFilter: PropTypes.func,
+};
+
+const defaultProps = {
+  defaultValue: {},
+  getFilter: null,
+};
+
 class CustomDateFilter extends React.Component {
+  state = {
+    showPicker: false,
+    topPosition: 0,
+    leftPosition: -1000,
+    from: null,
+    to: null,
+    displayValue: '',
+  };
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            showPicker: false,
-            topPosition: 0,
-            leftPosition: -1000,
-            from: null,
-            to: null,
-            displayValue: '',
-        };
+  componentWillMount() {
+    if (this.props.defaultValue && this.props.defaultValue.from) {
+      this.setState({ from: this.props.defaultValue.from });
+      if (this.props.defaultValue.to) this.setState({ to: this.props.defaultValue.to });
+      this.setDisplayValue(this.props.defaultValue.from, this.props.defaultValue.to);
+    }
+  }
+
+  componentDidMount() {
+    // export onFilter function to allow users to access
+    if (this.props.getFilter) {
+      this.props.getFilter(() => {
+        this.clearFilters();
+      });
     }
 
-    componentWillMount() {
-        if (this.props.defaultValue && this.props.defaultValue.from) {
-            this.setState({ from: this.props.defaultValue.from });
-            if (this.props.defaultValue.to) this.setState({ to: this.props.defaultValue.to });
-            this.setDisplayValue(this.props.defaultValue.from, this.props.defaultValue.to);
-        }
+    this.filter();
+  }
+
+  componentWillUnmount() {
+    this.removeEvents();
+  }
+
+  setDisplayValue = (fromDate, toDate) => {
+    let displayValue = '';
+    if (moment.isDate(fromDate)) {
+      if (moment.isDate(toDate)) {
+        displayValue = `
+              ${moment(fromDate).format(DISPLAY_DATE_FORMAT)}
+              ${' - '}
+              ${moment(toDate).format(DISPLAY_DATE_FORMAT)}
+              `;
+      } else displayValue = moment(fromDate).format(DISPLAY_DATE_FORMAT);
     }
+    this.setState({
+      displayValue,
+    });
+  };
 
-    componentDidMount() {
-        // export onFilter function to allow users to access
-        if (this.props.getFilter) {
-            this.props.getFilter(() => {
-                this.clearFilters();
-            });
-        }
-
-        this.filter();
+  updateFilters = (fromDate, toDate) => {
+    const fromValue = moment(fromDate).format(ISO_8601_DATE_FORMAT);
+    let toValue;
+    if (moment.isDate(toDate)) {
+      this.setDisplayValue(fromDate, toDate);
+      toValue = moment(toDate)
+        .hours(23)
+        .minutes(59)
+        .seconds(59)
+        .format(ISO_8601_DATETIME_FORMAT);
+    } else {
+      this.setDisplayValue(fromDate, fromDate);
+      toValue = moment(fromDate)
+        .hours(23)
+        .minutes(59)
+        .seconds(59)
+        .format(ISO_8601_DATETIME_FORMAT);
     }
+    this.props.onFilter({
+      from: fromValue,
+      to: toValue,
+    });
+  };
 
-    componentWillUnmount() {
-        this.removeEvents();
+  clearFilters = () => {
+    this.setState({
+      from: null,
+      to: null,
+      displayValue: '',
+    });
+    this.props.onFilter();
+  };
+
+  filter = () => {
+    if (moment.isDate(this.state.from)) {
+      this.updateFilters(this.state.from, this.state.to);
+    } else {
+      this.clearFilters();
     }
+    this.windowClick();
+  };
 
-    setDisplayValue = (fromDate, toDate) => {
-        let displayValue = '';
-        if (moment.isDate(fromDate)) {
-            if (moment.isDate(toDate)) {
-                displayValue = `
-                ${moment(fromDate).format('DD/MM/YYYY')}
-                ${' - '}
-                ${moment(toDate).format('DD/MM/YYYY')}
-                `;
-            } else displayValue = moment(fromDate).format('DD/MM/YYYY');
-        }
-        this.setState({
-            displayValue,
-        });
-    };
+  handleDayClick = day => {
+    const range = DateUtils.addDayToRange(day, this.state);
+    this.setState(range);
+  };
 
-    updateFilters = (fromDate, toDate) => {
-        const fromValue = moment(fromDate).format('YYYY-MM-DD');
-        let toValue;
-        if (moment.isDate(toDate)) {
-            this.setDisplayValue(fromDate, toDate);
-            toValue = moment(toDate)
-                .hours(23).minutes(59).seconds(59)
-                .format('YYYY-MM-DD HH:mm:ss');
-        } else {
-            this.setDisplayValue(fromDate, fromDate);
-            toValue = moment(fromDate)
-                .hours(23).minutes(59).seconds(59)
-                .format('YYYY-MM-DD HH:mm:ss');
-        }
-        this.props.onFilter({
-            from: fromValue,
-            to: toValue,
-        });
-    };
+  handleResetClick = () => {
+    this.setState({
+      from: null,
+      to: null,
+    });
+  };
 
-    clearFilters = () => {
-        this.setState({
-            from: null,
-            to: null,
-            displayValue: '',
-        });
-        this.props.onFilter();
-    };
+  addEvents = () => {
+    window.addEventListener('click', this.windowClick, false);
+    window.addEventListener('scroll', this.positionPicker, false);
+    window.addEventListener('resize', this.positionPicker, false);
+  };
 
-    filter = () => {
-        if (moment.isDate(this.state.from)) {
-            this.updateFilters(this.state.from, this.state.to);
-        } else {
-            this.clearFilters();
-        }
-        this.windowClick();
-    };
+  removeEvents = () => {
+    window.removeEventListener('click', this.windowClick);
+    window.removeEventListener('scroll', this.positionPicker);
+    window.removeEventListener('resize', this.positionPicker);
+  };
 
-    handleDayClick = (day) => {
-        const range = DateUtils.addDayToRange(day, this.state);
-        this.setState(range);
-    };
+  windowClick = () => {
+    this.setState({
+      showPicker: false,
+      topPosition: 0,
+      leftPosition: -1000,
+    });
+    this.removeEvents();
+  };
 
-    handleResetClick = () => {
-        this.setState({
-            from: null,
-            to: null,
-        });
-    };
+  positionPicker = () => {
+    const parentPosition = getPosition(document.getElementById(`${this.props.columnKey}-date-filter`));
+    const elemWidth = document.getElementById(`${this.props.columnKey}-date-filter-container`).offsetWidth;
+    const elemHeight = document.getElementById(`${this.props.columnKey}-date-filter-container`).offsetHeight;
+    const rightOfElement = parentPosition.x + elemWidth;
+    const bottomOfElement = parentPosition.y + elemHeight;
 
-    addEvents = () => {
-        window.addEventListener('click', this.windowClick, false);
-        window.addEventListener('scroll', this.positionPicker, false);
-        window.addEventListener('resize', this.positionPicker, false);
-    };
+    const rightOfScreen = document.documentElement.offsetWidth;
+    const bottomOfScreen = Math.max(document.documentElement.offsetHeight, window.innerHeight);
 
-    removeEvents = () => {
-        window.removeEventListener('click', this.windowClick);
-        window.removeEventListener('scroll', this.positionPicker);
-        window.removeEventListener('resize', this.positionPicker);
-    };
+    const leftAdjustmentPadding = 2;
+    const leftAdjustment = Math.max(rightOfElement + leftAdjustmentPadding - rightOfScreen, 0);
+    const topAdjustmentPadding = 3;
+    const topAdjustment = Math.max(bottomOfElement + topAdjustmentPadding - bottomOfScreen, -22);
 
-    windowClick = () => {
-        this.setState({
-            showPicker: false,
-            topPosition: 0,
-            leftPosition: -1000,
-        });
-        this.removeEvents();
-    };
+    this.setState({
+      topPosition: parentPosition.y - topAdjustment,
+      leftPosition: parentPosition.x - leftAdjustment,
+    });
+  };
 
-    positionPicker = () => {
-        const parentPosition = getPosition(document.getElementById(`${this.props.columnKey}-date-filter`));
-        const elemWidth = document.getElementById(`${this.props.columnKey}-date-filter-container`).offsetWidth;
-        const elemHeight = document.getElementById(`${this.props.columnKey}-date-filter-container`).offsetHeight;
-        const rightOfElement = parentPosition.x + elemWidth;
-        const bottomOfElement = parentPosition.y + elemHeight;
+  togglePicker = () => {
+    const { showPicker } = this.state;
+    this.removeEvents();
+    this.setState(prevState => ({
+      showPicker: !prevState.showPicker,
+      topPosition: 0,
+      leftPosition: -1000,
+    }));
+    if (!showPicker) {
+      this.positionPicker(!showPicker);
+      this.addEvents();
+    }
+  };
 
-        const rightOfScreen = document.documentElement.offsetWidth;
-        const bottomOfScreen = Math.max(
-            document.documentElement.offsetHeight,
-            window.innerHeight,
-        );
+  render() {
+    const { columnKey } = this.props;
+    const { topPosition, leftPosition, from, to, displayValue } = this.state;
 
-        const leftAdjustmentPadding = 2;
-        const leftAdjustment = Math.max((rightOfElement + leftAdjustmentPadding) - rightOfScreen, 0);
-        const topAdjustmentPadding = 3;
-        const topAdjustment = Math.max((bottomOfElement + topAdjustmentPadding) - bottomOfScreen, -22);
+    // Render the Calendar
+    return (
+      <div
+        onClick={e => e.stopPropagation()}
+        onKeyDown={e => e.stopPropagation()}
+        id={`${columnKey}-date-filter`}
+        class="custom-date-filter filter"
+      >
+        <span onClick={this.togglePicker} onKeyDown={this.togglePicker} class="filter-value">
+          {displayValue}
+        </span>
+        <div
+          class="dropContainer dropHide"
+          id={`${columnKey}-date-filter-container`}
+          style={{
+            position: 'fixed',
+            zIndex: 19,
+            top: topPosition,
+            left: leftPosition,
+          }}
+        >
+          <div class="fromToDate">
+            <DateField handleDayClick={this.handleDayClick} from={from} to={to} />
+          </div>
 
-        this.setState({
-            topPosition: parentPosition.y - topAdjustment,
-            leftPosition: parentPosition.x - leftAdjustment,
-        });
-    };
-
-    togglePicker = () => {
-        this.removeEvents();
-
-        const nextShowState = !this.state.showPicker;
-        this.setState({
-            showPicker: nextShowState,
-            topPosition: 0,
-            leftPosition: -1000,
-        });
-        if (nextShowState) {
-            this.positionPicker(nextShowState);
-            this.addEvents();
-        }
-    };
-
-    render() {
-        const { columnKey } = this.props;
-        const { topPosition, leftPosition, from, to, displayValue } = this.state;
-
-        // Render the Calendar
-        return (
+          <div style={{ clear: 'both' }}>
             <div
-              onClick={e => e.stopPropagation()}
-              id={`${columnKey}-date-filter`}
-              class="custom-date-filter filter"
+              id="cidCourseListFilterOkButton"
+              class="okButton filterButton"
+              onClick={this.filter}
+              onKeyDown={this.filter}
             >
-                <span onClick={this.togglePicker} class="filter-value">
-                    {displayValue}
-                </span>
-                <div
-                  class="dropContainer dropHide"
-                  id={`${columnKey}-date-filter-container`}
-                  style={{
-                      position: 'fixed',
-                      zIndex: 19,
-                      top: topPosition,
-                      left: leftPosition,
-                  }}
-                >
-                    <div class="fromToDate">
-                        <DateField
-                          handleDayClick={this.handleDayClick}
-                          from={from}
-                          to={to}
-                        />
-                    </div>
-
-                    <div style={{ clear: 'both' }}>
-                        <div
-                          id="cidCourseListFilterOkButton"
-                          class="okButton filterButton"
-                          onClick={this.filter}
-                        >
-                            OK
-                        </div>
-                        {from &&
-                        <div
-                          id="cidCourseListFilterClearFilterButton"
-                          class="clearFilterButton"
-                          onClick={this.handleResetClick}
-                        >
-                            Clear Filter
-                        </div>
-                        }
-                    </div>
-                </div>
+              OK
             </div>
-        );
-    }
+            {from && (
+              <div
+                id="cidCourseListFilterClearFilterButton"
+                class="clearFilterButton"
+                onClick={this.handleResetClick}
+                onKeyDown={this.handleResetClick}
+              >
+                Clear Filter
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
-CustomDateFilter.propTypes = {
-    onFilter: PropTypes.func.isRequired,
-    columnKey: PropTypes.string.isRequired,
-    defaultValue: PropTypes.object,
-    getFilter: PropTypes.func,
-};
-
-CustomDateFilter.defaultProps = {
-    defaultValue: {},
-    getFilter: null,
-};
+CustomDateFilter.propTypes = propTypes;
+CustomDateFilter.defaultProps = defaultProps;
 
 export default CustomDateFilter;

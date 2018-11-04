@@ -80,6 +80,25 @@ th {
     background: #dddddd;
 }
 
+.pagination .page-item {
+  button {
+    border: 0;
+    position: relative;
+    float: left;
+    padding: 2px 6px;
+    line-height: 1.42857;
+    color: #333;
+    background-color: #fff;
+    margin-left: -1px;
+    font-size: 10px;
+    cursor: pointer;
+  }
+
+  &.active button {
+    text-decoration: underline;
+  }
+}
+
 .dataTables_paginate {
     text-align: center;
     font-size: 11px;
