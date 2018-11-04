@@ -20,7 +20,11 @@ const buildGteExpression = (key, searchValue) => {
       }
     }
   }
-  return {$gte: parseInt(searchValue)};
+  return {
+    $where: function () {
+      return parseInt(this[key]) >= parseInt(searchValue);
+    }
+  }
 };
 
 const buildGtExpression = (key, searchValue) => {
@@ -31,7 +35,11 @@ const buildGtExpression = (key, searchValue) => {
       }
     }
   }
-  return {$gt: parseInt(searchValue)};
+  return {
+    $where: function () {
+      return parseInt(this[key]) > parseInt(searchValue);
+    }
+  }
 };
 
 const buildLteExpression = (key, searchValue) => {
@@ -42,7 +50,11 @@ const buildLteExpression = (key, searchValue) => {
       }
     }
   }
-  return {$lte: parseInt(searchValue)};
+  return {
+    $where: function () {
+      return parseInt(this[key]) <= parseInt(searchValue);
+    }
+  }
 };
 
 const buildLtExpression = (key, searchValue) => {
@@ -53,7 +65,11 @@ const buildLtExpression = (key, searchValue) => {
       }
     }
   }
-  return {$lt: parseInt(searchValue)};
+  return {
+    $where: function() {
+      return parseInt(this[key]) < parseInt(searchValue);
+    }
+  }
 };
 
 const buildEqExpression = (key, searchValue) => {
