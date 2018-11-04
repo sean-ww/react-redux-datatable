@@ -1,23 +1,19 @@
-# Project language
 language: php
 php:
   - 7.2
 
-# Cache node packages and the vendor folder
 cache:
   directories:
     - node_modules
     - vendor
 
-# Get a stable version of node.js
 before_install:
   - nvm install stable
 
-# Install dependencies and couscous
 install:
    - npm install --production
+   - npm run storybook:build
 
-# Install sass and create the dist directory
 before_script:
   - gem install sass
   - mkdir dist
@@ -25,6 +21,5 @@ before_script:
   - travis login --pro --debug --github-token $PA_TOKEN
   - composer require couscous/couscous
 
-# Test, build and deploy
 script:
   - npm test && npm run build && vendor/bin/couscous generate && npm run deploy
