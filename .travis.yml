@@ -3,10 +3,11 @@ language: php
 php:
   - 7.2
 
-# Cache node packages
+# Cache node packages and the vendor folder
 cache:
   directories:
     - node_modules
+    - vendor
 
 # Get a stable version of node.js
 before_install:
@@ -26,4 +27,4 @@ before_script:
 
 # Test, build and deploy
 script:
-  - npm test && npm run build && vendor/bin/couscous generate && build-storybook -o .couscous/generated/demo && node .dev/deploy.js
+  - npm test && npm run build && vendor/bin/couscous generate && npm run deploy
