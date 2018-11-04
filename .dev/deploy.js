@@ -10,7 +10,10 @@ const cleanUpDirectory = () => rimraf(targetDirectory, () => {
 const deployDirectoryToGitHub = () => {
   console.log(`Deploying ${targetDirectory} directory to GitHub`);
   ghpages.publish(`${targetDirectory}/generated`, error => {
-    if (error) return console.log(error);
+    if (error) {
+      console.log(error);
+      process.exit(1);
+    }
     cleanUpDirectory();
   });
 };
