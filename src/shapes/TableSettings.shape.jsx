@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { nonNegativeInteger } from 'airbnb-prop-types';
-import TableColumnsShape from './TableColumnsShape';
+import TableColumnsShape from './TableColumns.shape';
 
 import { SORT_TYPES } from '../constants';
 
