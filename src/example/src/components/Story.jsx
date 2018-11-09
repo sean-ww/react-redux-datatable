@@ -6,7 +6,7 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import Code from './CodeBlock';
 import store from '../store';
-import TableSettingsShape from '../../../shapes/TableSettingsShape';
+import TableSettingsShape from '../../../shapes/TableSettings.shape';
 import SEARCH_DATA from '../../../../.storybook/mocks/api/search.json'; // eslint-disable-line import/no-unresolved
 import search from '../../../../.storybook/mocks/api/search';
 import DataTable from '../../../DataTableContainer';

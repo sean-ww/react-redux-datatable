@@ -4,7 +4,7 @@ import { forbidExtraProps } from 'airbnb-prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import axios from 'axios';
-import TableSettingsShape from './shapes/TableSettingsShape';
+import TableSettingsShape from './shapes/TableSettings.shape';
 import { canUseDOM, exportToCSVFile } from './csvExport';
 import DataTable from './DataTable';
 import { fetchTableData, fetchExportData } from './DataTable.actions';
