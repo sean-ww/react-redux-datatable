@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment/moment';
-import Story from '../components/Story';
+import Story from '../../components/Story';
 
 const dateFormatter = cell => moment(cell).format('ddd, Do MMM YYYY HH:mm');
 
@@ -11,7 +11,7 @@ const actionFormatter = () => (
 );
 
 const tableSettings = {
-  tableID: 'ExampleDataTable',
+  tableID: 'AdvancedFeaturesTable',
   wrapperType: 'section',
   displayTitle: 'Requests Table',
   keyField: 'request_id',
@@ -103,7 +103,7 @@ const actionFormatter = () => (
 );
 
 const tableSettings = {
-  tableID: 'ExampleDataTable',
+  tableID: 'AdvancedFeaturesTable',
   wrapperType: 'section',
   displayTitle: 'Requests Table',
   keyField: 'request_id',
@@ -188,6 +188,6 @@ const DataTable = () => (
 );
 `;
 
-const ExampleTable = () => <Story sourceCode={sourceCode} tableSettings={tableSettings} />;
+const AdvancedFeaturesTable = () => <Story sourceCode={sourceCode} tableSettings={tableSettings} />;
 
-export default ExampleTable;
+export default AdvancedFeaturesTable;

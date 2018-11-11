@@ -362,6 +362,96 @@ describe('<DataTableContainer>', () => {
     });
   });
 
+  describe('With no export columns', () => {
+    it('should not display the export button', () => {
+      const newTableSettings = Object.assign({}, Component.props().tableSettings, {
+        tableColumns: [
+          {
+            title: 'Ref',
+            key: 'request_id',
+            export: false,
+          },
+          {
+            title: 'First Name',
+            key: 'first_name',
+            export: false,
+          },
+        ],
+      });
+      const NewComponent = mount(
+        <DataTableContainer dispatch={() => {}} tableSettings={newTableSettings} apiLocation="fake/location" />,
+      );
+      expect(NewComponent.find('.export-icon')).to.have.length(0);
+    });
+
+    it('should only display the export button with an exportable column', () => {
+      const newTableSettings = Object.assign({}, Component.props().tableSettings, {
+        tableColumns: [
+          {
+            title: 'Ref',
+            key: 'request_id',
+          },
+          {
+            title: 'First Name',
+            key: 'first_name',
+            export: false,
+          },
+        ],
+      });
+      const NewComponent = mount(
+        <DataTableContainer dispatch={() => {}} tableSettings={newTableSettings} apiLocation="fake/location" />,
+      );
+      expect(NewComponent.find('.export-icon')).to.have.length(1);
+    });
+  });
+
+  describe('With no searchable columns', () => {
+    it('should not display any filter icons or the global search', () => {
+      const newTableSettings = Object.assign({}, Component.props().tableSettings, {
+        tableColumns: [
+          {
+            title: 'Ref',
+            key: 'request_id',
+            searchable: false,
+          },
+          {
+            title: 'First Name',
+            key: 'first_name',
+            width: 90,
+            searchable: false,
+          },
+        ],
+      });
+      const NewComponent = mount(
+        <DataTableContainer dispatch={() => {}} tableSettings={newTableSettings} apiLocation="fake/location" />,
+      );
+      expect(NewComponent.find('.filter-icon')).to.have.length(0);
+      expect(NewComponent.find('.react-bs-table-search-form')).to.have.length(0);
+    });
+
+    it('should only display filter icons and the global search with a searchable column', () => {
+      const newTableSettings = Object.assign({}, Component.props().tableSettings, {
+        tableColumns: [
+          {
+            title: 'Ref',
+            key: 'request_id',
+            searchable: false,
+          },
+          {
+            title: 'First Name',
+            key: 'first_name',
+            width: 90,
+          },
+        ],
+      });
+      const NewComponent = mount(
+        <DataTableContainer dispatch={() => {}} tableSettings={newTableSettings} apiLocation="fake/location" />,
+      );
+      expect(NewComponent.find('.filter-icon')).to.have.length(1);
+      expect(NewComponent.find('.react-bs-table-search-form')).to.have.length(1);
+    });
+  });
+
   describe('With 119 (fake) results', () => {
     let NewComponent;
     beforeEach(() => {

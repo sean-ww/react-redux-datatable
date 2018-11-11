@@ -88,8 +88,15 @@ class DataTable extends React.Component {
     </button>
   );
 
+  hasColumnFilters = () =>
+    Object.values(this.props.tableColumns).filter(filter => filter.column.searchable !== false).length > 0;
+
+  hasColumnToExport = () =>
+    Object.values(this.props.tableColumns).filter(filter => filter.column.export !== false).length > 0;
+
   renderCustomButtonGroup = () => {
     let filtersType = 'hidden';
+    const hasColumnFilters = this.hasColumnFilters();
     if (this.state.showFilters) {
       if (this.props.isFiltered) {
         filtersType = 'filtered';
@@ -104,31 +111,34 @@ class DataTable extends React.Component {
             <b />
           </span>
         </button>
-        {filtersType === 'shown' && (
-          <button type="button" {...this.menuButtonClass()} onClick={() => this.toggleFilters()}>
-            <span class="filter-icon filter-icon-shown">
-              <b />
-            </span>
-            Filter
-          </button>
-        )}
-        {filtersType === 'filtered' && (
-          <button type="button" {...this.menuButtonClass()} onClick={() => this.startClearingAllFilters()}>
-            <span class="filter-icon filter-icon-clear">
-              <b />
-            </span>
-            Clear Filters
-          </button>
-        )}
-        {filtersType === 'hidden' && (
-          <button type="button" {...this.menuButtonClass()} onClick={() => this.toggleFilters()}>
-            <span class="filter-icon">
-              <b />
-            </span>
-            Filter
-          </button>
-        )}
-        {this.renderExportCSVButton()}
+        {hasColumnFilters &&
+          filtersType === 'shown' && (
+            <button type="button" {...this.menuButtonClass()} onClick={() => this.toggleFilters()}>
+              <span class="filter-icon filter-icon-shown">
+                <b />
+              </span>
+              Filter
+            </button>
+          )}
+        {hasColumnFilters &&
+          filtersType === 'filtered' && (
+            <button type="button" {...this.menuButtonClass()} onClick={() => this.startClearingAllFilters()}>
+              <span class="filter-icon filter-icon-clear">
+                <b />
+              </span>
+              Clear Filters
+            </button>
+          )}
+        {hasColumnFilters &&
+          filtersType === 'hidden' && (
+            <button type="button" {...this.menuButtonClass()} onClick={() => this.toggleFilters()}>
+              <span class="filter-icon">
+                <b />
+              </span>
+              Filter
+            </button>
+          )}
+        {this.hasColumnToExport() && this.renderExportCSVButton()}
         {this.props.extraButtons && this.props.extraButtons()}
       </div>
     );
@@ -150,7 +160,7 @@ class DataTable extends React.Component {
     <div class="react-bs-table-tool-bar">
       <div class="row">
         <div className="col-xs-6 col-sm-6 col-md-6 col-lg-8">{this.renderCustomButtonGroup()}</div>
-        <div className="col-xs-6 col-sm-6 col-md-6 col-lg-4">{this.renderSearchBox()}</div>
+        <div className="col-xs-6 col-sm-6 col-md-6 col-lg-4">{this.hasColumnFilters() && this.renderSearchBox()}</div>
       </div>
     </div>
   );

@@ -5,7 +5,7 @@ export default PropTypes.shape({
   key: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   dataFormat: PropTypes.func,
-  defaultValue: PropTypes.object,
+  defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   export: PropTypes.bool,
   filter: PropTypes.string,
   filterOptions: PropTypes.object,
