@@ -212,6 +212,12 @@
 <td>The text or component to render within the table if there are no results.</td>
 </tr>
 <tr>
+<td>customApiError</td>
+<td>function</td>
+<td>-</td>
+<td>Make use of an error object and render your own error response. <a href="#custom-api-error">See More</a></td>
+</tr>
+<tr>
 <td>useLocalStorage</td>
 <td>bool</td>
 <td>-</td>
@@ -282,6 +288,32 @@ const tableSettings = {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Content-Language': 'da',
     },
+    ...otherSettings,
+}</code></pre>
+<h5 id="custom-api-error">Custom API Error</h5>
+<p>The default error is:</p>
+<pre><code>&lt;div className="status_message offline"&gt;
+    &lt;p&gt;The table failed to initialise. Please check you are connected to the internet and try again.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+<p>You can override this error the customApiError setting:</p>
+<pre><code>const customApiError = errorObject =&gt; {
+  if (errorObject.response.status === 400) {
+    return (
+      &lt;div className="status_message offline"&gt;
+        &lt;p&gt;{errorObject.message}&lt;/p&gt;
+      &lt;/div&gt;
+    );
+  }
+  return (
+    &lt;div className="status_message offline"&gt;
+      &lt;p&gt;Something went wrong!&lt;/p&gt;
+    &lt;/div&gt;
+  );
+};
+
+const tableSettings = {
+    tableID: 'myTable',
+    customApiError,
     ...otherSettings,
 }</code></pre>
                 </div>
