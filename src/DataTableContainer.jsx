@@ -19,7 +19,7 @@ import {
   generateColumnFilters,
 } from './ColumnFilters';
 
-import { SIZE_PER_PAGE } from './constants';
+import { SIZE_PER_PAGE, DEFAULT_ERROR } from './constants';
 
 const defaultAxiosInstance = axios.create();
 defaultAxiosInstance.defaults.timeout = 60000;
@@ -229,22 +229,28 @@ export class DataTableContainer extends React.Component {
     this.setState(prevState => ({ isFullscreen: !prevState.isFullscreen }));
   };
 
+  getApiError = () => {
+    const { tableSettings, DataTableData } = this.props;
+
+    if (DataTableData && DataTableData[tableSettings.tableID] && DataTableData[tableSettings.tableID].error) {
+      return DataTableData[tableSettings.tableID].error;
+    }
+
+    return null;
+  };
+
   render() {
     const { tableSettings, DataTableData } = this.props;
 
-    if (
-      !tableSettings.tableID ||
-      (DataTableData && DataTableData[tableSettings.tableID] && DataTableData[tableSettings.tableID].error)
-    ) {
-      return (
-        <div class="status_message offline">
-          <p>The table failed to initialise. Please check you are connected to the internet and try again.</p>
-        </div>
-      );
+    if (!tableSettings.tableID || tableSettings.tableID === '') {
+      return 'Missing tableID';
     }
 
+    const error = this.getApiError();
+    if (error) return tableSettings.customApiError ? tableSettings.customApiError(error) : DEFAULT_ERROR();
+
     const isLoading =
-      !DataTableData || !DataTableData[tableSettings.tableID] || !DataTableData[tableSettings.tableID].fetched;
+      !DataTableData || !DataTableData[tableSettings.tableID] || DataTableData[tableSettings.tableID].fetching;
 
     const isFiltered = this.columnFilters && this.columnFilters.length > 0;
 

@@ -10,6 +10,7 @@ import MinWidthTable from './stories/tableSettings/MinWidthTable';
 import NoDataIndication from './stories/tableSettings/NoDataIndication';
 import UseLocalStorage from './stories/tableSettings/UseLocalStorage';
 import SetWrapperClass from './stories/tableSettings/SetWrapperClass';
+import CustomApiError from './stories/tableSettings/CustomApiError';
 
 import DefaultSearch from './stories/globalSearch/DefaultSearch';
 import NoSearch from './stories/globalSearch/NoSearch';
@@ -42,7 +43,8 @@ storiesOf('Table Settings', module)
   .add('Min Width Table', () => <MinWidthTable />)
   .add('No Data Indication', () => <NoDataIndication />)
   .add('Use Local Storage', () => <UseLocalStorage />)
-  .add('Set Wrapper Class', () => <SetWrapperClass />);
+  .add('Set Wrapper Class', () => <SetWrapperClass />)
+  .add('Custom Api Error', () => <CustomApiError />);
 
 storiesOf('Global Search', module)
   .add('Default Search', () => <DefaultSearch />)

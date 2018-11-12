@@ -1,6 +1,6 @@
 import React from 'react';
 import 'babel-polyfill';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import sinon from 'sinon';
 import { expect } from 'chai';
 import { DataTableContainer } from './DataTableContainer';
@@ -475,6 +475,79 @@ describe('<DataTableContainer>', () => {
 
     it('should display pagination with 1 to 10 of 119 results', () => {
       expect(NewComponent.find('.react-bootstrap-table-pagination').text()).contains('Showing 1 to 10 of 119 Results');
+    });
+  });
+
+  describe('With an api error', () => {
+    const DataTableData = {
+      ExampleDataTable: {
+        data: [],
+        dataTotalSize: 0,
+        error: {
+          test: 'error',
+        },
+        fetched: true,
+        fetching: false,
+      },
+    };
+
+    it('should return the default error', () => {
+      const NewComponent = mount(
+        <DataTableContainer
+          dispatch={() => {}}
+          tableSettings={testTableSettings}
+          apiLocation="fake/location"
+          DataTableData={DataTableData}
+        />,
+      );
+      expect(NewComponent.text()).to.equal(
+        'The table failed to initialise. Please check you are connected to the internet and try again.',
+      );
+    });
+
+    it('should return a custom error when set', () => {
+      const customApiError = errorObject => (
+        <div className="status_message offline">
+          <p>{errorObject.test}</p>
+        </div>
+      );
+      const newTableSettings = {
+        ...Component.props().tableSettings,
+        customApiError,
+      };
+      const NewComponent = mount(
+        <DataTableContainer
+          dispatch={() => {}}
+          tableSettings={newTableSettings}
+          apiLocation="fake/location"
+          DataTableData={DataTableData}
+        />,
+      );
+      expect(NewComponent.text()).to.equal('error');
+    });
+  });
+
+  describe('With no tableID', () => {
+    it('should return an error if no tableID is set', () => {
+      const newTableSettings = {
+        ...Component.props().tableSettings,
+        tableID: null,
+      };
+      const NewComponent = shallow(
+        <DataTableContainer dispatch={() => {}} tableSettings={newTableSettings} apiLocation="fake/location" />,
+      );
+      expect(NewComponent.text()).to.equal('Missing tableID');
+    });
+
+    it('should return an error if no tableID is blank', () => {
+      const newTableSettings = {
+        ...Component.props().tableSettings,
+        tableID: '',
+      };
+      const NewComponent = shallow(
+        <DataTableContainer dispatch={() => {}} tableSettings={newTableSettings} apiLocation="fake/location" />,
+      );
+      expect(NewComponent.text()).to.equal('Missing tableID');
     });
   });
 });
