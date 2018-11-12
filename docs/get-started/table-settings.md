@@ -69,21 +69,22 @@ Then the tableSettings post parameter would contain a corresponding json object:
 
 #### Available Options
 
-| Name              | Type     | Required? | Description                                                                      |
-| ----              | ----     | --------- | -----------                                                                      |
-| keyField          | string   | Yes       | A column key must be selected as the key field.                                  |
-| tableColumns      | array    | Yes       | An array of objects with at least a key and title.                               |
-| tableID           | string   | Yes       | An ID for the table.                                                             |
-| defaultSearch     | string   | -         | The default search value.                                                        |
-| defaultSort       | array    | -         | The default column to sort by, and if it is asc or desc e.g. ['ref_id', 'desc']. |
-| displayTitle      | string   | -         | This adds a title above the table.                                               |
-| extraToolbarItems | function | -         | A way of passing extra items to the toolbar. [See More](#extra-toolbar-items)    |
-| extraButtons      | function | -         | A way of passing extra buttons to the table. [See More](#extra-buttons)          |
-| headers           | object   | -         | Override the default request headers. [See More](#request-headers)               |
-| minWidth          | integer  | -         | Define a minimum width for the table.                                            |
-| noDataIndication  | mixed    | -         | The text or component to render within the table if there are no results.        |
-| useLocalStorage   | bool     | -         | If true the table filters will be stored using local storage.                    |
-| wrapperType       | string   | -         | This string adds a class or classes to the wrapper div around the table.         |
+| Name              | Type     | Required? | Description                                                                                   |
+| ----              | ----     | --------- | -----------                                                                                   |
+| keyField          | string   | Yes       | A column key must be selected as the key field.                                               |
+| tableColumns      | array    | Yes       | An array of objects with at least a key and title.                                            |
+| tableID           | string   | Yes       | An ID for the table.                                                                          |
+| defaultSearch     | string   | -         | The default search value.                                                                     |
+| defaultSort       | array    | -         | The default column to sort by, and if it is asc or desc e.g. ['ref_id', 'desc'].              |
+| displayTitle      | string   | -         | This adds a title above the table.                                                            |
+| extraToolbarItems | function | -         | A way of passing extra items to the toolbar. [See More](#extra-toolbar-items)                 |
+| extraButtons      | function | -         | A way of passing extra buttons to the table. [See More](#extra-buttons)                       |
+| headers           | object   | -         | Override the default request headers. [See More](#request-headers)                            |
+| minWidth          | integer  | -         | Define a minimum width for the table.                                                         |
+| noDataIndication  | mixed    | -         | The text or component to render within the table if there are no results.                     |
+| customApiError    | function | -         | Make use of an error object and render your own error response. [See More](#custom-api-error) |
+| useLocalStorage   | bool     | -         | If true the table filters will be stored using local storage.                                 |
+| wrapperType       | string   | -         | This string adds a class or classes to the wrapper div around the table.                      |
 
 ##### Using Local Storage
 
@@ -162,6 +163,39 @@ const tableSettings = {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Content-Language': 'da',
     },
+    ...otherSettings,
+}
+```
+
+##### Custom API Error
+
+The default error is:
+```
+<div className="status_message offline">
+    <p>The table failed to initialise. Please check you are connected to the internet and try again.</p>
+</div>
+```
+
+You can override this error the customApiError setting:
+```
+const customApiError = errorObject => {
+  if (errorObject.response.status === 400) {
+    return (
+      <div className="status_message offline">
+        <p>{errorObject.message}</p>
+      </div>
+    );
+  }
+  return (
+    <div className="status_message offline">
+      <p>Something went wrong!</p>
+    </div>
+  );
+};
+
+const tableSettings = {
+    tableID: 'myTable',
+    customApiError,
     ...otherSettings,
 }
 ```
