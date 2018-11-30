@@ -13,13 +13,14 @@
     "json2csv": "^4.2.1",
     "lodash": "^4.17.11",
     "moment": "^2.22.2",
-    "react-bootstrap-table-next": "^1.2.0",
+    "react-bootstrap-table-next": "^1.4.0",
     "react-bootstrap-table2-filter": "^1.0.0",
     "react-day-picker": "^7.1.9",
     "react-redux": "^5.0.2",
     "redux": "^3.6.0",
     "redux-promise-middleware": "^4.2.0",
     "redux-thunk": "^2.3.0",
+    "saas": "^1.0.0",
     "url-search-params-polyfill": "^1.2.0"
   },
   "devDependencies": {
