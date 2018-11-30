@@ -20,7 +20,6 @@
     "redux": "^3.6.0",
     "redux-promise-middleware": "^4.2.0",
     "redux-thunk": "^2.3.0",
-    "saas": "^1.0.0",
     "url-search-params-polyfill": "^1.2.0"
   },
   "devDependencies": {
