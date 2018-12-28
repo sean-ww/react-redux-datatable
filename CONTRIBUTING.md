@@ -44,6 +44,16 @@ See `src/example/src/stories/tableSettings/BasicTable.jsx` for an example.
 
 Everything within the sourceCode prop will be shown as a code example underneath the component example implementation.
 
+### Updating Documentation
+
+Documentation should be added or updated if editing or introducing new table settings, column options, filters or any other high level detail.
+See the docs folder:
+```
+docs
+```
+
+All documentation should be written in markdown.
+
 ### Running Tests
 
 Before committing any code you should ensure the existing tests still pass by running:
