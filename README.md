@@ -29,8 +29,8 @@ Dynamic data table using React and Redux that fetches JSON from a predefined API
 
 ### Contributing
 
-See the [Contributors Guide](https://github.com/sean-ww/react-datatable/blob/master/CONTRIBUTING.md)
+See the [Contributors Guide](https://github.com/sean-ww/react-redux-datatable/blob/master/CONTRIBUTING.md)
 
 ### License
 
-The MIT License (MIT). Please view the [License File](https://github.com/sean-ww/react-datatable/blob/master/LICENSE) for more information.
+The MIT License (MIT). Please view the [License File](https://github.com/sean-ww/react-redux-datatable/blob/master/LICENSE) for more information.
