@@ -60,6 +60,7 @@ export default (isRemotePagination, handleRemotePageChange) => {
             currentSizePerPage={options.sizePerPage}
             onPageChange={this.handleChangePage}
             onSizePerPageChange={this.handleChangeSizePerPage}
+            paginationTotal={options.paginationTotal}
           />
         </PaginationContext.Provider>
       );

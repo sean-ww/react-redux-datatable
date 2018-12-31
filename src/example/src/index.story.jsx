@@ -6,6 +6,7 @@ import DisplayTitle from './stories/tableSettings/DisplayTitle';
 import ExtraToolbarItems from './stories/tableSettings/ExtraToolbarItems';
 import ExtraButtons from './stories/tableSettings/ExtraButtons';
 import CustomHeaders from './stories/tableSettings/CustomHeaders';
+import CustomPaginationTotal from './stories/tableSettings/CustomPaginationTotal';
 import MinWidthTable from './stories/tableSettings/MinWidthTable';
 import NoDataIndication from './stories/tableSettings/NoDataIndication';
 import UseLocalStorage from './stories/tableSettings/UseLocalStorage';
@@ -40,6 +41,7 @@ storiesOf('Table Settings', module)
   .add('Extra Toolbar Items', () => <ExtraToolbarItems />)
   .add('Extra Buttons', () => <ExtraButtons />)
   .add('Custom Headers', () => <CustomHeaders />)
+  .add('Custom Pagination Total', () => <CustomPaginationTotal />)
   .add('Min Width Table', () => <MinWidthTable />)
   .add('No Data Indication', () => <NoDataIndication />)
   .add('Use Local Storage', () => <UseLocalStorage />)

@@ -511,6 +511,20 @@ describe('<DataTableContainer>', () => {
       expect(NewComponent.find('.react-bootstrap-table-pagination').text()).contains('Showing 1 to 10 of 119 Results');
     });
 
+    it('should display pagination with 1-10 of 119 with a custom pagination total', () => {
+      const PaginationTotal = (start, to, total) => (
+        <div>
+          {start}-{to} of {total}
+        </div>
+      );
+      const newTableSettings = Object.assign({}, NewComponent.props().tableSettings, {
+        customPaginationTotal: PaginationTotal,
+      });
+      NewComponent.setProps({ tableSettings: newTableSettings });
+
+      expect(NewComponent.find('.react-bootstrap-table-pagination').text()).contains('1-10 of 119');
+    });
+
     it('should display the expected test data', () => {
       expect(
         NewComponent.find('.react-bootstrap-table table tr th')
