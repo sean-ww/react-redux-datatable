@@ -9,6 +9,7 @@ export default PropTypes.shape({
   tableColumns: PropTypes.arrayOf(TableColumnsShape).isRequired,
   tableID: PropTypes.string.isRequired,
   customApiError: PropTypes.func,
+  customPaginationTotal: PropTypes.func,
   defaultSearch: PropTypes.string,
   defaultSort: PropTypes.arrayOf(PropTypes.string, PropTypes.oneOf(SORT_TYPES)),
   displayTitle: PropTypes.string,

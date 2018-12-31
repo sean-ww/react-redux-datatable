@@ -177,6 +177,7 @@ class DataTable extends React.Component {
       onSizePerPageChange,
       currentPage,
       sizePerPage,
+      paginationTotal,
     } = this.props;
 
     // Add sort options
@@ -196,6 +197,7 @@ class DataTable extends React.Component {
       page: currentPage,
       sizePerPage,
       totalSize: dataTotalSize,
+      paginationTotal,
     };
 
     const columns = Object.values(tableColumns).map(tableColumn => {

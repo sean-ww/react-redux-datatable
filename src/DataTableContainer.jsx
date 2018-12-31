@@ -304,6 +304,7 @@ export class DataTableContainer extends React.Component {
               keyField={tableSettings.keyField}
               noDataIndication={tableSettings.noDataIndication}
               extraButtons={tableSettings.extraButtons}
+              paginationTotal={tableSettings.customPaginationTotal}
               defaultSort={tableSettings.defaultSort}
               tableColumns={this.tableColumns}
               tableData={tableData}

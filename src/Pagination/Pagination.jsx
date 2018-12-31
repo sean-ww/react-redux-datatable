@@ -14,7 +14,12 @@ const propTypes = forbidExtraProps({
   currentSizePerPage: nonNegativeInteger.isRequired,
   onPageChange: PropTypes.func.isRequired,
   onSizePerPageChange: PropTypes.func.isRequired,
+  paginationTotal: PropTypes.func,
 });
+
+const defaultProps = {
+  paginationTotal: undefined,
+};
 
 class Pagination extends React.Component {
   state = {
@@ -83,7 +88,8 @@ class Pagination extends React.Component {
             onClick={this.toggleDropDown}
             onSizePerPageChange={this.handleChangeSizePerPage}
           />
-          <PaginationTotal start={from} to={to} total={dataSize} />
+          {!this.props.paginationTotal && <PaginationTotal start={from} to={to} total={dataSize} />}
+          {this.props.paginationTotal && this.props.paginationTotal(from, to, dataSize)}
         </div>
         <div className={pageListClass}>
           <PaginationList pages={paginationListItems} onPageChange={this.handleChangePage} />
@@ -94,5 +100,6 @@ class Pagination extends React.Component {
 }
 
 Pagination.propTypes = propTypes;
+Pagination.defaultProps = defaultProps;
 
 export default Pagination;

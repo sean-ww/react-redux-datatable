@@ -69,22 +69,23 @@ Then the tableSettings post parameter would contain a corresponding json object:
 
 #### Available Options
 
-| Name              | Type     | Required? | Description                                                                                   |
-| ----              | ----     | --------- | -----------                                                                                   |
-| keyField          | string   | Yes       | A column key must be selected as the key field.                                               |
-| tableColumns      | array    | Yes       | An array of objects with at least a key and title.                                            |
-| tableID           | string   | Yes       | An ID for the table.                                                                          |
-| defaultSearch     | string   | -         | The default search value.                                                                     |
-| defaultSort       | array    | -         | The default column to sort by, and if it is asc or desc e.g. ['ref_id', 'desc'].              |
-| displayTitle      | string   | -         | This adds a title above the table.                                                            |
-| extraToolbarItems | function | -         | A way of passing extra items to the toolbar. [See More](#extra-toolbar-items)                 |
-| extraButtons      | function | -         | A way of passing extra buttons to the table. [See More](#extra-buttons)                       |
-| headers           | object   | -         | Override the default request headers. [See More](#request-headers)                            |
-| minWidth          | integer  | -         | Define a minimum width for the table.                                                         |
-| noDataIndication  | mixed    | -         | The text or component to render within the table if there are no results.                     |
-| customApiError    | function | -         | Make use of an error object and render your own error response. [See More](#custom-api-error) |
-| useLocalStorage   | bool     | -         | If true the table filters will be stored using local storage.                                 |
-| wrapperType       | string   | -         | This string adds a class or classes to the wrapper div around the table.                      |
+| Name                  | Type     | Required? | Description                                                                                   |
+| ----                  | ----     | --------- | -----------                                                                                   |
+| keyField              | string   | Yes       | A column key must be selected as the key field.                                               |
+| tableColumns          | array    | Yes       | An array of objects with at least a key and title.                                            |
+| tableID               | string   | Yes       | An ID for the table.                                                                          |
+| defaultSearch         | string   | -         | The default search value.                                                                     |
+| defaultSort           | array    | -         | The default column to sort by, and if it is asc or desc e.g. ['ref_id', 'desc'].              |
+| displayTitle          | string   | -         | This adds a title above the table.                                                            |
+| customPaginationTotal | function | -         | A way of changing the pagination total displayed. [See More](#custom-pagination-total)        |
+| extraToolbarItems     | function | -         | A way of passing extra items to the toolbar. [See More](#extra-toolbar-items)                 |
+| extraButtons          | function | -         | A way of passing extra buttons to the table. [See More](#extra-buttons)                       |
+| headers               | object   | -         | Override the default request headers. [See More](#request-headers)                            |
+| minWidth              | integer  | -         | Define a minimum width for the table.                                                         |
+| noDataIndication      | mixed    | -         | The text or component to render within the table if there are no results.                     |
+| customApiError        | function | -         | Make use of an error object and render your own error response. [See More](#custom-api-error) |
+| useLocalStorage       | bool     | -         | If true the table filters will be stored using local storage.                                 |
+| wrapperType           | string   | -         | This string adds a class or classes to the wrapper div around the table.                      |
 
 ##### Using Local Storage
 
@@ -96,11 +97,31 @@ localStorage.removeItem('tableFilters'); // clear table filters
 localStorage.removeItem('tableSearch'); // clear table searches
 ```
 
+##### Custom Pagination Total
+
+[View Custom Pagination Total Example Implementation](https://sean-ww.github.io/react-redux-datatable/demo/?selectedKind=Table%20Settings&selectedStory=Custom%20Pagination%20Total&full=0&addons=0&stories=1&panelRight=0)
+
+You can add a custom pagination total when you use customPaginationTotal:
+```
+const PaginationTotal = (start, to, total) => (
+  <div>
+    {start}-{to} of {total}
+  </div>
+);
+
+const tableSettings = {
+    tableID: 'myTable',
+    displayTitle: 'Course Catalogue',
+    customPaginationTotal: PaginationTotal,
+    ...otherSettings,
+}
+```
+
 ##### Extra Toolbar Items
 
 ![Extra Toolbar Options](https://github.com/sean-ww/react-redux-datatable/raw/master/extra-toolbar-options.png)
 
-You can add extra items to the toolbar when you use displayTitle:
+You can add extra items to the toolbar when you use extraToolbarItems:
 ```
 const ExtraToolbarItem = () =>
     <Link
