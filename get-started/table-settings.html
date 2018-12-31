@@ -182,6 +182,12 @@
 <td>This adds a title above the table.</td>
 </tr>
 <tr>
+<td>customPaginationTotal</td>
+<td>function</td>
+<td>-</td>
+<td>A way of changing the pagination total displayed. <a href="#custom-pagination-total">See More</a></td>
+</tr>
+<tr>
 <td>extraToolbarItems</td>
 <td>function</td>
 <td>-</td>
@@ -236,9 +242,24 @@
 <p>LocalStorage can be cleared as below:</p>
 <pre><code>localStorage.removeItem('tableFilters'); // clear table filters
 localStorage.removeItem('tableSearch'); // clear table searches</code></pre>
+<h5 id="custom-pagination-total">Custom Pagination Total</h5>
+<p><a href="https://sean-ww.github.io/react-redux-datatable/demo/?selectedKind=Table%20Settings&amp;selectedStory=Custom%20Pagination%20Total&amp;full=0&amp;addons=0&amp;stories=1&amp;panelRight=0">View Custom Pagination Total Example Implementation</a></p>
+<p>You can add a custom pagination total when you use customPaginationTotal:</p>
+<pre><code>const PaginationTotal = (start, to, total) =&gt; (
+  &lt;div&gt;
+    {start}-{to} of {total}
+  &lt;/div&gt;
+);
+
+const tableSettings = {
+    tableID: 'myTable',
+    displayTitle: 'Course Catalogue',
+    customPaginationTotal: PaginationTotal,
+    ...otherSettings,
+}</code></pre>
 <h5 id="extra-toolbar-items">Extra Toolbar Items</h5>
 <p><img src="https://github.com/sean-ww/react-redux-datatable/raw/master/extra-toolbar-options.png" alt="Extra Toolbar Options" /></p>
-<p>You can add extra items to the toolbar when you use displayTitle:</p>
+<p>You can add extra items to the toolbar when you use extraToolbarItems:</p>
 <pre><code>const ExtraToolbarItem = () =&gt;
     &lt;Link
       class="table-icons"
