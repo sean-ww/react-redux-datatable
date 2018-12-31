@@ -453,6 +453,17 @@ describe('<DataTableContainer>', () => {
   });
 
   describe('With 119 (fake) results', () => {
+    const testDataRow = {
+      request_id: 1,
+      user_id: 7,
+      first_name: 'Ted',
+      surname: 'Stevens',
+      email: 'ted.stevens@test.com',
+      created_at: '2018-09-18 03:13:39',
+      type: 'Add',
+      system_type: 'staging',
+      actions: '4',
+    };
     let NewComponent;
     beforeEach(() => {
       NewComponent = mount(
@@ -462,7 +473,7 @@ describe('<DataTableContainer>', () => {
           apiLocation="fake/location"
           DataTableData={{
             ExampleDataTable: {
-              data: [],
+              data: [testDataRow],
               dataTotalSize: 119,
               error: null,
               fetched: true,
@@ -475,6 +486,39 @@ describe('<DataTableContainer>', () => {
 
     it('should display pagination with 1 to 10 of 119 results', () => {
       expect(NewComponent.find('.react-bootstrap-table-pagination').text()).contains('Showing 1 to 10 of 119 Results');
+    });
+
+    it('should display the expected test data', () => {
+      expect(
+        NewComponent.find('.react-bootstrap-table table tr th')
+          .first()
+          .text(),
+      ).contains('Ref');
+      expect(
+        NewComponent.find('.react-bootstrap-table table tr td')
+          .first()
+          .text(),
+      ).contains(1);
+      expect(
+        NewComponent.find('.react-bootstrap-table table tr th')
+          .at(4)
+          .text(),
+      ).contains('Email Address');
+      expect(
+        NewComponent.find('.react-bootstrap-table table tr td')
+          .at(4)
+          .text(),
+      ).contains('ted.stevens@test.com');
+      expect(
+        NewComponent.find('.react-bootstrap-table table tr th')
+          .at(7)
+          .text(),
+      ).contains('System');
+      expect(
+        NewComponent.find('.react-bootstrap-table table tr td')
+          .at(7)
+          .text(),
+      ).contains('staging');
     });
   });
 
