@@ -449,6 +449,29 @@ describe('<DataTableContainer>', () => {
       );
       expect(NewComponent.find('.filter-icon')).to.have.length(1);
       expect(NewComponent.find('.react-bs-table-search-form')).to.have.length(1);
+      expect(NewComponent.find('.react-bs-table-search-form input').props().defaultValue).to.equal('');
+    });
+
+    it('should display global search with a default value', () => {
+      const newTableSettings = Object.assign({}, Component.props().tableSettings, {
+        defaultSearch: 'ted',
+        tableColumns: [
+          {
+            title: 'Ref',
+            key: 'request_id',
+            searchable: false,
+          },
+          {
+            title: 'First Name',
+            key: 'first_name',
+            width: 90,
+          },
+        ],
+      });
+      const NewComponent = mount(
+        <DataTableContainer dispatch={() => {}} tableSettings={newTableSettings} apiLocation="fake/location" />,
+      );
+      expect(NewComponent.find('.react-bs-table-search-form input').props().defaultValue).to.equal('ted');
     });
   });
 
