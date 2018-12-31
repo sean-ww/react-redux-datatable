@@ -21,7 +21,7 @@ Dynamic data table using React and Redux that fetches JSON from a predefined API
 
 ### Demo
 
-[View the Demo](https://sean-ww.github.io/react-redux-datatable/demo/?selectedKind=General%20Demo&selectedStory=Advanced%20Features&full=0&addons=0&stories=1&panelRight=0)
+[View example implementations](https://sean-ww.github.io/react-redux-datatable/demo/?selectedKind=General%20Demo&selectedStory=Advanced%20Features&full=0&addons=0&stories=1&panelRight=0)
 
 ### Documentation
 

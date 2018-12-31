@@ -449,10 +449,44 @@ describe('<DataTableContainer>', () => {
       );
       expect(NewComponent.find('.filter-icon')).to.have.length(1);
       expect(NewComponent.find('.react-bs-table-search-form')).to.have.length(1);
+      expect(NewComponent.find('.react-bs-table-search-form input').props().defaultValue).to.equal('');
+    });
+
+    it('should display global search with a default value', () => {
+      const newTableSettings = Object.assign({}, Component.props().tableSettings, {
+        defaultSearch: 'ted',
+        tableColumns: [
+          {
+            title: 'Ref',
+            key: 'request_id',
+            searchable: false,
+          },
+          {
+            title: 'First Name',
+            key: 'first_name',
+            width: 90,
+          },
+        ],
+      });
+      const NewComponent = mount(
+        <DataTableContainer dispatch={() => {}} tableSettings={newTableSettings} apiLocation="fake/location" />,
+      );
+      expect(NewComponent.find('.react-bs-table-search-form input').props().defaultValue).to.equal('ted');
     });
   });
 
   describe('With 119 (fake) results', () => {
+    const testDataRow = {
+      request_id: 1,
+      user_id: 7,
+      first_name: 'Ted',
+      surname: 'Stevens',
+      email: 'ted.stevens@test.com',
+      created_at: '2018-09-18 03:13:39',
+      type: 'Add',
+      system_type: 'staging',
+      actions: '4',
+    };
     let NewComponent;
     beforeEach(() => {
       NewComponent = mount(
@@ -462,7 +496,7 @@ describe('<DataTableContainer>', () => {
           apiLocation="fake/location"
           DataTableData={{
             ExampleDataTable: {
-              data: [],
+              data: [testDataRow],
               dataTotalSize: 119,
               error: null,
               fetched: true,
@@ -475,6 +509,39 @@ describe('<DataTableContainer>', () => {
 
     it('should display pagination with 1 to 10 of 119 results', () => {
       expect(NewComponent.find('.react-bootstrap-table-pagination').text()).contains('Showing 1 to 10 of 119 Results');
+    });
+
+    it('should display the expected test data', () => {
+      expect(
+        NewComponent.find('.react-bootstrap-table table tr th')
+          .first()
+          .text(),
+      ).contains('Ref');
+      expect(
+        NewComponent.find('.react-bootstrap-table table tr td')
+          .first()
+          .text(),
+      ).contains(1);
+      expect(
+        NewComponent.find('.react-bootstrap-table table tr th')
+          .at(4)
+          .text(),
+      ).contains('Email Address');
+      expect(
+        NewComponent.find('.react-bootstrap-table table tr td')
+          .at(4)
+          .text(),
+      ).contains('ted.stevens@test.com');
+      expect(
+        NewComponent.find('.react-bootstrap-table table tr th')
+          .at(7)
+          .text(),
+      ).contains('System');
+      expect(
+        NewComponent.find('.react-bootstrap-table table tr td')
+          .at(7)
+          .text(),
+      ).contains('staging');
     });
   });
 
