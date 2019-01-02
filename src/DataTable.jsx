@@ -24,6 +24,7 @@ const propTypes = forbidExtraProps({
   extraButtons: PropTypes.func,
   isFiltered: PropTypes.bool,
   noDataIndication: PropTypes.any,
+  paginationTotal: PropTypes.func,
   searchValue: PropTypes.string,
   tableData: PropTypes.any,
 });
@@ -33,6 +34,7 @@ const defaultProps = {
   extraButtons: null,
   isFiltered: false,
   noDataIndication: NO_DATA_INDICATOR,
+  paginationTotal: undefined,
   searchValue: undefined,
   tableData: null,
 };
