@@ -24,6 +24,7 @@ const propTypes = forbidExtraProps({
   extraButtons: PropTypes.func,
   isFiltered: PropTypes.bool,
   noDataIndication: PropTypes.any,
+  paginationTotal: PropTypes.func,
   searchValue: PropTypes.string,
   tableData: PropTypes.any,
 });
@@ -33,6 +34,7 @@ const defaultProps = {
   extraButtons: null,
   isFiltered: false,
   noDataIndication: NO_DATA_INDICATOR,
+  paginationTotal: undefined,
   searchValue: undefined,
   tableData: null,
 };
@@ -80,7 +82,12 @@ class DataTable extends React.Component {
   };
 
   renderExportCSVButton = () => (
-    <button type="button" {...this.menuButtonClass()} onClick={() => this.props.onExportToCSV()}>
+    <button
+      aria-label="export to csv"
+      type="button"
+      {...this.menuButtonClass()}
+      onClick={() => this.props.onExportToCSV()}
+    >
       <span className="export-icon">
         <b />
       </span>
@@ -106,14 +113,25 @@ class DataTable extends React.Component {
     }
     return (
       <div className="table-button-menu">
-        <button type="button" {...this.menuButtonClass()} onClick={() => this.props.refreshTable()}>
+        <button
+          aria-label="refresh"
+          type="button"
+          {...this.menuButtonClass()}
+          onClick={() => this.props.refreshTable()}
+        >
           <span class="refresh-icon">
             <b />
           </span>
         </button>
         {hasColumnFilters &&
           filtersType === 'shown' && (
-            <button type="button" {...this.menuButtonClass()} onClick={() => this.toggleFilters()}>
+            <button
+              aria-label="hide filters"
+              aria-haspopup="true"
+              type="button"
+              {...this.menuButtonClass()}
+              onClick={() => this.toggleFilters()}
+            >
               <span class="filter-icon filter-icon-shown">
                 <b />
               </span>
@@ -122,7 +140,12 @@ class DataTable extends React.Component {
           )}
         {hasColumnFilters &&
           filtersType === 'filtered' && (
-            <button type="button" {...this.menuButtonClass()} onClick={() => this.startClearingAllFilters()}>
+            <button
+              aria-label="clear filters"
+              type="button"
+              {...this.menuButtonClass()}
+              onClick={() => this.startClearingAllFilters()}
+            >
               <span class="filter-icon filter-icon-clear">
                 <b />
               </span>
@@ -131,7 +154,12 @@ class DataTable extends React.Component {
           )}
         {hasColumnFilters &&
           filtersType === 'hidden' && (
-            <button type="button" {...this.menuButtonClass()} onClick={() => this.toggleFilters()}>
+            <button
+              aria-label="show filters"
+              type="button"
+              {...this.menuButtonClass()}
+              onClick={() => this.toggleFilters()}
+            >
               <span class="filter-icon">
                 <b />
               </span>
