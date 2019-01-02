@@ -7,7 +7,7 @@
 
 Dynamic data table using React and Redux that fetches JSON from a predefined API. Designed to build asynchronous React-Redux tables quickly and consistently.
 
-![Example](https://github.com/sean-ww/react-redux-datatable/raw/master/react-redux-datatable.png)
+[![Example](https://github.com/sean-ww/react-redux-datatable/raw/master/react-redux-datatable.png)](https://sean-ww.github.io/react-redux-datatable/demo/?selectedKind=General%20Demo&selectedStory=Advanced%20Features&full=0&addons=0&stories=1&panelRight=0)
 
 * Filter column values by date ranges, number, text and select lists
 * Paginate and Sort data
