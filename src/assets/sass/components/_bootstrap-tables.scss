@@ -166,59 +166,63 @@
     }
 }
 
-.dropup,
-.dropdown {
-    position: relative;
-}
+.react-bootstrap-table-pagination {
+    .dropup,
+    .dropdown {
+        position: relative;
+    }
 
-.open > .dropdown-menu {
-    display: block;
-}
-
-.dropdown-menu {
-    position: absolute;
-    bottom: 100%;
-    left: 0;
-    z-index: 1000;
-    display: none;
-    float: left;
-    padding: 3px 0;
-    margin: 2px 0 0;
-    list-style: none;
-    font-size: 10px;
-    text-align: left;
-    background-color: #ffffff;
-    border: 1px solid #cccccc;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    border-radius: 4px;
-    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-    background-clip: padding-box;
-
-    > li > a,
-    > li > button {
+    .open > .dropdown-menu {
         display: block;
-        padding: 3px 14px;
-        clear: both;
-        font-size: 10px;
-        font-weight: normal;
-        line-height: 1.42857;
-        color: #333333;
-        white-space: nowrap;
-        background: none;
-        border: 0;
-        text-decoration: underline;
-        width: 100%;
-        text-align: left;
+    }
 
-        &:hover,
-        &:focus {
-            text-decoration: none;
-            color: #262626;
-            background-color: #f5f5f5;
+    .dropdown-menu {
+        position: absolute;
+        bottom: 100%;
+        left: 0;
+        z-index: 1000;
+        display: none;
+        float: left;
+        padding: 3px 0;
+        margin: 2px 0 0;
+        list-style: none;
+        font-size: 10px;
+        text-align: left;
+        background-color: #ffffff;
+        border: 1px solid #cccccc;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        border-radius: 4px;
+        -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+        background-clip: padding-box;
+
+        > li > a,
+        > li > button {
+            display: block;
+            padding: 3px 14px;
+            clear: both;
+            font-size: 10px;
+            font-weight: normal;
+            line-height: 1.42857;
+            color: #333333;
+            white-space: nowrap;
+            background: none;
+            border: 0;
+            text-decoration: underline;
+            width: 100%;
+            text-align: left;
+
+            &:hover,
+            &:focus {
+                text-decoration: none;
+                color: #262626;
+                background-color: #f5f5f5;
+            }
         }
     }
 }
+
+
 
 .react-bootstrap-table-pagination,
 .react-bs-table-tool-bar {
