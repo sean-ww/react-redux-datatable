@@ -1,3 +1,5 @@
+/* eslint jsx-a11y/no-onchange: 0 */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import DayPicker from 'react-day-picker';
