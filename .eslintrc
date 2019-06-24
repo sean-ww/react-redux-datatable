@@ -8,11 +8,13 @@
   },
   "plugins": [
     "prettier",
-    "chai-friendly"
+    "chai-friendly",
+    "jsx-a11y"
   ],
   "extends": [
     "airbnb",
-    "prettier"
+    "prettier",
+    "plugin:jsx-a11y/recommended"
   ],
   "parser": "babel-eslint",
   "rules": {
@@ -24,13 +26,9 @@
 
     // allow the use of class and for
     "react/no-unknown-property": [ "error", {"ignore": ["class", "for"]}],
-    "jsx-a11y/label-has-for": "off",
 
     // allow all prop types except 'any'
     "react/forbid-prop-types": "off",
-
-    // allow static element interactions
-    "jsx-a11y/no-static-element-interactions": "off",
 
     // allow dangling underscores
     "no-underscore-dangle": "off",
