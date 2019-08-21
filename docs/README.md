@@ -17,7 +17,7 @@ Dynamic data table using React and Redux that fetches JSON from a predefined API
 * Uses React and Redux with a predefined API
 * Add table headers
 * Toggle full screen view
-* Export to a csv
+* Export to a csv file
 
 ### Demo
 
