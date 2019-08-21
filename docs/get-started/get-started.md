@@ -12,6 +12,23 @@ import { DataTableReducer } from 'react-redux-datatable';
 // ...combine with your existing reducers if applicable, and add to your store
 ```
 
+And include the redux promise and thunk middleware.
+```
+// in ECMAScript 6
+import { applyMiddleware, createStore } from 'redux';
+
+import thunk from 'redux-thunk';
+import promise from 'redux-promise-middleware';
+
+import reducer from './root.reducer';
+
+const middlewares = [promise(), thunk];
+
+const middleware = applyMiddleware(...middlewares);
+
+export default createStore(reducer, middleware);
+```
+
 #### Example Table Setup
 ```
 // in ECMAScript 6
