@@ -1,5 +1,7 @@
 # react-redux-datatable
 
+NOTE: This project is no longer actively maintained
+
 [![Build Status](https://travis-ci.org/sean-ww/react-redux-datatable.svg?branch=master)](https://travis-ci.org/sean-ww/react-redux-datatable)
 [![Coverage Status](https://coveralls.io/repos/github/sean-ww/react-redux-datatable/badge.svg?branch=master)](https://coveralls.io/github/sean-ww/react-redux-datatable?branch=master)
 [![Version](https://img.shields.io/npm/v/react-redux-datatable.svg)](https://www.npmjs.org/package/react-redux-datatable)
