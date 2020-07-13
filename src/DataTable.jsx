@@ -219,6 +219,20 @@ class DataTable extends React.Component {
       ];
     }
 
+    // expand options
+    const expandRow = {
+      renderer: row => (
+        <div>
+          <p>{`This Expand row is belong to rowKey ${row[Object.keys(row)[0]] || 'unknown'}`}</p>
+          <p>You can render anything here, also you can add additional data on every row object</p>
+          <p>expandRow.renderer callback will pass the origin row to you</p>
+        </div>
+      ),
+      showExpandColumn: true,
+      onlyOneExpanding: true,
+      expandByColumnOnly: true,
+    };
+
     // Add pagination options
     const paginationOptions = {
       onSizePerPageChange,
@@ -283,6 +297,7 @@ class DataTable extends React.Component {
         {this.renderToolBar()}
         <BootstrapTable
           remote={{ pagination: true }}
+          expandRow={expandRow}
           keyField={keyField}
           data={tableData || []}
           columns={columns}
